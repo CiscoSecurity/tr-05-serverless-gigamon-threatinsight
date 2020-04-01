@@ -1,46 +1,83 @@
+import json
+from typing import Optional
+
+import requests
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
 from flask import request, current_app, jsonify
-from werkzeug.exceptions import Forbidden, BadRequest
 
 
 def get_jwt():
-    """
-    Parse the incoming request's Authorization Bearer JWT for some credentials.
-    Validate its signature against the application's secret key.
-
-    Note. This function is just an example of how one can read and check
-    anything before passing to an API endpoint, and thus it may be modified in
-    any way, replaced by another function, or even removed from the module.
-    """
-
     try:
         scheme, token = request.headers['Authorization'].split()
         assert scheme.lower() == 'bearer'
         return jwt.decode(token, current_app.config['SECRET_KEY'])
     except (KeyError, ValueError, AssertionError, JoseError):
-        raise Forbidden('Invalid Authorization Bearer JWT.')
+        return {}
+
+
+def get_key() -> Optional[str]:
+    return get_jwt().get('key')  # GTI_API_KEY
 
 
 def get_json(schema):
-    """
-    Parse the incoming request's data as JSON.
-    Validate it against the specified schema.
-
-    Note. This function is just an example of how one can read and check
-    anything before passing to an API endpoint, and thus it may be modified in
-    any way, replaced by another function, or even removed from the module.
-    """
-
     data = request.get_json(force=True, silent=True, cache=False)
 
-    message = schema.validate(data)
+    error = schema.validate(data) or None
+    if error:
+        data = None
+        error = {
+            'code': 'invalid payload received',
+            'message': f'Invalid JSON payload received. {json.dumps(error)}.',
+        }
 
-    if message:
-        raise BadRequest(message)
+    return data, error
 
-    return data
+
+def call_gti_api(key, method, url, **kwargs):
+    if key is None:
+        # Mimic the GTI API error response payload.
+        error = {
+            'code': 'client.invalid_authentication',
+            'message': 'Authentication is invalid.',
+        }
+        return None, error
+
+    headers = {
+        'Authorization': f'IBToken {key}',
+        'User-Agent': current_app.config['GTI_USER_AGENT'],
+    }
+
+    kwargs.setdefault('headers', {}).update(headers)
+
+    response = requests.request(method, url, **kwargs)
+
+    if response.ok:
+        return response.json(), None
+
+    else:
+        error = response.json()['error']
+        # The GTI API error response payload is already well formatted,
+        # so just leave only the fields of interest and discard the rest.
+        error = {
+            'code': error['code'],
+            'message': error['message'],
+        }
+        return None, error
 
 
 def jsonify_data(data):
     return jsonify({'data': data})
+
+
+def jsonify_errors(error):
+    error['code'] = error['code'].replace('.', ' : ').replace('_', ' ')
+
+    # According to the official documentation, an error here means that the
+    # corresponding TR module is in an incorrect state and needs to be
+    # reconfigured, or the third-party service is down (for example, the API
+    # being queried has temporary issues) and thus unresponsive:
+    # https://visibility.amp.cisco.com/help/alerts-errors-warnings.
+    error['type'] = 'fatal'
+
+    return jsonify({'errors': [error]})
