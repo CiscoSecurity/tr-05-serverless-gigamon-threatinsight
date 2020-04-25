@@ -20,7 +20,7 @@ def _get_events_for_detection(key, detection_uuid):
         return detection_uuid, get_events_for_detection(key, detection_uuid)
 
 
-def _traverse(obj, path):
+def _values(obj, path):
     """
     Extract all the values located on a particular path in a given object.
 
@@ -28,7 +28,7 @@ def _traverse(obj, path):
     If the path doesn't exist for the object, the function won't yield anything
     resulting in an empty generator.
 
-    >>> list(_traverse({'x': {'y': [{'z': 1}, {'z': 2}, {'z': 3}]}}, ('x', 'y', 'z')))
+    >>> list(_values({'x': {'y': [{'z': 1}, {'z': 2}, {'z': 3}]}}, ('x', 'y', 'z')))  # noqa: E501
     [1, 2, 3]
     """
     if not path:
@@ -41,9 +41,9 @@ def _traverse(obj, path):
 
     if isinstance(obj[key], list):
         for item in obj[key]:
-            yield from _traverse(item, path[1:])
+            yield from _values(item, path[1:])
     else:
-        yield from _traverse(obj[key], path[1:])
+        yield from _values(obj[key], path[1:])
 
 
 def get_events_for_observable(key, observable):
@@ -107,7 +107,7 @@ def get_events_for_observable(key, observable):
 
             for event in events_for_detection:
                 if any(
-                    entity in _traverse(event, indicator_field_path)
+                    entity in _values(event, indicator_field_path)
                     for indicator_field_path in indicator_field_paths
                 ):
                     event['detection'] = detection
