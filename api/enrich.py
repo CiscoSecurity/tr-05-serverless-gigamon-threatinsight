@@ -26,10 +26,12 @@ def observe_observables():
     if error:
         return jsonify_errors(error)
 
+    observable_types = current_app.config['GTI_OBSERVABLE_TYPES']
+
     observables = [
         observable
         for observable in observables
-        if observable['type'] in current_app.config['GTI_ENTITY_TYPES']
+        if observable['type'] in observable_types
     ]
 
     key = get_key()

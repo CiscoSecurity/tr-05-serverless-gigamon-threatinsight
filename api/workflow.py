@@ -82,6 +82,8 @@ def get_events_for_observable(key, observable):
 
             indicator_values_by_indicator_type = defaultdict(set)
 
+            observable_types = current_app.config['GTI_OBSERVABLE_TYPES']
+
             for indicator in detection['indicators']:
                 # E.g.
                 # 'dst.ip' -> ('dst', 'ip'),
@@ -92,11 +94,11 @@ def get_events_for_observable(key, observable):
                 )
 
                 indicator_type = indicator_field_path[-1]
-                if indicator_type in current_app.config['GTI_ENTITY_TYPES']:
+                if indicator_type in observable_types:
                     indicator_field_paths.append(indicator_field_path)
 
                     indicator_values_by_indicator_type[
-                        current_app.config['GTI_ENTITY_TYPES'][indicator_type]
+                        observable_types[indicator_type]
                     ].update(indicator['values'])
 
             detection['summary'] = {

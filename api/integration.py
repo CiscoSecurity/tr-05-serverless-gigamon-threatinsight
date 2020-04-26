@@ -11,7 +11,7 @@ def _url(family, route):
 def _headers(key):
     return {
         'Authorization': f'IBToken {key}',
-        'User-Agent': current_app.config['GTI_USER_AGENT'],
+        'User-Agent': current_app.config['CTR_USER_AGENT'],
     }
 
 
