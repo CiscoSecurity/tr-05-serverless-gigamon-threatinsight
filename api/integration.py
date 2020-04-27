@@ -92,8 +92,11 @@ def get_events_for_detection(key, detection_uuid):
 def get_events_for_entity(key, entity):
     url = _url('event', 'query')
 
+    limit = current_app.config['CTR_ENTITIES_LIMIT']
+
     json = {
         'query': entity,
+        'limit': limit,
     }
 
     data, error = _request('POST', url, key=key, json=json)

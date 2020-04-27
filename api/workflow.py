@@ -135,5 +135,6 @@ def get_events_for_observable(key, observable):
     for event in events:
         event['observable'] = observable
 
-    # TODO: limit the number of events
-    return events
+    limit = current_app.config['CTR_ENTITIES_LIMIT']
+
+    return events[:limit]
