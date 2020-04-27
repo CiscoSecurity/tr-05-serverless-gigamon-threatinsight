@@ -13,6 +13,14 @@ class Config:
         '<tr-integrations-support@cisco.com>'
     )
 
+    CTR_ENTITIES_LIMIT_DEFAULT = 100
+
+    try:
+        CTR_ENTITIES_LIMIT = int(os.environ['CTR_ENTITIES_LIMIT'])
+        assert CTR_ENTITIES_LIMIT > 0
+    except (KeyError, ValueError, AssertionError):
+        CTR_ENTITIES_LIMIT = CTR_ENTITIES_LIMIT_DEFAULT
+
     GTI_OBSERVABLE_TYPES = {
         'ip': 'IP',
         'domain': 'Domain',
