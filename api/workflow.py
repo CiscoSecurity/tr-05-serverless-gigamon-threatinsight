@@ -137,4 +137,4 @@ def get_events_for_observable(key, observable):
 
     limit = current_app.config['CTR_ENTITIES_LIMIT']
 
-    return events[:limit]
+    return events[:limit], None
