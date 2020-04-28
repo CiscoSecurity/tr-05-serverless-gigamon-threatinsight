@@ -28,8 +28,6 @@ class Sighting(Mapping):
         'count': 1,
         'internal': True,
         'source': 'Gigamon ThreatINSIGHT',
-        # TODO: figure out with title
-        # 'title': 'Found on Gigamon ThreatINSIGHT',
         **CTIM_DEFAULTS
     }
 
@@ -81,16 +79,25 @@ class Sighting(Mapping):
         return sighting
 
     @staticmethod
-    def _relations(source, event):
+    def _relations(origin, event):
         relations = []
 
-        for src, dst in [('src', 'dst'), ('dst', 'src')]:
-            if event[src]['internal']:
+        for source_obj, related_obj, relation in [
+            ('src', 'dst', 'Connected_To'),
+            ('dst', 'src', 'Connected_From'),
+        ]:
+            if event[source_obj]['internal']:
                 relations.append({
-                    'origin': source,
-                    'related': {'type': 'ip', 'value': event[dst]['ip']},
-                    'relation': 'Connected_To',
-                    'source': {'type': 'ip', 'value': event[src]['ip']},
+                    'origin': origin,
+                    'related': {
+                        'type': 'ip',
+                        'value': event[related_obj]['ip'],
+                    },
+                    'relation': relation,
+                    'source': {
+                        'type': 'ip',
+                        'value': event[source_obj]['ip'],
+                    },
                 })
 
         # TODO: come up with more possible relations of interest
