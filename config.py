@@ -22,11 +22,11 @@ class Config:
         CTR_ENTITIES_LIMIT = CTR_ENTITIES_LIMIT_DEFAULT
 
     GTI_OBSERVABLE_TYPES = {
-        'ip': 'IP',
-        'domain': 'Domain',
-        'md5': 'MD-5',
-        'sha1': 'SHA-1',
-        'sha256': 'SHA-256',
+        'ip',
+        'domain',
+        'md5',
+        'sha1',
+        'sha256',
     }
 
     GTI_TEST_ENTITY = '8.8.8.8'

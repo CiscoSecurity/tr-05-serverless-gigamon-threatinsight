@@ -59,6 +59,9 @@ def get_events_for_observable(key, observable):
 
     events = []
 
+    impacted_devices_by_rule_account = defaultdict(set)
+    indicator_values_by_rule_account = defaultdict(set)
+
     with ThreadPoolExecutor() as executor:
         futures = [
             executor.submit(_get_events_for_detection, key, detection['uuid'])
@@ -78,15 +81,22 @@ def get_events_for_observable(key, observable):
                 if detection['uuid'] == detection_uuid
             )
 
-            indicator_field_paths = []
+            rule_account = detection['rule']['uuid'], detection['account_uuid']
 
-            indicator_values_by_indicator_type = defaultdict(set)
+            impacted_devices_by_rule_account[
+                rule_account
+            ].add(
+                detection['device_ip']
+            )
+
+            indicator_field_paths = []
 
             observable_types = current_app.config['GTI_OBSERVABLE_TYPES']
 
             for indicator in detection['indicators']:
                 # E.g.
                 # 'dst.ip' -> ('dst', 'ip'),
+                # 'http:host.domain' -> ('host', 'domain'),
                 # 'http:files.sha256' -> ('files', 'sha256'),
                 # etc.
                 indicator_field_path = tuple(
@@ -97,15 +107,11 @@ def get_events_for_observable(key, observable):
                 if indicator_type in observable_types:
                     indicator_field_paths.append(indicator_field_path)
 
-                    indicator_values_by_indicator_type[
-                        observable_types[indicator_type]
-                    ].update(indicator['values'])
-
-            detection['summary'] = {
-                indicator_type: len(indicator_values)
-                for indicator_type, indicator_values
-                in indicator_values_by_indicator_type.items()
-            }
+                    indicator_values_by_rule_account[
+                        rule_account
+                    ].update(
+                        indicator['values']
+                    )
 
             for event in events_for_detection:
                 if any(
@@ -114,6 +120,21 @@ def get_events_for_observable(key, observable):
                 ):
                     event['detection'] = detection
                     events.append(event)
+
+    for event in events:
+        detection = event['detection']
+
+        rule_account = detection['rule']['uuid'], detection['account_uuid']
+
+        impacted_devices = impacted_devices_by_rule_account[rule_account]
+        indicator_values = indicator_values_by_rule_account[rule_account]
+
+        summary = {
+            'impacted_devices': len(impacted_devices),
+            'indicator_values': len(indicator_values),
+        }
+
+        detection['summary'] = summary
 
     events.sort(key=itemgetter('timestamp'), reverse=True)
 

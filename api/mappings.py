@@ -48,10 +48,15 @@ class Sighting(Mapping):
         if 'detection' in event:
             sighting['data'] = {
                 'columns': [
-                    {'name': 'Indicator', 'type': 'string'},
-                    {'name': 'Unique Values', 'type': 'integer'},
+                    {'name': 'Impacted Devices', 'type': 'integer'},
+                    {'name': 'Indicator Values', 'type': 'integer'},
                 ],
-                'rows': list(event['detection']['summary'].items()),
+                'rows': [
+                    [
+                        event['detection']['summary']['impacted_devices'],
+                        event['detection']['summary']['indicator_values'],
+                    ],
+                ]
             }
 
         sighting['description'] = '\n'.join(
@@ -68,7 +73,6 @@ class Sighting(Mapping):
             []
         )
 
-        # Each event is always enriched with its corresponding observable.
         sighting['observables'] = [event['observable']]
 
         sighting['relations'] = cls._relations(sighting['source'], event)
