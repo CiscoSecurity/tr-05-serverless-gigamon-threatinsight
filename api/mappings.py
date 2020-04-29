@@ -31,6 +31,12 @@ class Sighting(Mapping):
         **CTIM_DEFAULTS
     }
 
+    SEVERITY_MAPPING = {
+        'high': 'High',
+        'moderate': 'Medium',
+        'low': 'Low',
+    }
+
     @classmethod
     def map(cls, event: JSON) -> JSON:
         sighting: JSON = cls.DEFAULTS.copy()
@@ -68,6 +74,11 @@ class Sighting(Mapping):
         sighting['relations'] = cls._relations(sighting['source'], event)
 
         sighting['sensor'] = event['sensor_id']
+
+        if 'detection' in event:
+            sighting['severity'] = (
+                cls.SEVERITY_MAPPING[event['detection']['rule']['severity']]
+            )
 
         if 'detection' in event:
             sighting['source_uri'] = current_app.config['GTI_UI_URL'].format(
