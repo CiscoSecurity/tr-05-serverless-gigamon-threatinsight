@@ -36,4 +36,7 @@ class Config:
         'event': 'https://events.icebrg.io/v2/',
     }
 
-    GTI_UI_URL = 'https://portal.icebrg.io/detections/rules/{rule_uuid}'
+    GTI_UI_URL = (
+        'https://portal.icebrg.io/detections/rules/'
+        '{rule_uuid}?account_uuid={account_uuid}'
+    )
