@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from unittest import mock
-from urllib.parse import quote
 
 from authlib.jose import jwt
 from pytest import fixture
@@ -36,55 +35,21 @@ def test_health_call_with_invalid_jwt_failure(route,
     assert response.get_json() == expected_payload
 
 
-@fixture(scope='function')
-def gti_api_request():
-    with mock.patch('requests.request') as mock_request:
-        yield mock_request
-
-
-def gti_api_response(*, ok):
-    mock_response = mock.MagicMock()
-
-    mock_response.ok = ok
-
-    if ok:
-        payload = ...
-
-    else:
-        payload = {
-            'error': {
-                'code': 'client.invalid_authentication',
-                'message': 'Authentication is invalid.',
-                'ellipsis': ...,
-            }
-        }
-
-    mock_response.json = lambda: payload
-
-    return mock_response
-
-
-def test_health_call_success(route, client, gti_api_request, valid_jwt):
+def test_health_call_success(route, client, valid_jwt):
     app = client.application
 
-    gti_api_request.return_value = gti_api_response(ok=True)
+    target = 'api.health.get_events_for_entity'
+    error = None
 
-    response = client.post(route, headers=headers(valid_jwt))
+    with mock.patch(target) as get_events_for_entity_mock:
+        get_events_for_entity_mock.return_value = (..., error)
 
-    expected_url = app.config['GTI_API_URLS']['entity']['summary'].format(
-        entity=quote(app.config['GTI_TEST_ENTITY'], safe='')
-    )
+        response = client.post(route, headers=headers(valid_jwt))
 
-    expected_headers = {
-        'Authorization': 'IBToken {[key]}'.format(
-            jwt.decode(valid_jwt, app.config['SECRET_KEY'])
-        ),
-        'User-Agent': app.config['GTI_USER_AGENT'],
-    }
+        key = jwt.decode(valid_jwt, app.config['SECRET_KEY'])['key']
+        entity = app.config['GTI_TEST_ENTITY']
 
-    gti_api_request.assert_called_once_with('GET',
-                                            expected_url,
-                                            headers=expected_headers)
+        get_events_for_entity_mock.assert_called_with(key, entity)
 
     expected_payload = {'data': {'status': 'ok'}}
 
@@ -94,28 +59,24 @@ def test_health_call_success(route, client, gti_api_request, valid_jwt):
 
 def test_health_call_with_auth_error_from_gti_failure(route,
                                                       client,
-                                                      gti_api_request,
                                                       valid_jwt):
     app = client.application
 
-    gti_api_request.return_value = gti_api_response(ok=False)
-
-    response = client.post(route, headers=headers(valid_jwt))
-
-    expected_url = app.config['GTI_API_URLS']['entity']['summary'].format(
-        entity=quote(app.config['GTI_TEST_ENTITY'], safe='')
-    )
-
-    expected_headers = {
-        'Authorization': 'IBToken {[key]}'.format(
-            jwt.decode(valid_jwt, app.config['SECRET_KEY'])
-        ),
-        'User-Agent': app.config['GTI_USER_AGENT'],
+    target = 'api.health.get_events_for_entity'
+    error = {
+        'code': 'client.invalid_authentication',
+        'message': 'Authentication is invalid.',
     }
 
-    gti_api_request.assert_called_once_with('GET',
-                                            expected_url,
-                                            headers=expected_headers)
+    with mock.patch(target) as get_events_for_entity_mock:
+        get_events_for_entity_mock.return_value = (..., error)
+
+        response = client.post(route, headers=headers(valid_jwt))
+
+        key = jwt.decode(valid_jwt, app.config['SECRET_KEY'])['key']
+        entity = app.config['GTI_TEST_ENTITY']
+
+        get_events_for_entity_mock.assert_called_with(key, entity)
 
     expected_payload = {
         'errors': [
