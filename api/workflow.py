@@ -136,8 +136,6 @@ def get_events_for_observable(key, observable):
 
         detection['summary'] = summary
 
-    events.sort(key=itemgetter('timestamp'), reverse=True)
-
     # Fetch some of the most recent events for the given entity and merge them
     # to the already processed ones making sure to filter out any duplicates.
 
@@ -153,9 +151,13 @@ def get_events_for_observable(key, observable):
         if event['uuid'] not in uuids
     )
 
+    limit = current_app.config['CTR_ENTITIES_LIMIT']
+
+    events = events[:limit]
+
+    events.sort(key=itemgetter('timestamp'), reverse=True)
+
     for event in events:
         event['observable'] = observable
 
-    limit = current_app.config['CTR_ENTITIES_LIMIT']
-
-    return events[:limit], None
+    return events, None

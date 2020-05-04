@@ -1,10 +1,11 @@
 from http import HTTPStatus
+from re import compile as re_compile
 from unittest import mock
 
 from authlib.jose import jwt
 from pytest import fixture
 
-from .utils import headers
+from .utils import headers, fixture_for
 
 
 def implemented_routes():
@@ -131,8 +132,28 @@ def expected_payload(any_route, client, valid_json):
     if any_route.startswith('/deliberate'):
         payload = {}
 
-    if any_route.startswith('/observe'):  # TODO: mock some sightings
-        payload = {}
+    if any_route.startswith('/observe'):
+        sightings = fixture_for('sightings')
+
+        class TransientID:
+            uuid4 = '-'.join([
+                '[a-f0-9]{8}',
+                '[a-f0-9]{4}',
+                '4[a-f0-9]{3}',
+                '[89ab][a-f0-9]{3}',
+                '[a-f0-9]{12}',
+            ])
+            pattern = re_compile(f'^transient:{uuid4}$')
+
+            def __eq__(self, other):
+                return bool(self.pattern.match(other))
+
+        for sighting in sightings['docs']:
+            sighting['id'] = TransientID()
+
+        payload = {
+            'sightings': sightings,
+        }
 
     if any_route.startswith('/refer'):
         observable_types = app.config['GTI_OBSERVABLE_TYPES']
@@ -174,11 +195,19 @@ def test_enrich_call_success(any_route,
     if any_route.startswith('/deliberate'):
         response = client.post(any_route)
 
-    if any_route.startswith('/observe'):  # TODO: mock some events
+    if any_route.startswith('/observe'):
         target = 'api.enrich.get_events_for_observable'
 
+        def side_effect(_, observable):
+            data = (
+                fixture_for('workflow/events_for_observable')
+                if observable['type'] == 'sha256' else
+                []
+            )
+            return data, None
+
         with mock.patch(target) as get_events_for_observable_mock:
-            get_events_for_observable_mock.return_value = ([], None)
+            get_events_for_observable_mock.side_effect = side_effect
 
             response = client.post(any_route,
                                    json=valid_json,

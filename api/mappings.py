@@ -1,6 +1,6 @@
 import abc
-import uuid
 from typing import Dict, Any
+from uuid import uuid4
 
 from flask import current_app
 
@@ -41,7 +41,7 @@ class Sighting(Mapping):
     def map(cls, event: JSON) -> JSON:
         sighting: JSON = cls.DEFAULTS.copy()
 
-        sighting['id'] = f'transient:{uuid.uuid4()}'
+        sighting['id'] = f'transient:{uuid4()}'
 
         sighting['observed_time'] = {'start_time': event['timestamp']}
 
