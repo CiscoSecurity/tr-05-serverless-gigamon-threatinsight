@@ -69,7 +69,7 @@ def test_health_call_with_auth_error_from_gti_failure(route,
     }
 
     with mock.patch(target) as get_events_for_entity_mock:
-        get_events_for_entity_mock.return_value = (..., error)
+        get_events_for_entity_mock.return_value = (None, error)
 
         response = client.post(route, headers=headers(valid_jwt))
 
