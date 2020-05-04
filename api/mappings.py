@@ -85,9 +85,11 @@ class Sighting(Mapping):
             )
 
         if 'detection' in event:
-            sighting['source_uri'] = current_app.config['GTI_UI_URL'].format(
-                rule_uuid=event['detection']['rule']['uuid'],
-                account_uuid=event['detection']['account_uuid'],
+            sighting['source_uri'] = (
+                current_app.config['GTI_UI_RULE_URL'].format(
+                    rule_uuid=event['detection']['rule']['uuid'],
+                    account_uuid=event['detection']['account_uuid'],
+                )
             )
 
         sighting['targets'] = cls._targets(sighting['observed_time'], event)

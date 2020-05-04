@@ -9,6 +9,7 @@ from .utils import headers
 
 def implemented_routes():
     yield '/observe/observables'
+    yield '/refer/observables'
 
 
 @fixture(scope='module',
@@ -83,10 +84,6 @@ def valid_json():
                 '9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3'  # noqa: E501
             ),
         },
-        {
-            'type': 'email',
-            'value': 'admin@cisco.com',
-        },
     ]
 
 
@@ -126,12 +123,9 @@ def any_route(request):
 
 
 @fixture(scope='module')
-def gti_events():  # TODO
-    return []
+def expected_payload(any_route, client, valid_json):
+    app = client.application
 
-
-@fixture(scope='module')
-def expected_payload(any_route, client):
     payload = None
 
     if any_route.startswith('/deliberate'):
@@ -141,7 +135,27 @@ def expected_payload(any_route, client):
         payload = {}
 
     if any_route.startswith('/refer'):
-        payload = []
+        observable_types = app.config['GTI_OBSERVABLE_TYPES']
+
+        def type_of(observable):
+            return observable_types[observable['type']]
+
+        url_template = app.config['GTI_UI_SEARCH_URL']
+
+        payload = [
+            {
+                'id': 'ref-gti-search-{type}-{value}'.format(**observable),
+                'title': f'Search for this {type_of(observable)}',
+                'description': (
+                    f'Lookup this {type_of(observable)} '
+                    'on Gigamon ThreatINSIGHT'
+                ),
+                'url': url_template.format(entity=observable['value']),
+                'categories': ['Search', 'Gigamon ThreatINSIGHT'],
+            }
+            for observable in valid_json
+            if observable['type'] in observable_types
+        ]
 
     assert payload is not None, f'Unknown route: {any_route}.'
 
@@ -150,7 +164,6 @@ def expected_payload(any_route, client):
 
 def test_enrich_call_success(any_route,
                              client,
-                             gti_events,
                              valid_json,
                              valid_jwt,
                              expected_payload):
@@ -165,7 +178,7 @@ def test_enrich_call_success(any_route,
         target = 'api.enrich.get_events_for_observable'
 
         with mock.patch(target) as get_events_for_observable_mock:
-            get_events_for_observable_mock.return_value = (gti_events, None)
+            get_events_for_observable_mock.return_value = ([], None)
 
             response = client.post(any_route,
                                    json=valid_json,
@@ -208,6 +221,7 @@ def test_enrich_call_with_auth_error_from_gti_failure(gti_api_route,
                                headers=headers(valid_jwt))
 
         key = jwt.decode(valid_jwt, app.config['SECRET_KEY'])['key']
+
         observable = next(
             observable
             for observable in valid_json

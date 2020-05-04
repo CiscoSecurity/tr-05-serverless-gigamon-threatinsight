@@ -61,5 +61,31 @@ def observe_observables():
 
 @enrich_api.route('/refer/observables', methods=['POST'])
 def refer_observables():
-    # There are no links to show.
-    return jsonify_data([])
+    observables, error = get_observables()
+
+    if error:
+        return jsonify_errors(error)
+
+    observable_types = current_app.config['GTI_OBSERVABLE_TYPES']
+
+    def type_of(observable):
+        return observable_types[observable['type']]
+
+    url_template = current_app.config['GTI_UI_SEARCH_URL']
+
+    data = [
+        {
+            'id': 'ref-gti-search-{type}-{value}'.format(**observable),
+            'title': f'Search for this {type_of(observable)}',
+            'description': (
+                f'Lookup this {type_of(observable)} '
+                'on Gigamon ThreatINSIGHT'
+            ),
+            'url': url_template.format(entity=observable['value']),
+            'categories': ['Search', 'Gigamon ThreatINSIGHT'],
+        }
+        for observable in observables
+        if observable['type'] in observable_types
+    ]
+
+    return jsonify_data(data)

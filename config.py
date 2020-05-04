@@ -22,11 +22,11 @@ class Config:
         CTR_ENTITIES_LIMIT = CTR_ENTITIES_LIMIT_DEFAULT
 
     GTI_OBSERVABLE_TYPES = {
-        'ip',
-        'domain',
-        'md5',
-        'sha1',
-        'sha256',
+        'ip': 'IP',
+        'domain': 'domain',
+        'md5': 'MD5',
+        'sha1': 'SHA1',
+        'sha256': 'SHA256',
     }
 
     GTI_TEST_ENTITY = '8.8.8.8'
@@ -36,7 +36,9 @@ class Config:
         'event': 'https://events.icebrg.io/v2/',
     }
 
-    GTI_UI_URL = (
+    GTI_UI_RULE_URL = (
         'https://portal.icebrg.io/detections/rules/'
         '{rule_uuid}?account_uuid={account_uuid}'
     )
+
+    GTI_UI_SEARCH_URL = 'https://portal.icebrg.io/search?query={entity}'
