@@ -131,7 +131,7 @@ def expected_payload(any_route, client, valid_json):
     if any_route.startswith('/deliberate'):
         payload = {}
 
-    if any_route.startswith('/observe'):  # TODO
+    if any_route.startswith('/observe'):  # TODO: mock some sightings
         payload = {}
 
     if any_route.startswith('/refer'):
@@ -174,7 +174,7 @@ def test_enrich_call_success(any_route,
     if any_route.startswith('/deliberate'):
         response = client.post(any_route)
 
-    if any_route.startswith('/observe'):  # TODO
+    if any_route.startswith('/observe'):  # TODO: mock some events
         target = 'api.enrich.get_events_for_observable'
 
         with mock.patch(target) as get_events_for_observable_mock:
