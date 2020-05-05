@@ -6,15 +6,18 @@ def headers(jwt):
     return {'Authorization': f'Bearer {jwt}'}
 
 
-def fixture_for(file_name):
-    if not file_name.endswith('.json'):
-        file_name += '.json'
+def load_fixture(path):
+    """Load a JSON fixture given a relative path to it."""
 
-    file_path = os.path.join(
+    if not path.endswith('.json'):
+        path += '.json'
+
+    # Build the absolute path to the fixture.
+    path = os.path.join(
         os.path.dirname(__file__),
         'fixtures',
-        file_name,
+        path,
     )
 
-    with open(file_path) as file_obj:
-        return json.load(file_obj)
+    with open(path) as file:
+        return json.load(file)

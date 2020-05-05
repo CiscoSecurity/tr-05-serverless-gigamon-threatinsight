@@ -5,7 +5,7 @@ from unittest import mock
 from authlib.jose import jwt
 from pytest import fixture
 
-from .utils import headers, fixture_for
+from .utils import headers, load_fixture
 
 
 def implemented_routes():
@@ -133,7 +133,7 @@ def expected_payload(any_route, client, valid_json):
         payload = {}
 
     if any_route.startswith('/observe'):
-        sightings = fixture_for('sightings')
+        sightings = load_fixture('sightings')
 
         class TransientID:
             uuid4 = '-'.join([
@@ -200,7 +200,7 @@ def test_enrich_call_success(any_route,
 
         def side_effect(_, observable):
             data = (
-                fixture_for('workflow/events_for_observable')
+                load_fixture('workflow/events_for_observable')
                 if observable['type'] == 'sha256' else
                 []
             )

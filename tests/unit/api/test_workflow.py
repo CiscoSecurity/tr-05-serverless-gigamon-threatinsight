@@ -3,7 +3,7 @@ from unittest import mock
 
 from api.workflow import get_events_for_observable
 
-from .utils import fixture_for
+from .utils import load_fixture
 
 
 def test_get_events_for_observable(client):
@@ -25,7 +25,7 @@ def test_get_events_for_observable(client):
             mock.patch('api.workflow.get_detections_for_entity')
         )
 
-        detections = fixture_for('integration/detections_for_entity')
+        detections = load_fixture('integration/detections_for_entity')
 
         get_detections_for_entity_mock.return_value = success(detections)
 
@@ -42,7 +42,7 @@ def test_get_events_for_observable(client):
         )
 
         get_events_for_detection_mock.return_value = success(
-            fixture_for('integration/events_for_detection')
+            load_fixture('integration/events_for_detection')
         )
 
         get_events_for_entity_mock = stack.enter_context(
@@ -50,15 +50,15 @@ def test_get_events_for_observable(client):
         )
 
         get_events_for_entity_mock.return_value = success(
-            fixture_for('integration/events_for_entity')
+            load_fixture('integration/events_for_entity')
         )
 
-        expected_events = fixture_for('workflow/events_for_observable')
+        expected_events = load_fixture('workflow/events_for_observable')
 
         # 2. Act.
 
         key = 'Chop Suey!'
-        observable = fixture_for('observable')
+        observable = load_fixture('observable')
 
         events, error = get_events_for_observable(key, observable)
 
