@@ -39,10 +39,12 @@ def test_health_call_success(route, client, valid_jwt):
     app = client.application
 
     target = 'api.health.get_events_for_entity'
-    error = None
+
+    # Nothing really matters...
+    data = ...
 
     with mock.patch(target) as get_events_for_entity_mock:
-        get_events_for_entity_mock.return_value = (..., error)
+        get_events_for_entity_mock.return_value = (data, None)
 
         response = client.post(route, headers=headers(valid_jwt))
 
@@ -63,6 +65,7 @@ def test_health_call_with_auth_error_from_gti_failure(route,
     app = client.application
 
     target = 'api.health.get_events_for_entity'
+
     error = {
         'code': 'client.invalid_authentication',
         'message': 'Authentication is invalid.',

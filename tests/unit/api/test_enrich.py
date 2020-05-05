@@ -237,6 +237,7 @@ def test_enrich_call_with_auth_error_from_gti_failure(gti_api_route,
     app = client.application
 
     target = 'api.enrich.get_events_for_observable'
+
     error = {
         'code': 'client.invalid_authentication',
         'message': 'Authentication is invalid.',
