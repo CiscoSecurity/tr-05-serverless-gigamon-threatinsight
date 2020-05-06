@@ -1,7 +1,6 @@
 import json
 from typing import Optional
 
-import requests
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
 from flask import request, current_app, jsonify
@@ -32,38 +31,6 @@ def get_json(schema):
         }
 
     return data, error
-
-
-def call_gti_api(key, method, url, **kwargs):
-    if key is None:
-        # Mimic the GTI API error response payload.
-        error = {
-            'code': 'client.invalid_authentication',
-            'message': 'Authentication is invalid.',
-        }
-        return None, error
-
-    headers = {
-        'Authorization': f'IBToken {key}',
-        'User-Agent': current_app.config['GTI_USER_AGENT'],
-    }
-
-    kwargs.setdefault('headers', {}).update(headers)
-
-    response = requests.request(method, url, **kwargs)
-
-    if response.ok:
-        return response.json(), None
-
-    else:
-        error = response.json()['error']
-        # The GTI API error response payload is already well formatted,
-        # so just leave only the fields of interest and discard the rest.
-        error = {
-            'code': error['code'],
-            'message': error['message'],
-        }
-        return None, error
 
 
 def jsonify_data(data):

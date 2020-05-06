@@ -1,0 +1,283 @@
+{
+  "count": 4,
+  "docs": [
+    {
+      "type": "sighting",
+      "confidence": "High",
+      "count": 1,
+      "internal": true,
+      "source": "Gigamon ThreatINSIGHT",
+      "schema_version": "1.0.16",
+      "id": "transient:770adcbd-c6ca-4ee3-9d1d-611a87acaf0d",
+      "observed_time": {
+        "start_time": "2020-05-04T21:42:01.961Z"
+      },
+      "description": "- Event: `PE`.",
+      "external_ids": [
+        "aadcce2c-7962-425a-816c-5076f86968f4"
+      ],
+      "observables": [
+        {
+          "type": "sha256",
+          "value": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+        }
+      ],
+      "relations": [
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Connected_To",
+          "source": {
+            "type": "ip",
+            "value": "192.168.0.200"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "192.168.0.200"
+          },
+          "relation": "Connected_From",
+          "source": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          }
+        }
+      ],
+      "sensor": "snsr",
+      "targets": [
+        {
+          "observables": [
+            {
+              "type": "ip",
+              "value": "192.168.0.200"
+            },
+            {
+              "type": "ip",
+              "value": "10.1.70.2"
+            }
+          ],
+          "observed_time": {
+            "start_time": "2020-05-04T21:42:01.961Z"
+          },
+          "type": "endpoint"
+        }
+      ]
+    },
+    {
+      "type": "sighting",
+      "confidence": "High",
+      "count": 1,
+      "internal": true,
+      "source": "Gigamon ThreatINSIGHT",
+      "schema_version": "1.0.16",
+      "id": "transient:dab7f2f2-ff19-4956-ab68-a91cef658b65",
+      "observed_time": {
+        "start_time": "2020-05-04T21:41:29.961Z"
+      },
+      "description": "- Event: `PE`.",
+      "external_ids": [
+        "10afd246-8dc9-4b76-b7b3-8381660e239b"
+      ],
+      "observables": [
+        {
+          "type": "sha256",
+          "value": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+        }
+      ],
+      "relations": [
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "192.168.0.200"
+          },
+          "relation": "Connected_To",
+          "source": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Connected_From",
+          "source": {
+            "type": "ip",
+            "value": "192.168.0.200"
+          }
+        }
+      ],
+      "sensor": "snsr",
+      "targets": [
+        {
+          "observables": [
+            {
+              "type": "ip",
+              "value": "10.1.70.2"
+            },
+            {
+              "type": "ip",
+              "value": "192.168.0.200"
+            }
+          ],
+          "observed_time": {
+            "start_time": "2020-05-04T21:41:29.961Z"
+          },
+          "type": "endpoint"
+        }
+      ]
+    },
+    {
+      "type": "sighting",
+      "confidence": "High",
+      "count": 1,
+      "internal": true,
+      "source": "Gigamon ThreatINSIGHT",
+      "schema_version": "1.0.16",
+      "id": "transient:3206af2b-d710-4894-8387-3cde4b8c5f68",
+      "observed_time": {
+        "start_time": "2020-05-04T21:40:52.882Z"
+      },
+      "data": {
+        "columns": [
+          {
+            "name": "Impacted Devices",
+            "type": "integer"
+          },
+          {
+            "name": "Indicator Values",
+            "type": "integer"
+          }
+        ],
+        "rows": [
+          [
+            1,
+            3
+          ]
+        ]
+      },
+      "description": "- Event: `HTTP`.\n- Rule: `Suspicious Executable File`.",
+      "external_ids": [
+        "33798826-53fc-4a32-ad9d-825dc0c08749",
+        "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947"
+      ],
+      "observables": [
+        {
+          "type": "sha256",
+          "value": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+        }
+      ],
+      "relations": [
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Connected_From",
+          "source": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          }
+        }
+      ],
+      "sensor": "snsr",
+      "severity": "Medium",
+      "source_uri": "https://portal.icebrg.io/detections/rules/5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947?account_uuid=0ed93998-99ff-4723-a5f1-a6cdbd4843e8",
+      "targets": [
+        {
+          "observables": [
+            {
+              "type": "ip",
+              "value": "10.1.70.2"
+            }
+          ],
+          "observed_time": {
+            "start_time": "2020-05-04T21:40:52.882Z"
+          },
+          "type": "endpoint"
+        }
+      ]
+    },
+    {
+      "type": "sighting",
+      "confidence": "High",
+      "count": 1,
+      "internal": true,
+      "source": "Gigamon ThreatINSIGHT",
+      "schema_version": "1.0.16",
+      "id": "transient:fb1eed9f-0f2a-4a2d-a3b0-8acb5adc4393",
+      "observed_time": {
+        "start_time": "2020-05-04T21:40:14.961Z"
+      },
+      "data": {
+        "columns": [
+          {
+            "name": "Impacted Devices",
+            "type": "integer"
+          },
+          {
+            "name": "Indicator Values",
+            "type": "integer"
+          }
+        ],
+        "rows": [
+          [
+            1,
+            3
+          ]
+        ]
+      },
+      "description": "- Event: `HTTP`.\n- Rule: `Suspicious Executable File`.",
+      "external_ids": [
+        "fd1d7b35-1df4-4a3a-b436-dda9179c9a79",
+        "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947"
+      ],
+      "observables": [
+        {
+          "type": "sha256",
+          "value": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+        }
+      ],
+      "relations": [
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Connected_To",
+          "source": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          }
+        }
+      ],
+      "sensor": "snsr",
+      "severity": "Medium",
+      "source_uri": "https://portal.icebrg.io/detections/rules/5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947?account_uuid=0ed93998-99ff-4723-a5f1-a6cdbd4843e8",
+      "targets": [
+        {
+          "observables": [
+            {
+              "type": "ip",
+              "value": "10.1.70.2"
+            }
+          ],
+          "observed_time": {
+            "start_time": "2020-05-04T21:40:14.961Z"
+          },
+          "type": "endpoint"
+        }
+      ]
+    }
+  ]
+}

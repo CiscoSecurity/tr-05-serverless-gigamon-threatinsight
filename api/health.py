@@ -1,8 +1,7 @@
-from urllib.parse import quote
-
 from flask import Blueprint, current_app
 
-from api.utils import get_key, call_gti_api, jsonify_errors, jsonify_data
+from api.integration import get_events_for_entity
+from api.utils import get_key, jsonify_errors, jsonify_data
 
 health_api = Blueprint('health', __name__)
 
@@ -12,10 +11,8 @@ def health():
     key = get_key()
 
     # Use some supported entity just to check that the GTI API key is valid.
-    url = current_app.config['GTI_API_URLS']['entity']['summary'].format(
-        entity=quote(current_app.config['GTI_TEST_ENTITY'], safe='')
-    )
-    _, error = call_gti_api(key, 'GET', url)
+    entity = current_app.config['GTI_TEST_ENTITY']
+    _, error = get_events_for_entity(key, entity)
 
     if error:
         return jsonify_errors(error)

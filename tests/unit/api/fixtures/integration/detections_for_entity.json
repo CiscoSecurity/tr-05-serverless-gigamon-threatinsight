@@ -1,0 +1,33 @@
+[
+  {
+    "uuid": "9bd7362e-e3aa-4af8-af45-db760f5cfee2",
+    "device_ip": "10.1.70.2",
+    "account_uuid": "0ed93998-99ff-4723-a5f1-a6cdbd4843e8",
+    "indicators": [
+      {
+        "field": "src.ip",
+        "values": [
+            "207.148.78.106"
+        ]
+      },
+      {
+        "field": "dst.ip",
+        "values": [
+            "207.148.78.106"
+        ]
+      },
+      {
+        "field": "http:files.sha256",
+        "values": [
+            "4f81b422c9f73f4a6167267e03d3d51c76f894b12d500ff1fb1f8bfc249931d2",
+            "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+        ]
+      }
+    ],
+    "rule": {
+      "uuid": "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947",
+      "name": "Suspicious Executable File",
+      "severity": "moderate"
+    }
+  }
+]
