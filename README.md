@@ -76,3 +76,15 @@ http POST "${URL}"/observe/observables Authorization:"Bearer ${JWT}" < observabl
 Check the full guide on
 [JWT](https://github.com/CiscoSecurity/tr-05-serverless-relay#jwt)
 encoding/decoding for more details.
+
+## Environment Variables
+
+Besides the common set of environment variables that have the same meaning for
+any Relay API (e.g. `SECRET_KEY`), the GTI Relay API also supports the
+following ones:
+
+- `CTR_ENTITIES_LIMIT`
+  - Restricts the maximum number of CTIM entities of each type returned in a
+  single response per each requested observable.
+  - Applies to: `Indicator`, `Sighting`.
+  - Must be a positive integer. Defaults to `100` (if unset or incorrect).
