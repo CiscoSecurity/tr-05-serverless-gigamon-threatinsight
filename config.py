@@ -21,6 +21,11 @@ class Config:
     except (KeyError, ValueError, AssertionError):
         CTR_ENTITIES_LIMIT = CTR_ENTITIES_LIMIT_DEFAULT
 
+    CTR_ENTITIES_LIMIT_MAX = 1000
+
+    if CTR_ENTITIES_LIMIT > CTR_ENTITIES_LIMIT_MAX:
+        CTR_ENTITIES_LIMIT = CTR_ENTITIES_LIMIT_MAX
+
     GTI_OBSERVABLE_TYPES = {
         'ip': 'IP',
         'domain': 'domain',
