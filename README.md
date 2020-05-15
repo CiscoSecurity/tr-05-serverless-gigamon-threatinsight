@@ -87,4 +87,6 @@ following ones:
   - Restricts the maximum number of CTIM entities of each type returned in a
   single response per each requested observable.
   - Applies to: `Indicator`, `Sighting`.
-  - Must be a positive integer. Defaults to `100` (if unset or incorrect).
+  - Must be a positive integer. Defaults to `100` (if unset or incorrect). Has
+  the upper bound of `1000` to avoid getting overwhelmed with too much data, so
+  any greater values are still acceptable but also limited at the same time.
