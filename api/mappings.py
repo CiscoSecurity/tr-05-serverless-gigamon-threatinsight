@@ -1,6 +1,6 @@
 import abc
 from collections import namedtuple
-from typing import Dict, Any
+from typing import Dict, Any, Optional, List
 from uuid import uuid4
 
 from flask import current_app
@@ -49,7 +49,9 @@ class Sighting(Mapping):
 
         sighting['observed_time'] = {'start_time': event['timestamp']}
 
-        sighting['data'] = cls._details(event)
+        details = cls._details(event)
+        if details:
+            sighting['data'] = details
 
         sighting['description'] = '\n'.join(
             [f'- Event: `{event["event_type"].upper()}`.'] + (
@@ -67,7 +69,9 @@ class Sighting(Mapping):
 
         sighting['observables'] = [event['observable']]
 
-        sighting['relations'] = cls._relations(sighting['source'], event)
+        relations = cls._relations(sighting['source'], event)
+        if relations:
+            sighting['relations'] = relations
 
         sighting['sensor'] = event['sensor_id']
 
@@ -84,12 +88,14 @@ class Sighting(Mapping):
                 )
             )
 
-        sighting['targets'] = cls._targets(sighting['observed_time'], event)
+        targets = cls._targets(sighting['observed_time'], event)
+        if targets:
+            sighting['targets'] = targets
 
         return sighting
 
     @staticmethod
-    def _details(event):
+    def _details(event) -> Optional[JSON]:
         columns = []
         rows = []
 
@@ -198,13 +204,18 @@ class Sighting(Mapping):
             else:
                 rows.append(extra_row)
 
-        return {
-            'columns': columns,
-            'rows': rows,
-        }
+        details = None
+
+        if columns and rows:
+            details = {
+                'columns': columns,
+                'rows': rows,
+            }
+
+        return details
 
     @staticmethod
-    def _relations(origin, event):
+    def _relations(origin, event) -> Optional[List[JSON]]:
         relations = []
 
         def append_relation(
@@ -222,14 +233,15 @@ class Sighting(Mapping):
                 'source': {
                     'type': source.type,
                     'value': source.value,
-                }
+                },
             })
 
-        append_relation(
-            Observable('ip', event['src']['ip']),
-            'Connected_To',
-            Observable('ip', event['dst']['ip']),
-        )
+        if 'src' in event and 'dst' in event:
+            append_relation(
+                Observable('ip', event['src']['ip']),
+                'Connected_To',
+                Observable('ip', event['dst']['ip']),
+            )
 
         # TODO: come up with more possible relations of interest
 
@@ -237,16 +249,17 @@ class Sighting(Mapping):
             append_relation(
                 Observable('ip', event['src']['ip']),
                 'Queried',
-                Observable('domain', event['query']['domain'])
+                Observable('domain', event['query']['domain']),
             )
 
             if event['answers']:
                 for answer in event['answers']:
-                    append_relation(
-                        Observable('domain', event['query']['domain']),
-                        'Resolved_To',
-                        Observable('ip', answer['ip'])
-                    )
+                    if 'ip' in answer:
+                        append_relation(
+                            Observable('domain', event['query']['domain']),
+                            'Resolved_To',
+                            Observable('ip', answer['ip']),
+                        )
 
         if event['event_type'] == 'http':
             if event['user_agent']:
@@ -256,28 +269,22 @@ class Sighting(Mapping):
                     Observable('ip', event['src']['ip']),
                 )
 
-        return relations
+        return relations or None
 
     @staticmethod
-    def _targets(observed_time, event):
-        ips = [
-            event[loc]['ip']
-            for loc in ['src', 'dst']
-            if event[loc]['internal']
-        ]
+    def _targets(observed_time, event) -> Optional[List[JSON]]:
+        ip = None
 
-        entity = event['observable']['value']
-        if entity in ips:
-            # If the entity being looked for is one of the internal devices,
-            # then move it to the end of the list to make the target look
-            # better on the UI (it will be labeled by the other device if any).
-            ips.sort(key=lambda ip: ip == entity)
+        if 'src' in event and event['src']['internal']:
+            ip = event['src']['ip']
+        elif 'dst' in event and event['dst']['internal']:
+            ip = event['dst']['ip']
+
+        if ip is None:
+            return None
 
         return [{
-            'observables': [
-                {'type': 'ip', 'value': ip}
-                for ip in ips
-            ],
+            'observables': [{'type': 'ip', 'value': ip}],
             'observed_time': observed_time,
             'type': 'endpoint',
         }]
