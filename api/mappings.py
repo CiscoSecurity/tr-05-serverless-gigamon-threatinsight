@@ -273,18 +273,29 @@ class Sighting(Mapping):
 
     @staticmethod
     def _targets(observed_time, event) -> Optional[List[JSON]]:
-        ip = None
+        device = None
 
-        if 'src' in event and event['src']['internal']:
-            ip = event['src']['ip']
-        elif 'dst' in event and event['dst']['internal']:
-            ip = event['dst']['ip']
+        for loc in ['src', 'dst']:
+            if loc in event and event[loc]['internal']:
+                device = event[loc]
+                break
 
-        if ip is None:
+        if device is None:
             return None
 
+        observables = [{'type': 'ip', 'value': device['ip']}]
+
+        if 'dhcp' in device:
+            for record in device['dhcp']:
+                if record['account_code'] == event['customer_id']:
+                    observables.extend([
+                        {'type': 'hostname', 'value': record['hostname']},
+                        {'type': 'mac_address', 'value': record['mac']},
+                    ])
+                    break
+
         return [{
-            'observables': [{'type': 'ip', 'value': ip}],
+            'observables': observables,
             'observed_time': observed_time,
             'type': 'endpoint',
         }]
