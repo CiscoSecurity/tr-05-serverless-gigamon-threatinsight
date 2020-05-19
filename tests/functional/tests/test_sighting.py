@@ -53,10 +53,6 @@ def test_positive_sighting(module_headers, observable, observable_type):
         assert sighting['internal']
         assert sighting['targets'][0]['type'] == 'endpoint'
         assert sighting['targets'][0]['observed_time']['start_time']
-        assert (
-            sighting['targets'][0]['observables'][0] ==
-            sighting['relations'][0]['source']
-        )
         assert sighting['targets'][0]['observables'][0]['type'] == 'ip'
 
     assert len(sightings['docs']) > 0
