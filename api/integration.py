@@ -110,7 +110,7 @@ def get_events_for_entity(key, entity):
     return events, None
 
 
-def get_dhcp_records_for_ips(key, event_time_by_ip):
+def get_dhcp_records_by_ip(key, event_time_by_ip):
     url = _url('entity', 'entity/tracking/bulk/get/ip')
 
     entities = [
@@ -133,9 +133,11 @@ def get_dhcp_records_for_ips(key, event_time_by_ip):
     if error:
         return None, error
 
+    dhcp_records = data['entity_tracking_bulk_response']['dhcp']
+
     dhcp_records_by_ip = defaultdict(list)
 
-    for record in data['entity_tracking_bulk_response']['dhcp']:
+    for record in dhcp_records:
         dhcp_records_by_ip[record['ip']].append(record)
 
     return dhcp_records_by_ip, None

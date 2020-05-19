@@ -8,6 +8,7 @@ from api.integration import (
     get_detections_for_entity,
     get_events_for_detection,
     get_events_for_entity,
+    get_dhcp_records_by_ip,
 )
 
 
@@ -284,4 +285,115 @@ def test_get_events_for_entity_success(client, gti_api_request):
     )
 
     assert events == expected_events
+    assert error is None
+
+
+def test_get_dhcp_records_by_ip_failure(client, gti_api_request):
+    app = client.application
+
+    expected_error = {
+        'code': 'code',
+        'message': 'message',
+    }
+
+    gti_api_request.return_value = gti_api_response(
+        ok=False,
+        payload={'error': expected_error},
+    )
+
+    key = 'key'
+    event_time_by_ip = {
+        'ip_1': 'event_time_1',
+        'ip_2': 'event_time_2',
+        'ip_3': 'event_time_3',
+    }
+
+    dhcp_records_by_ip, error = get_dhcp_records_by_ip(key, event_time_by_ip)
+
+    expected_method = 'POST'
+    expected_url = urljoin(
+        app.config['GTI_API_FAMILY_URLS']['entity'],
+        'entity/tracking/bulk/get/ip',
+    )
+    expected_headers = {
+        'Authorization': f'IBToken {key}',
+        'User-Agent': app.config['CTR_USER_AGENT'],
+    }
+    expected_json = {
+        'entities': [
+            {'ip': 'ip_1', 'event_time': 'event_time_1'},
+            {'ip': 'ip_2', 'event_time': 'event_time_2'},
+            {'ip': 'ip_3', 'event_time': 'event_time_3'},
+        ],
+    }
+
+    gti_api_request.assert_called_once_with(
+        expected_method,
+        expected_url,
+        headers=expected_headers,
+        json=expected_json,
+    )
+
+    assert dhcp_records_by_ip is None
+    assert error == expected_error
+
+
+def test_get_dhcp_records_by_ip_success(client, gti_api_request):
+    app = client.application
+
+    expected_dhcp_records = [
+        {'ip': ip, 'account_code': account_code}
+        for account_code in ['account_code_1', 'account_code_2']
+        for ip in ['ip_1', 'ip_2', 'ip_3']
+    ]
+
+    gti_api_request.return_value = gti_api_response(
+        ok=True,
+        payload={
+            'entity_tracking_bulk_response': {'dhcp': expected_dhcp_records},
+        },
+    )
+
+    expected_dhcp_records_by_ip = {
+        ip: [
+            {'ip': ip, 'account_code': account_code}
+            for account_code in ['account_code_1', 'account_code_2']
+        ]
+        for ip in ['ip_1', 'ip_2', 'ip_3']
+    }
+
+    key = 'key'
+    event_time_by_ip = {
+        'ip_1': 'event_time_1',
+        'ip_2': 'event_time_2',
+        'ip_3': 'event_time_3',
+    }
+
+    dhcp_records_by_ip, error = get_dhcp_records_by_ip(key, event_time_by_ip)
+
+    expected_method = 'POST'
+    expected_url = urljoin(
+        app.config['GTI_API_FAMILY_URLS']['entity'],
+        'entity/tracking/bulk/get/ip',
+    )
+    expected_headers = {
+        'Authorization': f'IBToken {key}',
+        'User-Agent': app.config['CTR_USER_AGENT'],
+    }
+    expected_json = {
+        'entities': [
+            {'ip': 'ip_1', 'event_time': 'event_time_1'},
+            {'ip': 'ip_2', 'event_time': 'event_time_2'},
+            {'ip': 'ip_3', 'event_time': 'event_time_3'},
+        ],
+    }
+
+    gti_api_request.assert_called_once_with(
+        expected_method,
+        expected_url,
+        headers=expected_headers,
+        json=expected_json,
+    )
+
+    assert dhcp_records_by_ip == expected_dhcp_records_by_ip
     assert error is None

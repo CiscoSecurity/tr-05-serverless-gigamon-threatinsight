@@ -8,7 +8,7 @@ from api.integration import (
     get_detections_for_entity,
     get_events_for_detection,
     get_events_for_entity,
-    get_dhcp_records_for_ips,
+    get_dhcp_records_by_ip,
 )
 
 
@@ -171,7 +171,7 @@ def get_events_for_observable(key, observable):
                 if ip not in event_time_by_ip:
                     event_time_by_ip[ip] = event['timestamp']
 
-    dhcp_records_by_ip, error = get_dhcp_records_for_ips(key, event_time_by_ip)
+    dhcp_records_by_ip, error = get_dhcp_records_by_ip(key, event_time_by_ip)
 
     if error:
         return None, error
