@@ -113,11 +113,19 @@ def get_events_for_entity(key, entity):
 def get_dhcp_records_for_ips(key, event_time_by_ip):
     url = _url('entity', 'entity/tracking/bulk/get/ip')
 
+    entities = [
+        {'ip': ip, 'event_time': event_time}
+        for ip, event_time in event_time_by_ip.items()
+    ]
+
+    if not entities:
+        # Let's immediately return an empty dict here to simplify further
+        # processing. Even if we make a real request to the GTI API instead,
+        # it will fail with a message like 'No entities specified.' anyway.
+        return {}, None
+
     json = {
-        'entities': [
-            {'ip': ip, 'event_time': event_time}
-            for ip, event_time in event_time_by_ip.items()
-        ],
+        'entities': entities,
     }
 
     data, error = _request('POST', url, key=key, json=json)
