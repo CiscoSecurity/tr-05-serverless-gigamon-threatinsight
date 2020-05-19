@@ -38,6 +38,8 @@ def test_positive_sighting(module_headers, observable, observable_type):
         response, 'Gigamon ThreatINSIGHT')['data']['sightings']
     confidence_levels = ['High', 'Info', 'Low', 'Medium', 'None', 'Unknown']
 
+    assert len(sightings['docs']) > 0
+    
     for sighting in sightings['docs']:
         assert sighting['description']
         assert sighting['confidence'] in confidence_levels
@@ -55,5 +57,4 @@ def test_positive_sighting(module_headers, observable, observable_type):
         assert sighting['targets'][0]['observed_time']['start_time']
         assert sighting['targets'][0]['observables'][0]['type'] == 'ip'
 
-    assert len(sightings['docs']) > 0
     assert sightings['count'] == len(sightings['docs'])
