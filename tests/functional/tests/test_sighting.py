@@ -59,4 +59,5 @@ def test_positive_sighting(module_headers, observable, observable_type):
         )
         assert sighting['targets'][0]['observables'][0]['type'] == 'ip'
 
+    assert len(sightings['docs']) > 0
     assert sightings['count'] == len(sightings['docs'])
