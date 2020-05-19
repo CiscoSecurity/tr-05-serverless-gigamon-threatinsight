@@ -39,7 +39,7 @@ def test_positive_sighting(module_headers, observable, observable_type):
     confidence_levels = ['High', 'Info', 'Low', 'Medium', 'None', 'Unknown']
 
     assert len(sightings['docs']) > 0
-    
+
     for sighting in sightings['docs']:
         assert sighting['description']
         assert sighting['confidence'] in confidence_levels
