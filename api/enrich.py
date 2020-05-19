@@ -81,7 +81,7 @@ def refer_observables():
                 f'Lookup this {type_of(observable)} '
                 'on Gigamon ThreatINSIGHT'
             ),
-            'url': url_template.format(entity=observable['value']),
+            'url': url_template.format(query=observable['value']),
             'categories': ['Search', 'Gigamon ThreatINSIGHT'],
         }
         for observable in observables

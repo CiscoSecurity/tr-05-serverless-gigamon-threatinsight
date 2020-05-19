@@ -1,6 +1,7 @@
 import abc
 from collections import namedtuple
 from typing import Dict, Any, Optional, List
+from urllib.parse import quote_plus
 from uuid import uuid4
 
 from flask import current_app
@@ -61,11 +62,15 @@ class Sighting(Mapping):
             )
         )
 
-        sighting['external_ids'] = [event['uuid']] + (
-            [event['detection']['rule']['uuid']]
-            if 'detection' in event else
-            []
-        )
+        sighting['external_ids'] = [event['uuid']]
+
+        sighting['external_references'] = [{
+            'source_name': sighting['source'],
+            'external_id': event['uuid'],
+            'url': current_app.config['GTI_UI_SEARCH_URL'].format(
+                query=quote_plus(f"uuid = '{event['uuid']}'")
+            ),
+        }]
 
         sighting['observables'] = [event['observable']]
 
@@ -242,8 +247,6 @@ class Sighting(Mapping):
                 'Connected_To',
                 Observable('ip', event['dst']['ip']),
             )
-
-        # TODO: come up with more possible relations of interest
 
         if event['event_type'] == 'dns':
             append_relation(

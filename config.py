@@ -47,4 +47,4 @@ class Config:
         '{rule_uuid}?account_uuid={account_uuid}'
     )
 
-    GTI_UI_SEARCH_URL = 'https://portal.icebrg.io/search?query={entity}'
+    GTI_UI_SEARCH_URL = 'https://portal.icebrg.io/search?query={query}'
