@@ -309,10 +309,14 @@ class Sighting(Mapping):
         if 'dhcp' in device:
             for record in device['dhcp']:
                 if record['account_code'] == event['customer_id']:
-                    observables.extend([
-                        {'type': 'hostname', 'value': record['hostname']},
-                        {'type': 'mac_address', 'value': record['mac']},
-                    ])
+                    if record['hostname']:
+                        observables.append(
+                            {'type': 'hostname', 'value': record['hostname']}
+                        )
+                    if record['mac']:
+                        observables.append(
+                            {'type': 'mac_address', 'value': record['mac']}
+                        )
                     break
 
         return [{
