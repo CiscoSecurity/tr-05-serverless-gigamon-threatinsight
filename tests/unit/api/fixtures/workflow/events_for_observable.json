@@ -5,12 +5,28 @@
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:42:01.961Z",
     "src": {
-      "ip": "192.168.0.200",
-      "internal": true
+      "ip": "10.1.70.100",
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:15:5d:00:04:0e",
+          "hostname": "FinanceWks008",
+          "ip": "10.1.70.100"
+        }
+      ]
     },
     "dst": {
       "ip": "10.1.70.2",
-      "internal": true
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:0c:29:79:39:51",
+          "hostname": "Enterprise-DC01",
+          "ip": "10.1.70.2"
+        }
+      ]
     },
     "file": {
       "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
@@ -27,11 +43,27 @@
     "timestamp": "2020-05-04T21:41:29.961Z",
     "src": {
       "ip": "10.1.70.2",
-      "internal": true
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:0c:29:79:39:51",
+          "hostname": "Enterprise-DC01",
+          "ip": "10.1.70.2"
+        }
+      ]
     },
     "dst": {
-      "ip": "192.168.0.200",
-      "internal": true
+      "ip": "10.1.70.100",
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:15:5d:00:04:0e",
+          "hostname": "FinanceWks008",
+          "ip": "10.1.70.100"
+        }
+      ]
     },
     "file": {
       "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
@@ -52,7 +84,15 @@
     },
     "dst": {
       "ip": "10.1.70.2",
-      "internal": true
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:0c:29:79:39:51",
+          "hostname": "Enterprise-DC01",
+          "ip": "10.1.70.2"
+        }
+      ]
     },
     "files": [
       {
@@ -106,7 +146,15 @@
     "timestamp": "2020-05-04T21:40:14.961Z",
     "src": {
       "ip": "10.1.70.2",
-      "internal": true
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:0c:29:79:39:51",
+          "hostname": "Enterprise-DC01",
+          "ip": "10.1.70.2"
+        }
+      ]
     },
     "dst": {
       "ip": "207.148.78.106",
