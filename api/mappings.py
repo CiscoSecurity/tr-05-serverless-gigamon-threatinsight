@@ -283,9 +283,18 @@ class Sighting(Mapping):
                     Observable('ip', event['dst']['ip']),
                 )
 
-            if event['uri'] and event['uri']['scheme']:
+            if event['uri']:
+                url = event['uri']['uri']
+                if not event['uri']['host']:
+                    host = event['host'] or {}
+                    host = host.get('domain') or host.get('ip') or ''
+                    url = host + url
+                if not event['uri']['scheme']:
+                    scheme = 'http'
+                    url = scheme + '://' + url
+
                 append_relation(
-                    Observable('url', event['uri']['uri']),
+                    Observable('url', url),
                     'Hosted_On',
                     Observable('ip', event['dst']['ip']),
                 )
