@@ -8,7 +8,7 @@
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
       "schema_version": "1.0.16",
-      "id": "transient:77b3b773-ce65-47cb-aee7-cce2a6188e3d",
+      "id": "transient:d76aa980-5d31-47ed-b201-5af8bd7010c1",
       "observed_time": {
         "start_time": "2020-05-04T21:42:01.961Z"
       },
@@ -19,6 +19,7 @@
       "external_references": [
         {
           "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of the given event.\n- Links to a UI search page querying for that particular event by its UUID.",
           "external_id": "aadcce2c-7962-425a-816c-5076f86968f4",
           "url": "https://portal.icebrg.io/search?query=uuid+%3D+%27aadcce2c-7962-425a-816c-5076f86968f4%27"
         }
@@ -44,6 +45,7 @@
         }
       ],
       "sensor": "snsr",
+      "source_uri": "https://portal.icebrg.io/search?query=uuid+%3D+%27aadcce2c-7962-425a-816c-5076f86968f4%27",
       "targets": [
         {
           "observables": [
@@ -74,7 +76,7 @@
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
       "schema_version": "1.0.16",
-      "id": "transient:c02172b1-dd4a-48af-90e5-feca1e994249",
+      "id": "transient:e529f567-8a95-4d44-9dd1-72a8597e8fff",
       "observed_time": {
         "start_time": "2020-05-04T21:41:29.961Z"
       },
@@ -85,6 +87,7 @@
       "external_references": [
         {
           "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of the given event.\n- Links to a UI search page querying for that particular event by its UUID.",
           "external_id": "10afd246-8dc9-4b76-b7b3-8381660e239b",
           "url": "https://portal.icebrg.io/search?query=uuid+%3D+%2710afd246-8dc9-4b76-b7b3-8381660e239b%27"
         }
@@ -110,6 +113,7 @@
         }
       ],
       "sensor": "snsr",
+      "source_uri": "https://portal.icebrg.io/search?query=uuid+%3D+%2710afd246-8dc9-4b76-b7b3-8381660e239b%27",
       "targets": [
         {
           "observables": [
@@ -140,7 +144,7 @@
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
       "schema_version": "1.0.16",
-      "id": "transient:51b9600d-475c-4b99-8bee-f7f30e1efb36",
+      "id": "transient:1fa0bc90-b5f1-4b35-8ac1-3d91c5b2a9ce",
       "observed_time": {
         "start_time": "2020-05-04T21:40:52.882Z"
       },
@@ -194,13 +198,21 @@
       },
       "description": "- Event: `HTTP`.\n- Rule: `Suspicious Executable File`.",
       "external_ids": [
-        "33798826-53fc-4a32-ad9d-825dc0c08749"
+        "33798826-53fc-4a32-ad9d-825dc0c08749",
+        "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947"
       ],
       "external_references": [
         {
           "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of the given event.\n- Links to a UI search page querying for that particular event by its UUID.",
           "external_id": "33798826-53fc-4a32-ad9d-825dc0c08749",
           "url": "https://portal.icebrg.io/search?query=uuid+%3D+%2733798826-53fc-4a32-ad9d-825dc0c08749%27"
+        },
+        {
+          "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of a rule matching the given event.\n- Links to a UI page describing that specific rule along with providing some summary over its history.\n- Includes the UUID of an account associated with that particular detection.",
+          "external_id": "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947",
+          "url": "https://portal.icebrg.io/detections/rules/5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947?account_uuid=0ed93998-99ff-4723-a5f1-a6cdbd4843e8"
         }
       ],
       "observables": [
@@ -292,7 +304,7 @@
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
       "schema_version": "1.0.16",
-      "id": "transient:b13edb91-23c9-4d7e-8a52-148819c9963a",
+      "id": "transient:0ca2aadd-d0fa-4d98-b2d9-ac02d6ca44f5",
       "observed_time": {
         "start_time": "2020-05-04T21:40:14.961Z"
       },
@@ -346,13 +358,21 @@
       },
       "description": "- Event: `HTTP`.\n- Rule: `Suspicious Executable File`.",
       "external_ids": [
-        "fd1d7b35-1df4-4a3a-b436-dda9179c9a79"
+        "fd1d7b35-1df4-4a3a-b436-dda9179c9a79",
+        "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947"
       ],
       "external_references": [
         {
           "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of the given event.\n- Links to a UI search page querying for that particular event by its UUID.",
           "external_id": "fd1d7b35-1df4-4a3a-b436-dda9179c9a79",
           "url": "https://portal.icebrg.io/search?query=uuid+%3D+%27fd1d7b35-1df4-4a3a-b436-dda9179c9a79%27"
+        },
+        {
+          "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of a rule matching the given event.\n- Links to a UI page describing that specific rule along with providing some summary over its history.\n- Includes the UUID of an account associated with that particular detection.",
+          "external_id": "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947",
+          "url": "https://portal.icebrg.io/detections/rules/5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947?account_uuid=0ed93998-99ff-4723-a5f1-a6cdbd4843e8"
         }
       ],
       "observables": [

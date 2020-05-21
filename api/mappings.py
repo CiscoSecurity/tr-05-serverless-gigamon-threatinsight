@@ -54,23 +54,47 @@ class Sighting(Mapping):
         if details:
             sighting['data'] = details
 
-        sighting['description'] = '\n'.join(
-            [f'- Event: `{event["event_type"].upper()}`.'] + (
-                [f'- Rule: `{event["detection"]["rule"]["name"]}`.']
-                if 'detection' in event else
-                []
+        sighting['description'] = f'- Event: `{event["event_type"].upper()}`.'
+        if 'detection' in event:
+            sighting['description'] += '\n' + (
+                f'- Rule: `{event["detection"]["rule"]["name"]}`.'
             )
-        )
 
         sighting['external_ids'] = [event['uuid']]
+        if 'detection' in event:
+            sighting['external_ids'].append(
+                event['detection']['rule']['uuid']
+            )
 
         sighting['external_references'] = [{
             'source_name': sighting['source'],
+            'description': '\n'.join([
+                '- Represents the UUID of the given event.',
+                '- Links to a UI search page querying for that particular '
+                'event by its UUID.',
+            ]),
             'external_id': event['uuid'],
             'url': current_app.config['GTI_UI_SEARCH_URL'].format(
-                query=quote_plus(f"uuid = '{event['uuid']}'")
+                query=quote_plus(f"uuid = '{event['uuid']}'"),
             ),
         }]
+        if 'detection' in event:
+            sighting['external_references'].append({
+                'source_name': sighting['source'],
+                'description': '\n'.join([
+                    '- Represents the UUID of a rule matching the given '
+                    'event.',
+                    '- Links to a UI page describing that specific rule along '
+                    'with providing some summary over its history.',
+                    '- Includes the UUID of an account associated with that '
+                    'particular detection.',
+                ]),
+                'external_id': event['detection']['rule']['uuid'],
+                'url': current_app.config['GTI_UI_RULE_URL'].format(
+                    rule_uuid=event['detection']['rule']['uuid'],
+                    account_uuid=event['detection']['account_uuid'],
+                ),
+            })
 
         sighting['observables'] = [event['observable']]
 
@@ -85,13 +109,7 @@ class Sighting(Mapping):
                 cls.SEVERITY_MAPPING[event['detection']['rule']['severity']]
             )
 
-        if 'detection' in event:
-            sighting['source_uri'] = (
-                current_app.config['GTI_UI_RULE_URL'].format(
-                    rule_uuid=event['detection']['rule']['uuid'],
-                    account_uuid=event['detection']['account_uuid'],
-                )
-            )
+        sighting['source_uri'] = sighting['external_references'][-1]['url']
 
         targets = cls._targets(sighting['observed_time'], event)
         if targets:
