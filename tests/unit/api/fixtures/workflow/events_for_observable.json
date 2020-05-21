@@ -102,9 +102,7 @@
       "ip": "10.1.70.2"
     },
     "uri": {
-      "uri": "/upload.php",
-      "scheme": null,
-      "host": null
+      "uri": "/upload.php"
     },
     "user_agent": "FileSender",
     "status_code": 200,
@@ -181,9 +179,7 @@
       "domain": "mystery.io"
     },
     "uri": {
-      "uri": "/download.php",
-      "scheme": null,
-      "host": null
+      "uri": "/download.php"
     },
     "user_agent": "FileReceiver",
     "status_code": 200,

@@ -1,7 +1,7 @@
 import abc
 from collections import namedtuple
 from typing import Dict, Any, Optional, List
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urlparse
 from uuid import uuid4
 
 from flask import current_app
@@ -302,17 +302,20 @@ class Sighting(Mapping):
                 )
 
             if event['uri']:
-                url = event['uri']['uri']
-                if not event['uri']['host']:
+                # Don't rely on Gigamon and parse the provided URL into a named
+                # tuple of its components by ourselves.
+                # Make sure to also fill the main components (if missing) in
+                # order to reconstruct the full URL.
+                # Assume that the URL contains at least the path, but the host
+                # and the scheme can be absent.
+                components = urlparse(event['uri']['uri'], scheme='http')
+                if not components.netloc:
                     host = event['host'] or {}
                     host = host.get('domain') or host.get('ip') or ''
-                    url = host + url
-                if not event['uri']['scheme']:
-                    scheme = 'http'
-                    url = scheme + '://' + url
+                    components = components._replace(netloc=host)
 
                 append_relation(
-                    Observable('url', url),
+                    Observable('url', components.geturl()),
                     'Hosted_On',
                     Observable('ip', event['dst']['ip']),
                 )
