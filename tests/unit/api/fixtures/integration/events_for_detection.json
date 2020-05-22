@@ -2,6 +2,7 @@
   {
     "event_type": "http",
     "uuid": "4617dd69-8b1a-43f3-8537-aafa53deecd4",
+    "customer_id": "cstmr",
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:39:49.660Z",
     "src": {
@@ -12,6 +13,16 @@
       "ip": "207.148.78.106",
       "internal": false
     },
+    "method": "GET",
+    "host": {
+      "domain": "mystery.io"
+    },
+    "uri": {
+      "uri": "/download.php"
+    },
+    "user_agent": "FileReceiver",
+    "status_code": 200,
+    "status_msg": "OK",
     "files": [
       {
         "sha256": "4f81b422c9f73f4a6167267e03d3d51c76f894b12d500ff1fb1f8bfc249931d2"
@@ -21,6 +32,7 @@
   {
     "event_type": "http",
     "uuid": "fd1d7b35-1df4-4a3a-b436-dda9179c9a79",
+    "customer_id": "cstmr",
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:40:14.961Z",
     "src": {
@@ -31,6 +43,16 @@
       "ip": "207.148.78.106",
       "internal": false
     },
+    "method": "GET",
+    "host": {
+      "domain": "mystery.io"
+    },
+    "uri": {
+      "uri": "/download.php"
+    },
+    "user_agent": "FileReceiver",
+    "status_code": 200,
+    "status_msg": "OK",
     "files": [
       {
         "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
@@ -40,6 +62,7 @@
   {
     "event_type": "http",
     "uuid": "dfb4fee2-2a5c-4330-aa4b-6dde76f0002d",
+    "customer_id": "cstmr",
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:40:31.873Z",
     "src": {
@@ -50,6 +73,16 @@
       "ip": "10.1.70.2",
       "internal": true
     },
+    "method": "POST",
+    "host": {
+      "ip": "10.1.70.2"
+    },
+    "uri": {
+      "uri": "/upload.php"
+    },
+    "user_agent": "FileSender",
+    "status_code": 200,
+    "status_msg": "OK",
     "files": [
       {
         "sha256": "4f81b422c9f73f4a6167267e03d3d51c76f894b12d500ff1fb1f8bfc249931d2"
@@ -59,6 +92,7 @@
   {
     "event_type": "http",
     "uuid": "33798826-53fc-4a32-ad9d-825dc0c08749",
+    "customer_id": "cstmr",
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:40:52.882Z",
     "src": {
@@ -69,6 +103,16 @@
       "ip": "10.1.70.2",
       "internal": true
     },
+    "method": "POST",
+    "host": {
+      "ip": "10.1.70.2"
+    },
+    "uri": {
+      "uri": "/upload.php"
+    },
+    "user_agent": "FileSender",
+    "status_code": 200,
+    "status_msg": "OK",
     "files": [
       {
         "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"

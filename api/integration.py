@@ -1,3 +1,4 @@
+from collections import defaultdict
 from urllib.parse import urljoin
 
 import requests
@@ -107,3 +108,36 @@ def get_events_for_entity(key, entity):
     events = data['events']
 
     return events, None
+
+
+def get_dhcp_records_by_ip(key, event_time_by_ip):
+    url = _url('entity', 'entity/tracking/bulk/get/ip')
+
+    entities = [
+        {'ip': ip, 'event_time': event_time}
+        for ip, event_time in event_time_by_ip.items()
+    ]
+
+    if not entities:
+        # Let's immediately return an empty dict here to simplify further
+        # processing. Even if we make a real request to the GTI API instead,
+        # it will fail with a message like 'No entities specified.' anyway.
+        return {}, None
+
+    json = {
+        'entities': entities,
+    }
+
+    data, error = _request('POST', url, key=key, json=json)
+
+    if error:
+        return None, error
+
+    dhcp_records = data['entity_tracking_bulk_response']['dhcp']
+
+    dhcp_records_by_ip = defaultdict(list)
+
+    for record in dhcp_records:
+        dhcp_records_by_ip[record['ip']].append(record)
+
+    return dhcp_records_by_ip, None

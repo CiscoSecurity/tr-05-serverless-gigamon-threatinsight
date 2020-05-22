@@ -8,13 +8,21 @@
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
       "schema_version": "1.0.16",
-      "id": "transient:770adcbd-c6ca-4ee3-9d1d-611a87acaf0d",
+      "id": "transient:d76aa980-5d31-47ed-b201-5af8bd7010c1",
       "observed_time": {
         "start_time": "2020-05-04T21:42:01.961Z"
       },
       "description": "- Event: `PE`.",
       "external_ids": [
         "aadcce2c-7962-425a-816c-5076f86968f4"
+      ],
+      "external_references": [
+        {
+          "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of the given event.\n- Links to a UI search page querying for that particular event by its UUID.",
+          "external_id": "aadcce2c-7962-425a-816c-5076f86968f4",
+          "url": "https://portal.icebrg.io/search?query=uuid+%3D+%27aadcce2c-7962-425a-816c-5076f86968f4%27"
+        }
       ],
       "observables": [
         {
@@ -32,33 +40,26 @@
           "relation": "Connected_To",
           "source": {
             "type": "ip",
-            "value": "192.168.0.200"
-          }
-        },
-        {
-          "origin": "Gigamon ThreatINSIGHT",
-          "related": {
-            "type": "ip",
-            "value": "192.168.0.200"
-          },
-          "relation": "Connected_From",
-          "source": {
-            "type": "ip",
-            "value": "10.1.70.2"
+            "value": "10.1.70.100"
           }
         }
       ],
       "sensor": "snsr",
+      "source_uri": "https://portal.icebrg.io/search?query=uuid+%3D+%27aadcce2c-7962-425a-816c-5076f86968f4%27",
       "targets": [
         {
           "observables": [
             {
               "type": "ip",
-              "value": "192.168.0.200"
+              "value": "10.1.70.100"
             },
             {
-              "type": "ip",
-              "value": "10.1.70.2"
+              "type": "hostname",
+              "value": "FinanceWks008"
+            },
+            {
+              "type": "mac_address",
+              "value": "00:15:5d:00:04:0e"
             }
           ],
           "observed_time": {
@@ -75,13 +76,21 @@
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
       "schema_version": "1.0.16",
-      "id": "transient:dab7f2f2-ff19-4956-ab68-a91cef658b65",
+      "id": "transient:e529f567-8a95-4d44-9dd1-72a8597e8fff",
       "observed_time": {
         "start_time": "2020-05-04T21:41:29.961Z"
       },
       "description": "- Event: `PE`.",
       "external_ids": [
         "10afd246-8dc9-4b76-b7b3-8381660e239b"
+      ],
+      "external_references": [
+        {
+          "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of the given event.\n- Links to a UI search page querying for that particular event by its UUID.",
+          "external_id": "10afd246-8dc9-4b76-b7b3-8381660e239b",
+          "url": "https://portal.icebrg.io/search?query=uuid+%3D+%2710afd246-8dc9-4b76-b7b3-8381660e239b%27"
+        }
       ],
       "observables": [
         {
@@ -94,28 +103,17 @@
           "origin": "Gigamon ThreatINSIGHT",
           "related": {
             "type": "ip",
-            "value": "192.168.0.200"
+            "value": "10.1.70.100"
           },
           "relation": "Connected_To",
           "source": {
             "type": "ip",
             "value": "10.1.70.2"
           }
-        },
-        {
-          "origin": "Gigamon ThreatINSIGHT",
-          "related": {
-            "type": "ip",
-            "value": "10.1.70.2"
-          },
-          "relation": "Connected_From",
-          "source": {
-            "type": "ip",
-            "value": "192.168.0.200"
-          }
         }
       ],
       "sensor": "snsr",
+      "source_uri": "https://portal.icebrg.io/search?query=uuid+%3D+%2710afd246-8dc9-4b76-b7b3-8381660e239b%27",
       "targets": [
         {
           "observables": [
@@ -124,8 +122,12 @@
               "value": "10.1.70.2"
             },
             {
-              "type": "ip",
-              "value": "192.168.0.200"
+              "type": "hostname",
+              "value": "Enterprise-DC01"
+            },
+            {
+              "type": "mac_address",
+              "value": "00:0c:29:79:39:51"
             }
           ],
           "observed_time": {
@@ -142,12 +144,16 @@
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
       "schema_version": "1.0.16",
-      "id": "transient:3206af2b-d710-4894-8387-3cde4b8c5f68",
+      "id": "transient:1fa0bc90-b5f1-4b35-8ac1-3d91c5b2a9ce",
       "observed_time": {
         "start_time": "2020-05-04T21:40:52.882Z"
       },
       "data": {
         "columns": [
+          {
+            "name": "Detection Summary",
+            "type": "string"
+          },
           {
             "name": "Impacted Devices",
             "type": "integer"
@@ -155,12 +161,38 @@
           {
             "name": "Indicator Values",
             "type": "integer"
+          },
+          {
+            "name": "Event Summary",
+            "type": "string"
+          },
+          {
+            "name": "\u2022 method",
+            "type": "string"
+          },
+          {
+            "name": "\u2022 status_code",
+            "type": "integer"
+          },
+          {
+            "name": "\u2022 status_msg",
+            "type": "string"
+          },
+          {
+            "name": "\u2022 files",
+            "type": "integer"
           }
         ],
         "rows": [
           [
+            " ",
             1,
-            3
+            3,
+            " ",
+            "POST",
+            200,
+            "OK",
+            1
           ]
         ]
       },
@@ -168,6 +200,20 @@
       "external_ids": [
         "33798826-53fc-4a32-ad9d-825dc0c08749",
         "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947"
+      ],
+      "external_references": [
+        {
+          "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of the given event.\n- Links to a UI search page querying for that particular event by its UUID.",
+          "external_id": "33798826-53fc-4a32-ad9d-825dc0c08749",
+          "url": "https://portal.icebrg.io/search?query=uuid+%3D+%2733798826-53fc-4a32-ad9d-825dc0c08749%27"
+        },
+        {
+          "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of a rule matching the given event.\n- Links to a UI page describing that specific rule along with providing some summary over its history.\n- Includes the UUID of an account associated with that particular detection.",
+          "external_id": "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947",
+          "url": "https://portal.icebrg.io/detections/rules/5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947?account_uuid=0ed93998-99ff-4723-a5f1-a6cdbd4843e8"
+        }
       ],
       "observables": [
         {
@@ -180,12 +226,48 @@
           "origin": "Gigamon ThreatINSIGHT",
           "related": {
             "type": "ip",
-            "value": "207.148.78.106"
+            "value": "10.1.70.2"
           },
-          "relation": "Connected_From",
+          "relation": "Connected_To",
           "source": {
             "type": "ip",
+            "value": "207.148.78.106"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Sent_From",
+          "source": {
+            "type": "user_agent",
+            "value": "FileSender"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
             "value": "10.1.70.2"
+          },
+          "relation": "Sent_To",
+          "source": {
+            "type": "user_agent",
+            "value": "FileSender"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Hosted_On",
+          "source": {
+            "type": "url",
+            "value": "http://10.1.70.2/upload.php"
           }
         }
       ],
@@ -198,6 +280,14 @@
             {
               "type": "ip",
               "value": "10.1.70.2"
+            },
+            {
+              "type": "hostname",
+              "value": "Enterprise-DC01"
+            },
+            {
+              "type": "mac_address",
+              "value": "00:0c:29:79:39:51"
             }
           ],
           "observed_time": {
@@ -214,12 +304,16 @@
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
       "schema_version": "1.0.16",
-      "id": "transient:fb1eed9f-0f2a-4a2d-a3b0-8acb5adc4393",
+      "id": "transient:0ca2aadd-d0fa-4d98-b2d9-ac02d6ca44f5",
       "observed_time": {
         "start_time": "2020-05-04T21:40:14.961Z"
       },
       "data": {
         "columns": [
+          {
+            "name": "Detection Summary",
+            "type": "string"
+          },
           {
             "name": "Impacted Devices",
             "type": "integer"
@@ -227,12 +321,38 @@
           {
             "name": "Indicator Values",
             "type": "integer"
+          },
+          {
+            "name": "Event Summary",
+            "type": "string"
+          },
+          {
+            "name": "\u2022 method",
+            "type": "string"
+          },
+          {
+            "name": "\u2022 status_code",
+            "type": "integer"
+          },
+          {
+            "name": "\u2022 status_msg",
+            "type": "string"
+          },
+          {
+            "name": "\u2022 files",
+            "type": "integer"
           }
         ],
         "rows": [
           [
+            " ",
             1,
-            3
+            3,
+            " ",
+            "GET",
+            200,
+            "OK",
+            1
           ]
         ]
       },
@@ -240,6 +360,20 @@
       "external_ids": [
         "fd1d7b35-1df4-4a3a-b436-dda9179c9a79",
         "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947"
+      ],
+      "external_references": [
+        {
+          "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of the given event.\n- Links to a UI search page querying for that particular event by its UUID.",
+          "external_id": "fd1d7b35-1df4-4a3a-b436-dda9179c9a79",
+          "url": "https://portal.icebrg.io/search?query=uuid+%3D+%27fd1d7b35-1df4-4a3a-b436-dda9179c9a79%27"
+        },
+        {
+          "source_name": "Gigamon ThreatINSIGHT",
+          "description": "- Represents the UUID of a rule matching the given event.\n- Links to a UI page describing that specific rule along with providing some summary over its history.\n- Includes the UUID of an account associated with that particular detection.",
+          "external_id": "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947",
+          "url": "https://portal.icebrg.io/detections/rules/5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947?account_uuid=0ed93998-99ff-4723-a5f1-a6cdbd4843e8"
+        }
       ],
       "observables": [
         {
@@ -259,6 +393,54 @@
             "type": "ip",
             "value": "10.1.70.2"
           }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Sent_From",
+          "source": {
+            "type": "user_agent",
+            "value": "FileReceiver"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Sent_To",
+          "source": {
+            "type": "user_agent",
+            "value": "FileReceiver"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Resolved_To",
+          "source": {
+            "type": "domain",
+            "value": "mystery.io"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Hosted_On",
+          "source": {
+            "type": "url",
+            "value": "http://mystery.io/download.php"
+          }
         }
       ],
       "sensor": "snsr",
@@ -270,6 +452,14 @@
             {
               "type": "ip",
               "value": "10.1.70.2"
+            },
+            {
+              "type": "hostname",
+              "value": "Enterprise-DC01"
+            },
+            {
+              "type": "mac_address",
+              "value": "00:0c:29:79:39:51"
             }
           ],
           "observed_time": {

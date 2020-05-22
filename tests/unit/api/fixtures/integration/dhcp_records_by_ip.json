@@ -1,0 +1,18 @@
+{
+  "10.1.70.100": [
+    {
+      "account_code": "cstmr",
+      "mac": "00:15:5d:00:04:0e",
+      "hostname": "FinanceWks008",
+      "ip": "10.1.70.100"
+    }
+  ],
+  "10.1.70.2": [
+    {
+      "account_code": "cstmr",
+      "mac": "00:0c:29:79:39:51",
+      "hostname": "Enterprise-DC01",
+      "ip": "10.1.70.2"
+    }
+  ]
+}

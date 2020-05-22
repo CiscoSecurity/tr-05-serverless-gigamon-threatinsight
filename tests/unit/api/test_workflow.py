@@ -55,6 +55,14 @@ def test_get_events_for_observable(client):
 
         expected_events = load_fixture('workflow/events_for_observable')
 
+        get_dhcp_records_by_ip_mock = stack.enter_context(
+            mock.patch('api.workflow.get_dhcp_records_by_ip')
+        )
+
+        get_dhcp_records_by_ip_mock.return_value = success(
+            load_fixture('integration/dhcp_records_by_ip')
+        )
+
         # 2. Act.
 
         key = 'Chop Suey!'
@@ -74,6 +82,11 @@ def test_get_events_for_observable(client):
         ])
 
         get_events_for_entity_mock.assert_called_once_with(key, entity)
+
+        # The actual algorithm for building the `event_time_by_ip` argument is
+        # quite unwieldy but straightforward at the same time, so let's just
+        # ignore it and don't repeat the same code one more time again.
+        get_dhcp_records_by_ip_mock.assert_called_once_with(key, mock.ANY)
 
         assert events == expected_events
         assert error is None

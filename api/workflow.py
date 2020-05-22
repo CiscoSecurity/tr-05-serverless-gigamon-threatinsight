@@ -8,6 +8,7 @@ from api.integration import (
     get_detections_for_entity,
     get_events_for_detection,
     get_events_for_entity,
+    get_dhcp_records_by_ip,
 )
 
 
@@ -157,6 +158,32 @@ def get_events_for_observable(key, observable):
 
     events.sort(key=itemgetter('timestamp'), reverse=True)
 
+    # Additionally, try to enrich each internal device with some of its most
+    # recent DHCP records if available.
+
+    event_time_by_ip = {}
+
+    for event in events:
+        for loc in ['src', 'dst']:
+            if loc in event and event[loc]['internal']:
+                ip = event[loc]['ip']
+                # Use the very first matching event (i.e. the most recent one).
+                if ip not in event_time_by_ip:
+                    event_time_by_ip[ip] = event['timestamp']
+
+    dhcp_records_by_ip, error = get_dhcp_records_by_ip(key, event_time_by_ip)
+
+    if error:
+        return None, error
+
+    for event in events:
+        for loc in ['src', 'dst']:
+            if loc in event and event[loc]['internal']:
+                ip = event[loc]['ip']
+                if ip in dhcp_records_by_ip:
+                    event[loc]['dhcp'] = dhcp_records_by_ip[ip]
+
+    # Finally, enrich each event with the given observable.
     for event in events:
         event['observable'] = observable
 

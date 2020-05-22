@@ -171,7 +171,7 @@ def expected_payload(any_route, client, valid_json):
                     f'Lookup this {type_of(observable)} '
                     'on Gigamon ThreatINSIGHT'
                 ),
-                'url': url_template.format(entity=observable['value']),
+                'url': url_template.format(query=observable['value']),
                 'categories': ['Search', 'Gigamon ThreatINSIGHT'],
             }
             for observable in valid_json

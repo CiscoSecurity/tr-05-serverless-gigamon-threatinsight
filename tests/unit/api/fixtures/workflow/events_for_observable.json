@@ -2,15 +2,32 @@
   {
     "event_type": "pe",
     "uuid": "aadcce2c-7962-425a-816c-5076f86968f4",
+    "customer_id": "cstmr",
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:42:01.961Z",
     "src": {
-      "ip": "192.168.0.200",
-      "internal": true
+      "ip": "10.1.70.100",
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:15:5d:00:04:0e",
+          "hostname": "FinanceWks008",
+          "ip": "10.1.70.100"
+        }
+      ]
     },
     "dst": {
       "ip": "10.1.70.2",
-      "internal": true
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:0c:29:79:39:51",
+          "hostname": "Enterprise-DC01",
+          "ip": "10.1.70.2"
+        }
+      ]
     },
     "file": {
       "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
@@ -23,15 +40,32 @@
   {
     "event_type": "pe",
     "uuid": "10afd246-8dc9-4b76-b7b3-8381660e239b",
+    "customer_id": "cstmr",
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:41:29.961Z",
     "src": {
       "ip": "10.1.70.2",
-      "internal": true
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:0c:29:79:39:51",
+          "hostname": "Enterprise-DC01",
+          "ip": "10.1.70.2"
+        }
+      ]
     },
     "dst": {
-      "ip": "192.168.0.200",
-      "internal": true
+      "ip": "10.1.70.100",
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:15:5d:00:04:0e",
+          "hostname": "FinanceWks008",
+          "ip": "10.1.70.100"
+        }
+      ]
     },
     "file": {
       "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
@@ -44,6 +78,7 @@
   {
     "event_type": "http",
     "uuid": "33798826-53fc-4a32-ad9d-825dc0c08749",
+    "customer_id": "cstmr",
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:40:52.882Z",
     "src": {
@@ -52,8 +87,26 @@
     },
     "dst": {
       "ip": "10.1.70.2",
-      "internal": true
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:0c:29:79:39:51",
+          "hostname": "Enterprise-DC01",
+          "ip": "10.1.70.2"
+        }
+      ]
     },
+    "method": "POST",
+    "host": {
+      "ip": "10.1.70.2"
+    },
+    "uri": {
+      "uri": "/upload.php"
+    },
+    "user_agent": "FileSender",
+    "status_code": 200,
+    "status_msg": "OK",
     "files": [
       {
         "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
@@ -102,16 +155,35 @@
   {
     "event_type": "http",
     "uuid": "fd1d7b35-1df4-4a3a-b436-dda9179c9a79",
+    "customer_id": "cstmr",
     "sensor_id": "snsr",
     "timestamp": "2020-05-04T21:40:14.961Z",
     "src": {
       "ip": "10.1.70.2",
-      "internal": true
+      "internal": true,
+      "dhcp": [
+        {
+          "account_code": "cstmr",
+          "mac": "00:0c:29:79:39:51",
+          "hostname": "Enterprise-DC01",
+          "ip": "10.1.70.2"
+        }
+      ]
     },
     "dst": {
       "ip": "207.148.78.106",
       "internal": false
     },
+    "method": "GET",
+    "host": {
+      "domain": "mystery.io"
+    },
+    "uri": {
+      "uri": "/download.php"
+    },
+    "user_agent": "FileReceiver",
+    "status_code": 200,
+    "status_msg": "OK",
     "files": [
       {
         "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"

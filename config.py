@@ -39,6 +39,7 @@ class Config:
     GTI_API_FAMILY_URLS = {
         'detection': 'https://detections.icebrg.io/v1/',
         'event': 'https://events.icebrg.io/v2/',
+        'entity': 'https://entity.icebrg.io/v2/',
     }
 
     GTI_UI_RULE_URL = (
@@ -46,4 +47,4 @@ class Config:
         '{rule_uuid}?account_uuid={account_uuid}'
     )
 
-    GTI_UI_SEARCH_URL = 'https://portal.icebrg.io/search?query={entity}'
+    GTI_UI_SEARCH_URL = 'https://portal.icebrg.io/search?query={query}'
