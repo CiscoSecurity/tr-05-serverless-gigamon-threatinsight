@@ -45,25 +45,23 @@ def observe_observables():
         if error:
             return jsonify_errors(error)
 
-        rule_uuids = set()
+        indicator_by_rule_uuid = {}
 
         for event in events:
             sighting = Sighting.map(event)
-
             bundle.add(sighting)
 
             if 'detection' in event:
                 rule = event['detection']['rule']
 
-                if rule['uuid'] in rule_uuids:
-                    continue
+                indicator = indicator_by_rule_uuid.get(rule['uuid'])
+                if indicator is None:
+                    indicator = Indicator.map(rule)
+                    indicator_by_rule_uuid[rule['uuid']] = indicator
+                    bundle.add(indicator)
 
-                rule_uuids.add(rule['uuid'])
-
-                indicator = Indicator.map(rule)
-                relationship = Relationship.map(indicator, sighting)
-
-                bundle.add(indicator, relationship)
+                relationship = Relationship.map(sighting, indicator)
+                bundle.add(relationship)
 
     data = bundle.json()
 

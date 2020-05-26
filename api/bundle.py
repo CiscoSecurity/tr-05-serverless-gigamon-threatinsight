@@ -6,11 +6,10 @@ class Bundle:
     def __init__(self):
         self._entities_by_type = defaultdict(list)
 
-    def add(self, *entities):
-        for entity in entities:
-            # Pluralize the type of an entity to make TR accept it.
-            entity_type = entity['type'] + 's'
-            self._entities_by_type[entity_type].append(entity)
+    def add(self, entity):
+        # Pluralize the type of an entity to make TR accept it.
+        entity_type = entity['type'] + 's'
+        self._entities_by_type[entity_type].append(entity)
 
     @staticmethod
     def _format_docs(docs):

@@ -424,7 +424,7 @@ class Relationship(Mapping):
     }
 
     @classmethod
-    def map(cls, indicator: JSON, sighting: JSON) -> JSON:
+    def map(cls, sighting: JSON, indicator: JSON) -> JSON:
         relationship: JSON = cls.DEFAULTS.copy()
 
         relationship['id'] = f'transient:{uuid4()}'

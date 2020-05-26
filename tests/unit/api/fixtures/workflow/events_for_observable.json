@@ -140,7 +140,11 @@
       "rule": {
         "uuid": "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947",
         "name": "Suspicious Executable File",
-        "severity": "moderate"
+        "category": "Attack:Installation",
+        "description": "This logic is intended to detect suspicious executable files downloaded over HTTP...",
+        "severity": "moderate",
+        "confidence": "low",
+        "created": "2020-05-04T21:39:41.696Z"
       },
       "summary": {
         "impacted_devices": 1,
@@ -217,7 +221,11 @@
       "rule": {
         "uuid": "5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947",
         "name": "Suspicious Executable File",
-        "severity": "moderate"
+        "category": "Attack:Installation",
+        "description": "This logic is intended to detect suspicious executable files downloaded over HTTP...",
+        "severity": "moderate",
+        "confidence": "low",
+        "created": "2020-05-04T21:39:41.696Z"
       },
       "summary": {
         "impacted_devices": 1,
