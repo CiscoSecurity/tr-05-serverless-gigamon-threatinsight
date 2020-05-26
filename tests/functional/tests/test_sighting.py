@@ -37,7 +37,7 @@ def test_positive_sighting(module_headers, observable, observable_type):
     sightings = get_observables(
         response, 'Gigamon ThreatINSIGHT')['data']['sightings']
     confidence_levels = ['High', 'Info', 'Low', 'Medium', 'None', 'Unknown']
-    relations_type = [
+    relations_types = [
         'Connected_To', 'Sent_From', 'Sent_To',
         'Resolved_To', 'Hosted_On', 'Queried_For'
     ]
@@ -67,13 +67,13 @@ def test_positive_sighting(module_headers, observable, observable_type):
 
         for relation in sighting['relations']:
             assert relation['origin'] == 'Gigamon ThreatINSIGHT'
-            assert relation['relation'] in relations_type
+            assert relation['relation'] in relations_types
             assert relation['source']['value']
             assert relation['source']['type']
             assert relation['related']['value']
             assert relation['related']['type']
             if relation['relation'] == 'Hosted_On':
-                assert relation['source']['value'].startswith('http://') and (
+                assert relation['source']['value'].startswith('http') and (
                        relation['source']['type'] == 'url')
 
         assert sighting['sensor']
