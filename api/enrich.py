@@ -2,7 +2,8 @@ from functools import partial
 
 from flask import Blueprint, current_app
 
-from api.mappings import Sighting
+from api.bundle import Bundle
+from api.mappings import Sighting, Indicator, Relationship
 from api.schemas import ObservableSchema
 from api.utils import get_json, jsonify_data, jsonify_errors, get_key
 from api.workflow import get_events_for_observable
@@ -36,7 +37,7 @@ def observe_observables():
 
     key = get_key()
 
-    sightings = []
+    bundle = Bundle()
 
     for observable in observables:
         events, error = get_events_for_observable(key, observable)
@@ -44,17 +45,27 @@ def observe_observables():
         if error:
             return jsonify_errors(error)
 
-        sightings.extend(
-            Sighting.map(event) for event in events
-        )
+        rule_uuids = set()
 
-    data = {}
+        for event in events:
+            sighting = Sighting.map(event)
 
-    def format_docs(docs):
-        return {'count': len(docs), 'docs': docs}
+            bundle.add(sighting)
 
-    if sightings:
-        data['sightings'] = format_docs(sightings)
+            if 'detection' in event:
+                rule = event['detection']['rule']
+
+                if rule['uuid'] in rule_uuids:
+                    continue
+
+                rule_uuids.add(rule['uuid'])
+
+                indicator = Indicator.map(rule)
+                relationship = Relationship.map(indicator, sighting)
+
+                bundle.add(indicator, relationship)
+
+    data = bundle.json()
 
     return jsonify_data(data)
 
