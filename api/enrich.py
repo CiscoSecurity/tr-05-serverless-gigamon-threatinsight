@@ -43,7 +43,8 @@ def observe_observables():
         events, error = get_events_for_observable(key, observable)
 
         if error:
-            return jsonify_errors(error)
+            # Make sure not to lose any data processed so far.
+            return jsonify_errors(error, data=bundle.json())
 
         indicator_by_rule_uuid = {}
 
