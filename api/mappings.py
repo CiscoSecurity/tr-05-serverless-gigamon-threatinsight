@@ -54,10 +54,10 @@ class Sighting(Mapping):
         if details:
             sighting['data'] = details
 
-        sighting['description'] = f'- Event: `{event["event_type"].upper()}`.'
+        sighting['description'] = f'- Event: `{event["event_type"].upper()}`'
         if 'detection' in event:
             sighting['description'] += '\n' + (
-                f'- Rule: `{event["detection"]["rule"]["name"]}`.'
+                f'- Rule: `{event["detection"]["rule"]["name"]}`'
             )
 
         sighting['external_ids'] = [event['uuid']]
@@ -90,7 +90,7 @@ class Sighting(Mapping):
                     'particular detection.',
                 ]),
                 'external_id': event['detection']['rule']['uuid'],
-                'url': current_app.config['GTI_UI_RULE_URL'].format(
+                'url': current_app.config['GTI_UI_RULE_ACCOUNT_URL'].format(
                     rule_uuid=event['detection']['rule']['uuid'],
                     account_uuid=event['detection']['account_uuid'],
                 ),
@@ -354,3 +354,83 @@ class Sighting(Mapping):
             'observed_time': observed_time,
             'type': 'endpoint',
         }]
+
+
+class Indicator(Mapping):
+    DEFAULTS = {
+        'type': 'indicator',
+        'producer': 'Gigamon ThreatINSIGHT',
+        'source': 'Gigamon ThreatINSIGHT',
+        **CTIM_DEFAULTS
+    }
+
+    CONFIDENCE_MAPPING = {
+        'high': 'High',
+        'moderate': 'Medium',
+        'low': 'Low',
+    }
+
+    SEVERITY_MAPPING = {
+        'high': 'High',
+        'moderate': 'Medium',
+        'low': 'Low',
+    }
+
+    @classmethod
+    def map(cls, rule: JSON) -> JSON:
+        indicator: JSON = cls.DEFAULTS.copy()
+
+        indicator['id'] = f'transient:{uuid4()}'
+
+        indicator['valid_time'] = {'start_time': rule['created']}
+
+        indicator['confidence'] = cls.CONFIDENCE_MAPPING[rule['confidence']]
+
+        indicator['description'] = rule['description']
+
+        indicator['external_ids'] = [rule['uuid']]
+
+        indicator['external_references'] = [{
+            'source_name': indicator['source'],
+            'description': '\n'.join([
+                '- Represents the UUID of the given rule.',
+                '- Links to a UI page describing that specific rule along '
+                'with providing some summary over its history.',
+            ]),
+            'external_id': rule['uuid'],
+            'url': current_app.config['GTI_UI_RULE_URL'].format(
+                rule_uuid=rule['uuid'],
+            ),
+        }]
+
+        indicator['severity'] = cls.SEVERITY_MAPPING[rule['severity']]
+
+        indicator['short_description'] = rule['name']
+
+        indicator['source_uri'] = indicator['external_references'][0]['url']
+
+        indicator['tags'] = [rule['category']]
+
+        indicator['title'] = rule['name']
+
+        return indicator
+
+
+class Relationship(Mapping):
+    DEFAULTS = {
+        'type': 'relationship',
+        'relationship_type': 'sighting-of',
+        **CTIM_DEFAULTS
+    }
+
+    @classmethod
+    def map(cls, sighting: JSON, indicator: JSON) -> JSON:
+        relationship: JSON = cls.DEFAULTS.copy()
+
+        relationship['id'] = f'transient:{uuid4()}'
+
+        relationship['source_ref'] = sighting['id']
+
+        relationship['target_ref'] = indicator['id']
+
+        return relationship

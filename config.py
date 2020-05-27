@@ -42,9 +42,7 @@ class Config:
         'entity': 'https://entity.icebrg.io/v2/',
     }
 
-    GTI_UI_RULE_URL = (
-        'https://portal.icebrg.io/detections/rules/'
-        '{rule_uuid}?account_uuid={account_uuid}'
-    )
+    GTI_UI_RULE_URL = 'https://portal.icebrg.io/detections/rules/{rule_uuid}'
+    GTI_UI_RULE_ACCOUNT_URL = GTI_UI_RULE_URL + '?account_uuid={account_uuid}'
 
     GTI_UI_SEARCH_URL = 'https://portal.icebrg.io/search?query={query}'

@@ -145,11 +145,11 @@ def get_events_for_observable(key, observable):
     if error:
         return None, error
 
-    uuids = frozenset(event['uuid'] for event in events)
+    event_uuids = frozenset(event['uuid'] for event in events)
 
     events.extend(
         event for event in events_for_entity
-        if event['uuid'] not in uuids
+        if event['uuid'] not in event_uuids
     )
 
     limit = current_app.config['CTR_ENTITIES_LIMIT']

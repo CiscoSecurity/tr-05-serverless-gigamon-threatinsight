@@ -134,6 +134,8 @@ def expected_payload(any_route, client, valid_json):
 
     if any_route.startswith('/observe'):
         sightings = load_fixture('sightings')
+        indicators = load_fixture('indicators')
+        relationships = load_fixture('relationships')
 
         class TransientID:
             uuid4 = '-'.join([
@@ -151,8 +153,18 @@ def expected_payload(any_route, client, valid_json):
         for sighting in sightings['docs']:
             sighting['id'] = TransientID()
 
+        for indicator in indicators['docs']:
+            indicator['id'] = TransientID()
+
+        for relationship in relationships['docs']:
+            relationship['id'] = TransientID()
+            relationship['source_ref'] = TransientID()
+            relationship['target_ref'] = TransientID()
+
         payload = {
             'sightings': sightings,
+            'indicators': indicators,
+            'relationships': relationships,
         }
 
     if any_route.startswith('/refer'):

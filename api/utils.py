@@ -37,7 +37,7 @@ def jsonify_data(data):
     return jsonify({'data': data})
 
 
-def jsonify_errors(error):
+def jsonify_errors(error, data=None):
     error['code'] = error['code'].replace('.', ' : ').replace('_', ' ')
 
     # According to the official documentation, an error here means that the
@@ -47,4 +47,8 @@ def jsonify_errors(error):
     # https://visibility.amp.cisco.com/help/alerts-errors-warnings.
     error['type'] = 'fatal'
 
-    return jsonify({'errors': [error]})
+    payload = {'errors': [error]}
+    if data:
+        payload['data'] = data
+
+    return jsonify(payload)
