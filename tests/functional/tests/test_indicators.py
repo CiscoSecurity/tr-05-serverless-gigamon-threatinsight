@@ -60,6 +60,7 @@ def test_positive_indicators(module_headers, observable, observable_type):
             assert external_reference['external_id'] in (
                    indicator['external_ids'])
             assert external_reference['source_name'] == indicator['source']
-            assert external_reference['url'].startswith('https://portal.icebrg.io/')
+            assert external_reference['url'].startswith(
+                  'https://portal.icebrg.io/')
 
     assert indicators['count'] == len(indicators['docs'])
