@@ -38,8 +38,10 @@ def test_positive_relationships(module_headers, observable, observable_type):
     relationships = gigamon_module_data['relationships']
     indicators = gigamon_module_data['indicators']
     sightings = gigamon_module_data['sightings']
-    indicators_ids = frozenset(indicator['id'] for indicator in indicators['docs'])
-    sightings_ids = frozenset(sighting['id'] for sighting in sightings['docs'])
+    indicators_ids = frozenset(
+        indicator['id'] for indicator in indicators['docs'])
+    sightings_ids = frozenset(
+        sighting['id'] for sighting in sightings['docs'])
 
     assert len(relationships['docs']) > 0
 
