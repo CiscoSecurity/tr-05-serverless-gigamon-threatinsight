@@ -38,26 +38,18 @@ def test_positive_relationships(module_headers, observable, observable_type):
     relationships = gigamon_module_data['relationships']
     indicators = gigamon_module_data['indicators']
     sightings = gigamon_module_data['sightings']
-    unique_indicators_ids = set()
-    unique_sightings_ids = set()
+    indicators_ids = frozenset(indicator['id'] for indicator in indicators['docs'])
+    sightings_ids = frozenset(sighting['id'] for sighting in sightings['docs'])
 
     assert len(relationships['docs']) > 0
 
     for relationship in relationships['docs']:
         assert relationship['schema_version']
-        unique_indicators_ids.add(relationship['target_ref'])
-        unique_sightings_ids.add(relationship['source_ref'])
         assert relationship['target_ref'].startswith('transient:')
         assert relationship['type'] == 'relationship'
         assert relationship['source_ref'].startswith('transient:')
         assert relationship['relationship_type'] == 'sighting-of'
+        assert relationship['target_ref'] in indicators_ids
+        assert relationship['source_ref'] in sightings_ids
 
     assert relationships['count'] == len(relationships['docs'])
-
-    for unique_indicator_id in unique_indicators_ids:
-        assert unique_indicator_id in [
-               indicator['id'] for indicator in indicators['docs']]
-
-    for unique_target_id in unique_sightings_ids:
-        assert unique_target_id in [
-               sighting['id'] for sighting in sightings['docs']]
