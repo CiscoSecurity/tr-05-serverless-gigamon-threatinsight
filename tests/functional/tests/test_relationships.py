@@ -48,10 +48,11 @@ def test_positive_relationships(module_headers, observable, observable_type):
     for relationship in relationships['docs']:
         assert relationship['schema_version']
         assert relationship['target_ref'].startswith('transient:')
+        assert relationship['target_ref'] in indicators_ids
         assert relationship['type'] == 'relationship'
         assert relationship['source_ref'].startswith('transient:')
-        assert relationship['relationship_type'] == 'sighting-of'
-        assert relationship['target_ref'] in indicators_ids
         assert relationship['source_ref'] in sightings_ids
+        assert relationship['id'].startswith('transient:')
+        assert relationship['relationship_type'] == 'sighting-of'
 
     assert relationships['count'] == len(relationships['docs'])
