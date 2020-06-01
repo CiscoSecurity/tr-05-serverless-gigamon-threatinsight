@@ -314,8 +314,16 @@ class Sighting(Mapping):
                     host = host.get('domain') or host.get('ip') or ''
                     components = components._replace(netloc=host)
 
+                url = components.geturl()
+
                 append_relation(
-                    Observable('url', components.geturl()),
+                    Observable('ip', event['src']['ip']),
+                    'Connected_To',
+                    Observable('url', url),
+                )
+
+                append_relation(
+                    Observable('url', url),
                     'Hosted_On',
                     Observable('ip', event['dst']['ip']),
                 )

@@ -261,6 +261,18 @@
         {
           "origin": "Gigamon ThreatINSIGHT",
           "related": {
+            "type": "url",
+            "value": "http://10.1.70.2/upload.php"
+          },
+          "relation": "Connected_To",
+          "source": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
             "type": "ip",
             "value": "10.1.70.2"
           },
@@ -428,6 +440,18 @@
           "source": {
             "type": "domain",
             "value": "mystery.io"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "url",
+            "value": "http://mystery.io/download.php"
+          },
+          "relation": "Connected_To",
+          "source": {
+            "type": "ip",
+            "value": "10.1.70.2"
           }
         },
         {
