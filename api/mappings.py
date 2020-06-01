@@ -329,19 +329,25 @@ class Sighting(Mapping):
                 )
 
             if event['files']:
-                relation = (
-                    'Downloaded_From'
+                for loc, relation in (
+                    [
+                        ('src', 'Downloaded_To'),
+                        ('dst', 'Downloaded_From'),
+                    ]
                     if event['method'] == 'GET' else
-                    'Uploaded_To'
-                )
-                for file in event['files']:
-                    for hash_type in ['md5', 'sha1', 'sha256']:
-                        if file.get(hash_type):
-                            append_relation(
-                                Observable(hash_type, file[hash_type]),
-                                relation,
-                                Observable('ip', event['dst']['ip']),
-                            )
+                    [
+                        ('src', 'Uploaded_From'),
+                        ('dst', 'Uploaded_To'),
+                    ]
+                ):
+                    for file in event['files']:
+                        for hash_type in ['md5', 'sha1', 'sha256']:
+                            if file.get(hash_type):
+                                append_relation(
+                                    Observable(hash_type, file[hash_type]),
+                                    relation,
+                                    Observable('ip', event[loc]['ip']),
+                                )
 
         return relations or None
 
