@@ -15,7 +15,7 @@ def test_positive_relationships(module_headers, observable, observable_type):
     """Perform testing for enrich observe observables endpoint to check
     relationships of Gigamon ThreatINSIGHT module
 
-    ID: CCTRI-1094-fb59a541-a42e-41fc-b859-52a1b564c14e
+    ID: CCTRI-1094-52303f90-0ac9-42e5-80b7-aab5b5d83f47
 
     Steps:
         1. Send request to enrich observe observable endpoint and check
@@ -23,8 +23,8 @@ def test_positive_relationships(module_headers, observable, observable_type):
 
 
     Expectedresults:
-        1. Check that data in response body contains relationships entity
-        with needed fields ThreatINSIGHT module
+        1. Response body contains relationships entity with needed fields from
+        ThreatINSIGHT module
 
     Importance: Critical
     """

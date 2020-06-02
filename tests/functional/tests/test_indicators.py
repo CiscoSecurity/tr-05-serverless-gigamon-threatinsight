@@ -23,8 +23,8 @@ def test_positive_indicators(module_headers, observable, observable_type):
 
 
     Expectedresults:
-        1. Check that data in response body contains indicators entity
-        with needed fields ThreatINSIGHT module
+        1. Response body contains indicators entity with needed fields from
+        ThreatINSIGHT module
 
     Importance: Critical
     """
