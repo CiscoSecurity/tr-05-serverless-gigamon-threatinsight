@@ -39,7 +39,9 @@ def test_positive_sighting(module_headers, observable, observable_type):
     confidence_levels = ['High', 'Info', 'Low', 'Medium', 'None', 'Unknown']
     relations_types = [
         'Connected_To', 'Sent_From', 'Sent_To',
-        'Resolved_To', 'Hosted_On', 'Queried_For'
+        'Resolved_To', 'Hosted_On', 'Queried_For',
+        'Downloaded_To', 'Downloaded_From',
+        'Uploaded_From', 'Uploaded_To',
     ]
     targets_observables_types = ['ip', 'hostname', 'mac_address']
 
