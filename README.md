@@ -90,3 +90,9 @@ following ones:
   - Must be a positive integer. Defaults to `100` (if unset or incorrect). Has
   the upper bound of `1000` to avoid getting overwhelmed with too much data, so
   any greater values are still acceptable but also limited at the same time.
+
+- `GTI_ALLOW_TEST_ACCOUNTS`
+  - Allows fake data from the test accounts (`Demo` and `Training`) to be
+  returned along with real data (if enabled).
+  - Must be a boolean flag represented as an integer (`0` or `1`). Defaults to
+  `0` (if unset or incorrect).

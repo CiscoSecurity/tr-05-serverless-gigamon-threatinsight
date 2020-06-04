@@ -23,7 +23,7 @@ CTIM_DEFAULTS = {
 }
 
 
-Observable = namedtuple('Observable', ('type', 'value'))
+Observable = namedtuple('Observable', ['type', 'value'])
 
 
 class Sighting(Mapping):
@@ -314,11 +314,40 @@ class Sighting(Mapping):
                     host = host.get('domain') or host.get('ip') or ''
                     components = components._replace(netloc=host)
 
+                url = components.geturl()
+
                 append_relation(
-                    Observable('url', components.geturl()),
+                    Observable('ip', event['src']['ip']),
+                    'Connected_To',
+                    Observable('url', url),
+                )
+
+                append_relation(
+                    Observable('url', url),
                     'Hosted_On',
                     Observable('ip', event['dst']['ip']),
                 )
+
+            if event['files']:
+                for loc, relation in (
+                    [
+                        ('src', 'Downloaded_To'),
+                        ('dst', 'Downloaded_From'),
+                    ]
+                    if event['method'] == 'GET' else
+                    [
+                        ('src', 'Uploaded_From'),
+                        ('dst', 'Uploaded_To'),
+                    ]
+                ):
+                    for file in event['files']:
+                        for hash_type in ['md5', 'sha1', 'sha256']:
+                            if file.get(hash_type):
+                                append_relation(
+                                    Observable(hash_type, file[hash_type]),
+                                    relation,
+                                    Observable('ip', event[loc]['ip']),
+                                )
 
         return relations or None
 

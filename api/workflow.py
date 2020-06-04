@@ -55,6 +55,12 @@ def get_events_for_observable(key, observable):
     if error:
         return None, error
 
+    def is_allowed(account: str) -> bool:
+        return (
+            current_app.config['GTI_ALLOW_TEST_ACCOUNTS'] or
+            account not in current_app.config['GTI_TEST_ACCOUNTS']
+        )
+
     # Fetch all the detections for the given entity and then all the events for
     # each detection enriching them with some additional context along the way.
 
@@ -67,6 +73,7 @@ def get_events_for_observable(key, observable):
         futures = [
             executor.submit(_get_events_for_detection, key, detection['uuid'])
             for detection in detections
+            if is_allowed(detection['account_uuid'])
         ]
 
         for future in as_completed(futures):
@@ -151,6 +158,8 @@ def get_events_for_observable(key, observable):
         event for event in events_for_entity
         if event['uuid'] not in event_uuids
     )
+
+    events = [event for event in events if is_allowed(event['customer_id'])]
 
     limit = current_app.config['CTR_ENTITIES_LIMIT']
 
