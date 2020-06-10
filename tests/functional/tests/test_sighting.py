@@ -30,12 +30,13 @@ def test_positive_sighting(module_headers, observable, observable_type):
     Importance: Critical
     """
     observables = [{'type': observable_type, 'value': observable}]
-    response = enrich_observe_observables(
+    response_from_all_modules = enrich_observe_observables(
         payload=observables,
         **{'headers': module_headers}
     )['data']
     sightings = get_observables(
-        response, 'Gigamon ThreatINSIGHT')['data']['sightings']
+        response_from_all_modules, 'Gigamon ThreatINSIGHT'
+    )['data']['sightings']
     confidence_levels = ['High', 'Info', 'Low', 'Medium', 'None', 'Unknown']
     targets_observables_types = ['ip', 'hostname', 'mac_address']
 
@@ -100,12 +101,13 @@ def test_positive_sighting_relation(module_headers, observable,
     Importance: Critical
     """
     observables = [{'type': observable_type, 'value': observable}]
-    response = enrich_observe_observables(
+    response_from_all_modules = enrich_observe_observables(
         payload=observables,
         **{'headers': module_headers}
     )['data']
     sightings = get_observables(
-        response, 'Gigamon ThreatINSIGHT')['data']['sightings']
+        response_from_all_modules, 'Gigamon ThreatINSIGHT'
+    )['data']['sightings']
     relations_types = [
         'Connected_To', 'Sent_From', 'Sent_To',
         'Resolved_To', 'Hosted_On', 'Queried_For',
@@ -117,14 +119,14 @@ def test_positive_sighting_relation(module_headers, observable,
         if 'HTTP' in sighting['description']:
             for relation in sighting['relations']:
                 http_relations.add(relation['relation'])
-            assert 'Hosted_On' and 'Connected_To' in http_relations
-            assert 'Downloaded_To' and 'Downloaded_From' or (
-                   'Uploaded_From' and 'Uploaded_To') in http_relations
-            if 'Downloaded_To' and 'Downloaded_From' in http_relations:
-                assert 'Uploaded_From' and 'Uploaded_To' not in http_relations
-            if 'Uploaded_From' and 'Uploaded_To' in http_relations:
-                assert 'Downloaded_To' and (
-                       'Downloaded_From' not in http_relations)
+            assert 'Connected_To' in http_relations
+            download_relations = {'Downloaded_To', 'Downloaded_From'}
+            upload_relations = {'Uploaded_From', 'Uploaded_To'}
+            intersection_relations = http_relations & (
+                    download_relations | upload_relations)
+            assert not intersection_relations or (
+                       intersection_relations == download_relations) or (
+                       intersection_relations == upload_relations)
 
         for relation in sighting['relations']:
             assert relation['origin'] == 'Gigamon ThreatINSIGHT'
