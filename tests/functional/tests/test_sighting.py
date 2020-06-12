@@ -13,8 +13,8 @@ import pytest
      ('sha1', '2d7177f8466d82e28150572584928278ba72d435'))
 )
 def test_positive_sighting(module_headers, observable, observable_type):
-    """Perform testing for enrich observe observables endpoint to check sightings
-    of Gigamon ThreatINSIGHT module
+    """Perform testing for enrich observe observables endpoint to check
+    sightings of Gigamon ThreatINSIGHT module
 
     ID: CCTRI-894-cfffca7f-cdd9-4ead-8d3d-6d757246137c
 
@@ -24,31 +24,27 @@ def test_positive_sighting(module_headers, observable, observable_type):
 
 
     Expectedresults:
-        1. Check that data in response body contains sighting entity
-        with needed fields ThreatINSIGHT module
+        1. Response body contains sightings entity with needed fields from
+        ThreatINSIGHT module
 
     Importance: Critical
     """
     observables = [{'type': observable_type, 'value': observable}]
-    response = enrich_observe_observables(
+    response_from_all_modules = enrich_observe_observables(
         payload=observables,
         **{'headers': module_headers}
     )['data']
     sightings = get_observables(
-        response, 'Gigamon ThreatINSIGHT')['data']['sightings']
+        response_from_all_modules, 'Gigamon ThreatINSIGHT'
+    )['data']['sightings']
     confidence_levels = ['High', 'Info', 'Low', 'Medium', 'None', 'Unknown']
-    relations_types = [
-        'Connected_To', 'Sent_From', 'Sent_To',
-        'Resolved_To', 'Hosted_On', 'Queried_For',
-        'Downloaded_To', 'Downloaded_From',
-        'Uploaded_From', 'Uploaded_To',
-    ]
     targets_observables_types = ['ip', 'hostname', 'mac_address']
 
     assert len(sightings['docs']) > 0
 
     for sighting in sightings['docs']:
         assert sighting['description']
+        assert sighting['relations']
         assert sighting['confidence'] in confidence_levels
         assert sighting['count'] == 1
         assert sighting['id'].startswith('transient:')
@@ -67,6 +63,71 @@ def test_positive_sighting(module_headers, observable, observable_type):
             assert external_reference['description']
             assert external_reference['url']
 
+        assert sighting['sensor']
+        assert sighting['internal'] is True
+        assert sighting['targets'][0]['type'] == 'endpoint'
+        assert sighting['targets'][0]['observed_time']['start_time']
+        for observable_type in sighting['targets'][0]['observables']:
+            assert observable_type['type'] in targets_observables_types
+
+    assert sightings['count'] == len(sightings['docs'])
+
+
+@pytest.mark.parametrize(
+    'observable_type, observable',
+    (('ip', '45.77.51.101'),
+     ('domain', 'securecorp.club'),
+     ('sha256',
+      '9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3'),
+     ('md5', '3319b1a422c785c221050f1152ad77cb'),
+     ('sha1', '2d7177f8466d82e28150572584928278ba72d435'))
+)
+def test_positive_sighting_relation(module_headers, observable,
+                                    observable_type):
+    """Perform testing for enrich observe observables endpoint to check
+    relationships in sighting of Gigamon ThreatINSIGHT module
+
+    ID: CCTRI-1174-fb8d55ae-0352-4170-9b17-ddf49fa81783
+
+    Steps:
+        1. Send request to enrich observe observable endpoint and check
+        relationships in sighting
+
+
+    Expectedresults:
+        1. Response body contains relationships in sightings entity with needed
+        fields from Gigamon ThreatINSIGHT module
+
+    Importance: Critical
+    """
+    observables = [{'type': observable_type, 'value': observable}]
+    response_from_all_modules = enrich_observe_observables(
+        payload=observables,
+        **{'headers': module_headers}
+    )['data']
+    sightings = get_observables(
+        response_from_all_modules, 'Gigamon ThreatINSIGHT'
+    )['data']['sightings']
+    relations_types = [
+        'Connected_To', 'Sent_From', 'Sent_To',
+        'Resolved_To', 'Hosted_On', 'Queried_For',
+        'Downloaded_To', 'Downloaded_From',
+        'Uploaded_From', 'Uploaded_To',
+    ]
+    for sighting in sightings['docs']:
+        if 'HTTP' in sighting['description'].splitlines()[0]:
+            http_relations = {
+                relation['relation'] for relation in sighting['relations']
+            }
+            assert 'Connected_To' in http_relations
+            download_relations = {'Downloaded_To', 'Downloaded_From'}
+            upload_relations = {'Uploaded_From', 'Uploaded_To'}
+            intersection_relations = http_relations & (
+                    download_relations | upload_relations)
+            assert not intersection_relations or (
+                    intersection_relations == download_relations) or (
+                    intersection_relations == upload_relations)
+
         for relation in sighting['relations']:
             assert relation['origin'] == 'Gigamon ThreatINSIGHT'
             assert relation['relation'] in relations_types
@@ -77,12 +138,3 @@ def test_positive_sighting(module_headers, observable, observable_type):
             if relation['relation'] == 'Hosted_On':
                 assert relation['source']['value'].startswith('http') and (
                        relation['source']['type'] == 'url')
-
-        assert sighting['sensor']
-        assert sighting['internal'] is True
-        assert sighting['targets'][0]['type'] == 'endpoint'
-        assert sighting['targets'][0]['observed_time']['start_time']
-        for observable_type in sighting['targets'][0]['observables']:
-            assert observable_type['type'] in targets_observables_types
-
-    assert sightings['count'] == len(sightings['docs'])
