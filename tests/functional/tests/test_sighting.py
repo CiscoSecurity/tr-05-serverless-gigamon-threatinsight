@@ -115,10 +115,10 @@ def test_positive_sighting_relation(module_headers, observable,
         'Uploaded_From', 'Uploaded_To',
     ]
     for sighting in sightings['docs']:
-        http_relations = set()
         if 'HTTP' in sighting['description'].splitlines()[0]:
-            for relation in sighting['relations']:
-                http_relations.add(relation['relation'])
+            http_relations = {
+                relation['relation'] for relation in sighting['relations']
+            }
             assert 'Connected_To' in http_relations
             download_relations = {'Downloaded_To', 'Downloaded_From'}
             upload_relations = {'Uploaded_From', 'Uploaded_To'}
