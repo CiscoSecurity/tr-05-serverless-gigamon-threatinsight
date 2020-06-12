@@ -1,7 +1,6 @@
 from ctrlibrary.core.utils import get_observables
 from ctrlibrary.threatresponse.enrich import enrich_observe_observables
 import pytest
-import re
 
 
 @pytest.mark.parametrize(
@@ -117,9 +116,7 @@ def test_positive_sighting_relation(module_headers, observable,
     ]
     for sighting in sightings['docs']:
         http_relations = set()
-        match_obj = re.match(r'- Event: `(?P<event_type>[A-Z]+)`', sighting[
-            'description'])
-        if match_obj and match_obj.group('event_type') == 'HTTP':
+        if 'HTTP' in sighting['description'].splitlines()[0]:
             for relation in sighting['relations']:
                 http_relations.add(relation['relation'])
             assert 'Connected_To' in http_relations
