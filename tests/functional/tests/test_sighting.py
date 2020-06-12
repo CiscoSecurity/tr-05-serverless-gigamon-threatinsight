@@ -125,8 +125,8 @@ def test_positive_sighting_relation(module_headers, observable,
             intersection_relations = http_relations & (
                     download_relations | upload_relations)
             assert not intersection_relations or (
-                       intersection_relations == download_relations) or (
-                       intersection_relations == upload_relations)
+                    intersection_relations == download_relations) or (
+                    intersection_relations == upload_relations)
 
         for relation in sighting['relations']:
             assert relation['origin'] == 'Gigamon ThreatINSIGHT'
