@@ -29,12 +29,18 @@ def test_positive_indicators(module_headers, observable, observable_type):
     Importance: Critical
     """
     observables = [{'type': observable_type, 'value': observable}]
-    response = enrich_observe_observables(
+    response_from_all_modules = enrich_observe_observables(
         payload=observables,
         **{'headers': module_headers}
     )['data']
-    indicators = get_observables(
-        response, 'Gigamon ThreatINSIGHT')['data']['indicators']
+    response_from_gigamon_module = get_observables(
+        response_from_all_modules, 'Gigamon ThreatINSIGHT')
+
+    assert response_from_gigamon_module['module'] == 'Gigamon ThreatINSIGHT'
+    assert response_from_gigamon_module['module_instance_id']
+    assert response_from_gigamon_module['module_type_id']
+
+    indicators = response_from_gigamon_module['data']['indicators']
     confidence_and_severity_levels = ['High', 'Medium', 'Low']
 
     assert len(indicators['docs']) > 0
