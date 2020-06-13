@@ -267,20 +267,23 @@ class Sighting(Mapping):
             )
 
         if event['event_type'] == 'dns':
-            append_relation(
-                Observable('ip', event['src']['ip']),
-                'Queried_For',
-                Observable('domain', event['query']['domain']),
-            )
+            if event['query']:
+                domain = event['query']['domain']
 
-            if event['answers']:
-                for answer in event['answers']:
-                    if 'ip' in answer:
-                        append_relation(
-                            Observable('domain', event['query']['domain']),
-                            'Resolved_To',
-                            Observable('ip', answer['ip']),
-                        )
+                append_relation(
+                    Observable('ip', event['src']['ip']),
+                    'Queried_For',
+                    Observable('domain', domain),
+                )
+
+                if event['answers']:
+                    for answer in event['answers']:
+                        if 'ip' in answer:
+                            append_relation(
+                                Observable('domain', domain),
+                                'Resolved_To',
+                                Observable('ip', answer['ip']),
+                            )
 
         if event['event_type'] == 'http':
             if event['user_agent']:
@@ -348,6 +351,14 @@ class Sighting(Mapping):
                                     relation,
                                     Observable('ip', event[loc]['ip']),
                                 )
+
+        if event['event_type'] == 'x509':
+            if event['observable']['type'] == 'domain':
+                append_relation(
+                    Observable('domain', event['observable']['value']),
+                    'SAN_DNS_For',
+                    Observable('ip', event['dst']['ip']),
+                )
 
         return relations or None
 
