@@ -138,3 +138,49 @@ def test_positive_sighting_relation(module_headers, observable,
             if relation['relation'] == 'Hosted_On':
                 assert relation['source']['value'].startswith('http') and (
                        relation['source']['type'] == 'url')
+
+
+def test_positive_sighting_x509(module_headers):
+    """Perform testing for Gigamon ThreatINSIGHT module sightings functionality
+    for x509 event types specifically
+
+    ID: CCTRI-1125-82b45fee-9266-4793-9642-b89a324b8e26
+
+    Steps:
+        1. Send request to enrich observe observable endpoint and check
+        sighting. Use observables that contains sightings for x509 event type
+
+
+    Expectedresults:
+        1. Response body contains sightings entity with expected data for x509
+            event type
+
+    Importance: Critical
+    """
+    observables = [{'type': 'domain', 'value': 'wp.com'}]
+    response_from_all_modules = enrich_observe_observables(
+        payload=observables,
+        **{'headers': module_headers}
+    )['data']
+    sightings = get_observables(
+        response_from_all_modules, 'Gigamon ThreatINSIGHT'
+    )['data']['sightings']
+
+    assert len(sightings['docs']) > 0
+    assert [
+        sighting for sighting in sightings['docs']
+        if 'Event: `X509`' in sighting['description']
+    ], 'There are no sightings with necessary event type'
+
+    for sighting in sightings['docs']:
+        if 'Event: `X509`' in sighting['description']:
+            relation = [
+                r for r in sighting['relations']
+                if r['relation'] == 'SAN_DNS_For'
+            ]
+            assert relation
+            assert relation[0]['origin'] == 'Gigamon ThreatINSIGHT'
+            assert relation[0]['source'] == observables[0]
+            assert relation[0]['related']['type'] == 'ip'
+            assert relation[0]['related']['value']
+    assert sightings['count'] == len(sightings['docs'])
