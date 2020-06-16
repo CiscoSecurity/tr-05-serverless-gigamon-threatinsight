@@ -167,14 +167,20 @@ def test_positive_sighting_x509(module_headers):
     )['data']['sightings']
 
     assert len(sightings['docs']) > 0
+    assert [
+        sighting for sighting in sightings['docs']
+        if 'Event: `X509`' in sighting['description']
+    ], 'There are no sightings with necessary event type'
 
     for sighting in sightings['docs']:
-        assert 'Event: `X509`' in sighting['description']
-        relation = [
-            r for r in sighting['relations'] if r['relation'] == 'SAN_DNS_For']
-        assert relation
-        assert relation[0]['origin'] == 'Gigamon ThreatINSIGHT'
-        assert relation[0]['source'] == observables[0]
-        assert relation[0]['related']['type'] == 'ip'
-        assert relation[0]['related']['value']
+        if 'Event: `X509`' in sighting['description']:
+            relation = [
+                r for r in sighting['relations']
+                if r['relation'] == 'SAN_DNS_For'
+            ]
+            assert relation
+            assert relation[0]['origin'] == 'Gigamon ThreatINSIGHT'
+            assert relation[0]['source'] == observables[0]
+            assert relation[0]['related']['type'] == 'ip'
+            assert relation[0]['related']['value']
     assert sightings['count'] == len(sightings['docs'])
