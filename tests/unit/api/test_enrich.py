@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from re import compile as re_compile
+from re import match as re_match
 from unittest import mock
 
 from authlib.jose import jwt
@@ -145,21 +145,23 @@ def expected_payload(any_route, client, valid_json):
                 '[89ab][a-f0-9]{3}',
                 '[a-f0-9]{12}',
             ])
-            pattern = re_compile(f'^transient:{uuid4}$')
+
+            def __init__(self, entity_type):
+                self.pattern = f'^transient:{entity_type}-{self.uuid4}$'
 
             def __eq__(self, other):
-                return bool(self.pattern.match(other))
+                return bool(re_match(self.pattern, other))
 
         for sighting in sightings['docs']:
-            sighting['id'] = TransientID()
+            sighting['id'] = TransientID('sighting')
 
         for indicator in indicators['docs']:
-            indicator['id'] = TransientID()
+            indicator['id'] = TransientID('indicator')
 
         for relationship in relationships['docs']:
-            relationship['id'] = TransientID()
-            relationship['source_ref'] = TransientID()
-            relationship['target_ref'] = TransientID()
+            relationship['id'] = TransientID('relationship')
+            relationship['source_ref'] = TransientID('sighting')
+            relationship['target_ref'] = TransientID('indicator')
 
         payload = {
             'sightings': sightings,

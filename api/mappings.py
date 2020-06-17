@@ -1,4 +1,4 @@
-import abc
+from abc import ABC, abstractmethod
 from collections import namedtuple
 from typing import Dict, Any, Optional, List
 from urllib.parse import quote_plus, urlparse
@@ -10,10 +10,10 @@ from flask import current_app
 JSON = Dict[str, Any]
 
 
-class Mapping(abc.ABC):
+class Mapping(ABC):
 
     @classmethod
-    @abc.abstractmethod
+    @abstractmethod
     def map(cls, *args, **kwargs) -> JSON:
         pass
 
@@ -21,6 +21,10 @@ class Mapping(abc.ABC):
 CTIM_DEFAULTS = {
     'schema_version': '1.0.16',
 }
+
+
+def generate_transient_id(entity):
+    return f"transient:{entity['type']}-{uuid4()}"
 
 
 Observable = namedtuple('Observable', ['type', 'value'])
@@ -46,7 +50,7 @@ class Sighting(Mapping):
     def map(cls, event: JSON) -> JSON:
         sighting: JSON = cls.DEFAULTS.copy()
 
-        sighting['id'] = f'transient:{uuid4()}'
+        sighting['id'] = generate_transient_id(sighting)
 
         sighting['observed_time'] = {'start_time': event['timestamp']}
 
@@ -54,10 +58,10 @@ class Sighting(Mapping):
         if details:
             sighting['data'] = details
 
-        sighting['description'] = f'- Event: `{event["event_type"].upper()}`'
+        sighting['description'] = f"- Event: `{event['event_type'].upper()}`"
         if 'detection' in event:
             sighting['description'] += '\n' + (
-                f'- Rule: `{event["detection"]["rule"]["name"]}`'
+                f"- Rule: `{event['detection']['rule']['name']}`"
             )
 
         sighting['external_ids'] = [event['uuid']]
@@ -420,7 +424,7 @@ class Indicator(Mapping):
     def map(cls, rule: JSON) -> JSON:
         indicator: JSON = cls.DEFAULTS.copy()
 
-        indicator['id'] = f'transient:{uuid4()}'
+        indicator['id'] = generate_transient_id(indicator)
 
         indicator['valid_time'] = {'start_time': rule['created']}
 
@@ -467,7 +471,7 @@ class Relationship(Mapping):
     def map(cls, sighting: JSON, indicator: JSON) -> JSON:
         relationship: JSON = cls.DEFAULTS.copy()
 
-        relationship['id'] = f'transient:{uuid4()}'
+        relationship['id'] = generate_transient_id(relationship)
 
         relationship['source_ref'] = sighting['id']
 
