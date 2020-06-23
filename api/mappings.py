@@ -19,7 +19,7 @@ class Mapping(ABC):
 
 
 CTIM_DEFAULTS = {
-    'schema_version': '1.0.16',
+    'schema_version': '1.0.17',
 }
 
 
