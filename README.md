@@ -232,8 +232,8 @@ whenever you need some input data for testing purposes.
 - `POST /health`
   - Verifies the Authorization Bearer JWT and decodes it to restore the
   original credentials.
-  - Authenticates to the underlying external service to check that the
-  credentials are valid and the service is available.
+  - Authenticates to the underlying external service to check that the provided
+  credentials are valid and the service is available at the moment.
 
 - `POST /observe/observables`
   - Accepts a list of observables and filters out unsupported ones.
@@ -242,8 +242,7 @@ whenever you need some input data for testing purposes.
   - Makes a series of requests to the underlying external service to query for
   some cyber threat intelligence data on each supported observable.
   - Maps the fetched data into appropriate CTIM entities.
-  - Returns a composite object containing a nested list per each of the
-  following CTIM entities (if any extracted):
+  - Returns a list per each of the following CTIM entities (if any extracted):
     - `Indicator`,
     - `Sighting`,
     - `Relationship`.
@@ -252,7 +251,7 @@ whenever you need some input data for testing purposes.
   - Accepts a list of observables and filters out unsupported ones.
   - Builds a search link per each supported observable to pivot back to the
   underlying external service and look up the observable there.
-  - Returns a list of objects containing those links.
+  - Returns a list of those links.
 
 ### Supported Types of Observables
 
