@@ -222,8 +222,8 @@ If you want to test the live Lambda you may use any HTTP client (e.g. Postman),
 just make sure to send requests to your Lambda's `URL` with the `Authorization`
 header set to `Bearer <JWT>`.
 
-Feel free to take a look at the [observables.json](observables.json) file
-whenever you need some input data for testing purposes.
+**NOTE.** If you need input data for testing purposes you can use data from the
+[observables.json](observables.json) file.
 
 ## Implementation Details
 
