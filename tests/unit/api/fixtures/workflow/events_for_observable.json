@@ -30,6 +30,8 @@
       ]
     },
     "file": {
+      "md5": "3319b1a422c785c221050f1152ad77cb",
+      "sha1": "2d7177f8466d82e28150572584928278ba72d435",
       "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
     },
     "observable": {
@@ -68,6 +70,8 @@
       ]
     },
     "file": {
+      "md5": "3319b1a422c785c221050f1152ad77cb",
+      "sha1": "2d7177f8466d82e28150572584928278ba72d435",
       "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
     },
     "observable": {
@@ -109,6 +113,8 @@
     "status_msg": "OK",
     "files": [
       {
+        "md5": "3319b1a422c785c221050f1152ad77cb",
+        "sha1": "2d7177f8466d82e28150572584928278ba72d435",
         "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
       }
     ],
@@ -190,6 +196,8 @@
     "status_msg": "OK",
     "files": [
       {
+        "md5": "3319b1a422c785c221050f1152ad77cb",
+        "sha1": "2d7177f8466d82e28150572584928278ba72d435",
         "sha256": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
       }
     ],

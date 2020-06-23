@@ -290,8 +290,56 @@
           },
           "relation": "Uploaded_From",
           "source": {
+            "type": "md5",
+            "value": "3319b1a422c785c221050f1152ad77cb"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Uploaded_From",
+          "source": {
+            "type": "sha1",
+            "value": "2d7177f8466d82e28150572584928278ba72d435"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Uploaded_From",
+          "source": {
             "type": "sha256",
             "value": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Uploaded_To",
+          "source": {
+            "type": "md5",
+            "value": "3319b1a422c785c221050f1152ad77cb"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Uploaded_To",
+          "source": {
+            "type": "sha1",
+            "value": "2d7177f8466d82e28150572584928278ba72d435"
           }
         },
         {
@@ -498,8 +546,56 @@
           },
           "relation": "Downloaded_To",
           "source": {
+            "type": "md5",
+            "value": "3319b1a422c785c221050f1152ad77cb"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Downloaded_To",
+          "source": {
+            "type": "sha1",
+            "value": "2d7177f8466d82e28150572584928278ba72d435"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Downloaded_To",
+          "source": {
             "type": "sha256",
             "value": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Downloaded_From",
+          "source": {
+            "type": "md5",
+            "value": "3319b1a422c785c221050f1152ad77cb"
+          }
+        },
+      {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Downloaded_From",
+          "source": {
+            "type": "sha1",
+            "value": "2d7177f8466d82e28150572584928278ba72d435"
           }
         },
         {
