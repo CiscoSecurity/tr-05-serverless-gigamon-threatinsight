@@ -286,3 +286,24 @@ header set to `Bearer <JWT>`.
   returned along with real data (if enabled).
   - Must be a boolean flag represented as an integer (`0` or `1`). Defaults to
   `0` (if unset or incorrect).
+
+### CTIM Mapping Specifics
+
+Each `Sighting` for a supported observable is based on a matching network event
+that occurred in your environment and was recorded by GTI sensors. There are
+quite a few different event types. Each event type contains both a set of
+common fields (included in all event types) and event fields (unique to the
+event type). Thus, each particular `Sighting` may have different types of
+embedded CTIM relations depending on the actual type of the original event the
+`Sighting` is based on.
+
+Besides inspecting your network traffic and extracting key protocol metadata
+into events, GTI also provides an alerting mechanism of rules and detections,
+notifying you when events matching specific criteria appear in your
+environment. Thus, if an event was detected by a rule, then the corresponding
+`Sighting` for the given event will also contain additional information about
+the given matching rule spread across several CTIM fields.
+
+Since each GTI rule is effectively an `Indicator` in terms of CTIM, each event
+detected by a rule will also result in a `Relationship` between the event's
+`Sighting` and the matching rule's `Indicator`.
