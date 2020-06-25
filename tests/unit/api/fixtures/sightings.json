@@ -7,8 +7,8 @@
       "count": 1,
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
-      "schema_version": "1.0.16",
-      "id": "transient:8e5e90d5-0ffd-463d-b8d3-e54ddd0af03b",
+      "schema_version": "1.0.17",
+      "id": "transient:sighting-8e5e90d5-0ffd-463d-b8d3-e54ddd0af03b",
       "observed_time": {
         "start_time": "2020-05-04T21:42:01.961Z"
       },
@@ -75,8 +75,8 @@
       "count": 1,
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
-      "schema_version": "1.0.16",
-      "id": "transient:7796c6c5-06f0-4777-a190-fa88ba198079",
+      "schema_version": "1.0.17",
+      "id": "transient:sighting-7796c6c5-06f0-4777-a190-fa88ba198079",
       "observed_time": {
         "start_time": "2020-05-04T21:41:29.961Z"
       },
@@ -143,8 +143,8 @@
       "count": 1,
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
-      "schema_version": "1.0.16",
-      "id": "transient:2cc161e7-c7cc-4a39-91e2-278fed1b147c",
+      "schema_version": "1.0.17",
+      "id": "transient:sighting-2cc161e7-c7cc-4a39-91e2-278fed1b147c",
       "observed_time": {
         "start_time": "2020-05-04T21:40:52.882Z"
       },
@@ -290,8 +290,56 @@
           },
           "relation": "Uploaded_From",
           "source": {
+            "type": "md5",
+            "value": "3319b1a422c785c221050f1152ad77cb"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Uploaded_From",
+          "source": {
+            "type": "sha1",
+            "value": "2d7177f8466d82e28150572584928278ba72d435"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Uploaded_From",
+          "source": {
             "type": "sha256",
             "value": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Uploaded_To",
+          "source": {
+            "type": "md5",
+            "value": "3319b1a422c785c221050f1152ad77cb"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Uploaded_To",
+          "source": {
+            "type": "sha1",
+            "value": "2d7177f8466d82e28150572584928278ba72d435"
           }
         },
         {
@@ -339,8 +387,8 @@
       "count": 1,
       "internal": true,
       "source": "Gigamon ThreatINSIGHT",
-      "schema_version": "1.0.16",
-      "id": "transient:fcedcec9-0fee-470d-9ae4-827e43e87e59",
+      "schema_version": "1.0.17",
+      "id": "transient:sighting-fcedcec9-0fee-470d-9ae4-827e43e87e59",
       "observed_time": {
         "start_time": "2020-05-04T21:40:14.961Z"
       },
@@ -498,8 +546,56 @@
           },
           "relation": "Downloaded_To",
           "source": {
+            "type": "md5",
+            "value": "3319b1a422c785c221050f1152ad77cb"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Downloaded_To",
+          "source": {
+            "type": "sha1",
+            "value": "2d7177f8466d82e28150572584928278ba72d435"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "10.1.70.2"
+          },
+          "relation": "Downloaded_To",
+          "source": {
             "type": "sha256",
             "value": "9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3"
+          }
+        },
+        {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Downloaded_From",
+          "source": {
+            "type": "md5",
+            "value": "3319b1a422c785c221050f1152ad77cb"
+          }
+        },
+      {
+          "origin": "Gigamon ThreatINSIGHT",
+          "related": {
+            "type": "ip",
+            "value": "207.148.78.106"
+          },
+          "relation": "Downloaded_From",
+          "source": {
+            "type": "sha1",
+            "value": "2d7177f8466d82e28150572584928278ba72d435"
           }
         },
         {

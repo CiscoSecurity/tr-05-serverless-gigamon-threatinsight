@@ -2,5 +2,21 @@
   {
     "type": "ip",
     "value": "8.8.8.8"
+  },
+  {
+    "type": "domain",
+    "value": "google.com"
+  },
+  {
+    "type": "md5",
+    "value": "32cd7d572cb8039915755b2441746fef"
+  },
+  {
+    "type": "sha1",
+    "value": "d294e927c958c0f800db396babf136f2503de240"
+  },
+  {
+    "type": "sha256",
+    "value": "679b788fe5ff3ca33f0d004a823bdd66c8ee37f73263494d35e077e9de46a93a"
   }
 ]
