@@ -1,4 +1,4 @@
-[![Travis CI Build Status](https://travis-ci.com/CiscoSecurity/tr-05-gigamon-threatinsight.svg?branch=develop)](https://travis-ci.com/CiscoSecurity/tr-05-gigamon-threatinsight)
+[![Travis CI Build Status](https://travis-ci.com/CiscoSecurity/tr-05-serverless-gigamon-threatinsight.svg?branch=develop)](https://travis-ci.com/CiscoSecurity/tr-05-serverless-gigamon-threatinsight)
 
 # Gigamon ThreatINSIGHT Relay
 

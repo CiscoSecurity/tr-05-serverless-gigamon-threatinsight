@@ -10,7 +10,8 @@
       "schema_version": "1.0.17",
       "id": "transient:sighting-8e5e90d5-0ffd-463d-b8d3-e54ddd0af03b",
       "observed_time": {
-        "start_time": "2020-05-04T21:42:01.961Z"
+        "start_time": "2020-05-04T21:42:01.961Z",
+        "end_time": "2020-05-04T21:42:01.961Z"
       },
       "description": "- Event: `PE`",
       "external_ids": [
@@ -63,7 +64,8 @@
             }
           ],
           "observed_time": {
-            "start_time": "2020-05-04T21:42:01.961Z"
+            "start_time": "2020-05-04T21:42:01.961Z",
+            "end_time": "2020-05-04T21:42:01.961Z"
           },
           "type": "endpoint"
         }
@@ -78,7 +80,8 @@
       "schema_version": "1.0.17",
       "id": "transient:sighting-7796c6c5-06f0-4777-a190-fa88ba198079",
       "observed_time": {
-        "start_time": "2020-05-04T21:41:29.961Z"
+        "start_time": "2020-05-04T21:41:29.961Z",
+        "end_time": "2020-05-04T21:41:29.961Z"
       },
       "description": "- Event: `PE`",
       "external_ids": [
@@ -131,7 +134,8 @@
             }
           ],
           "observed_time": {
-            "start_time": "2020-05-04T21:41:29.961Z"
+            "start_time": "2020-05-04T21:41:29.961Z",
+            "end_time": "2020-05-04T21:41:29.961Z"
           },
           "type": "endpoint"
         }
@@ -146,7 +150,8 @@
       "schema_version": "1.0.17",
       "id": "transient:sighting-2cc161e7-c7cc-4a39-91e2-278fed1b147c",
       "observed_time": {
-        "start_time": "2020-05-04T21:40:52.882Z"
+        "start_time": "2020-05-04T21:40:52.882Z",
+        "end_time": "2020-05-04T21:40:52.882Z"
       },
       "data": {
         "columns": [
@@ -375,7 +380,8 @@
             }
           ],
           "observed_time": {
-            "start_time": "2020-05-04T21:40:52.882Z"
+            "start_time": "2020-05-04T21:40:52.882Z",
+            "end_time": "2020-05-04T21:40:52.882Z"
           },
           "type": "endpoint"
         }
@@ -390,7 +396,8 @@
       "schema_version": "1.0.17",
       "id": "transient:sighting-fcedcec9-0fee-470d-9ae4-827e43e87e59",
       "observed_time": {
-        "start_time": "2020-05-04T21:40:14.961Z"
+        "start_time": "2020-05-04T21:40:14.961Z",
+        "end_time": "2020-05-04T21:40:14.961Z"
       },
       "data": {
         "columns": [
@@ -631,7 +638,8 @@
             }
           ],
           "observed_time": {
-            "start_time": "2020-05-04T21:40:14.961Z"
+            "start_time": "2020-05-04T21:40:14.961Z",
+            "end_time": "2020-05-04T21:40:14.961Z"
           },
           "type": "endpoint"
         }

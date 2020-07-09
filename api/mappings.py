@@ -52,7 +52,12 @@ class Sighting(Mapping):
 
         sighting['id'] = generate_transient_id(sighting)
 
-        sighting['observed_time'] = {'start_time': event['timestamp']}
+        sighting['observed_time'] = {
+            'start_time': event['timestamp']
+        }
+        sighting['observed_time']['end_time'] = (
+            sighting['observed_time']['start_time']
+        )
 
         details = cls._details(event)
         if details:
