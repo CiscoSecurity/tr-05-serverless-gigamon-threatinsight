@@ -48,7 +48,9 @@ def test_positive_sighting(module_headers, observable, observable_type):
         assert sighting['confidence'] in confidence_levels
         assert sighting['count'] == 1
         assert sighting['id'].startswith('transient:')
-        assert sighting['observed_time']['start_time']
+        assert sighting['observed_time']['start_time'] == (
+            sighting['observed_time']['end_time']
+        )
         assert sighting['schema_version']
         assert sighting['observables'][0] == observables[0]
         assert sighting['external_ids']
@@ -66,7 +68,9 @@ def test_positive_sighting(module_headers, observable, observable_type):
         assert sighting['sensor']
         assert sighting['internal'] is True
         assert sighting['targets'][0]['type'] == 'endpoint'
-        assert sighting['targets'][0]['observed_time']['start_time']
+        assert sighting['targets'][0]['observed_time']['start_time'] == (
+            sighting['targets'][0]['observed_time']['end_time']
+        )
         for observable_type in sighting['targets'][0]['observables']:
             assert observable_type['type'] in targets_observables_types
 
