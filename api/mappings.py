@@ -23,8 +23,10 @@ CTIM_DEFAULTS = {
 }
 
 
-def generate_transient_id(entity):
-    return f"transient:{entity['type']}-{uuid4()}"
+def generate_transient_id(entity, uuid=None):
+    if uuid is None:
+        uuid = uuid4()
+    return f"transient:{entity['type']}-{uuid}"
 
 
 Observable = namedtuple('Observable', ['type', 'value'])
@@ -429,7 +431,7 @@ class Indicator(Mapping):
     def map(cls, rule: JSON) -> JSON:
         indicator: JSON = cls.DEFAULTS.copy()
 
-        indicator['id'] = generate_transient_id(indicator)
+        indicator['id'] = generate_transient_id(indicator, uuid=rule['uuid'])
 
         indicator['valid_time'] = {'start_time': rule['created']}
 
