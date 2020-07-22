@@ -23,8 +23,10 @@ CTIM_DEFAULTS = {
 }
 
 
-def generate_transient_id(entity):
-    return f"transient:{entity['type']}-{uuid4()}"
+def transient_id(entity, uuid=None):
+    if uuid is None:
+        uuid = uuid4()
+    return f"transient:{entity['type']}-{uuid}"
 
 
 Observable = namedtuple('Observable', ['type', 'value'])
@@ -50,7 +52,7 @@ class Sighting(Mapping):
     def map(cls, event: JSON) -> JSON:
         sighting: JSON = cls.DEFAULTS.copy()
 
-        sighting['id'] = generate_transient_id(sighting)
+        sighting['id'] = transient_id(sighting)
 
         sighting['observed_time'] = {
             'start_time': event['timestamp']
@@ -429,7 +431,7 @@ class Indicator(Mapping):
     def map(cls, rule: JSON) -> JSON:
         indicator: JSON = cls.DEFAULTS.copy()
 
-        indicator['id'] = generate_transient_id(indicator)
+        indicator['id'] = transient_id(indicator, uuid=rule['uuid'])
 
         indicator['valid_time'] = {'start_time': rule['created']}
 
@@ -476,7 +478,7 @@ class Relationship(Mapping):
     def map(cls, sighting: JSON, indicator: JSON) -> JSON:
         relationship: JSON = cls.DEFAULTS.copy()
 
-        relationship['id'] = generate_transient_id(relationship)
+        relationship['id'] = transient_id(relationship)
 
         relationship['source_ref'] = sighting['id']
 

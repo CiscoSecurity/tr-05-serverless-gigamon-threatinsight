@@ -7,7 +7,7 @@
       "schema_version": "1.0.17",
       "id": "transient:relationship-89e0d249-4da1-4d56-9220-40af97111e7f",
       "source_ref": "transient:sighting-2cc161e7-c7cc-4a39-91e2-278fed1b147c",
-      "target_ref": "transient:indicator-9a2f421c-fd7f-4640-b66d-335c05a99141"
+      "target_ref": "transient:indicator-5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947"
     },
     {
       "type": "relationship",
@@ -15,7 +15,7 @@
       "schema_version": "1.0.17",
       "id": "transient:relationship-702b6655-6558-4058-9079-935f0e0f10d2",
       "source_ref": "transient:sighting-fcedcec9-0fee-470d-9ae4-827e43e87e59",
-      "target_ref": "transient:indicator-9a2f421c-fd7f-4640-b66d-335c05a99141"
+      "target_ref": "transient:indicator-5b7d1cc6-21b1-4be2-ba4d-4cafe6ad8947"
     }
   ]
 }
