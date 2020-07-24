@@ -1,6 +1,14 @@
+import pytest
 from ctrlibrary.core.utils import get_observables
 from ctrlibrary.threatresponse.enrich import enrich_observe_observables
-import pytest
+from tests.functional.tests.constants import (
+    MODULE_NAME,
+    CONFIDENCE,
+    TARGETS_OBSERVABLES_TYPES,
+    GIGAMON_URL,
+    RELATIONS_TYPES,
+    RELATED_OBSERVABLES_TYPES
+)
 
 
 @pytest.mark.parametrize(
@@ -34,20 +42,22 @@ def test_positive_sighting(module_headers, observable, observable_type):
         payload=observables,
         **{'headers': module_headers}
     )['data']
-    sightings = get_observables(
-        response_from_all_modules, 'Gigamon ThreatINSIGHT'
-    )['data']['sightings']
-    confidence_levels = ['High', 'Info', 'Low', 'Medium', 'None', 'Unknown']
-    targets_observables_types = ['ip', 'hostname', 'mac_address']
+    response_from_gigamon = get_observables(response_from_all_modules,
+                                            MODULE_NAME)
 
+    assert response_from_gigamon['module'] == MODULE_NAME
+    assert response_from_gigamon['module_instance_id']
+    assert response_from_gigamon['module_type_id']
+
+    sightings = response_from_gigamon['data']['sightings']
     assert len(sightings['docs']) > 0
 
     for sighting in sightings['docs']:
         assert sighting['description']
         assert sighting['relations']
-        assert sighting['confidence'] in confidence_levels
+        assert sighting['confidence'] in CONFIDENCE
         assert sighting['count'] == 1
-        assert sighting['id'].startswith('transient:')
+        assert sighting['id'].startswith('transient:sighting')
         assert sighting['observed_time']['start_time'] == (
             sighting['observed_time']['end_time']
         )
@@ -55,15 +65,23 @@ def test_positive_sighting(module_headers, observable, observable_type):
         assert sighting['observables'][0] == observables[0]
         assert sighting['external_ids']
         assert sighting['type'] == 'sighting'
-        assert sighting['source'] == 'Gigamon ThreatINSIGHT'
-        assert sighting['source_uri'].startswith('https://portal.icebrg.io/')
+        assert sighting['source'] == MODULE_NAME
+        assert sighting['source_uri'].startswith(GIGAMON_URL)
+        assert any(
+            external_id in sighting['source_uri']
+            for external_id in sighting['external_ids']
+        )
 
         for external_reference in sighting['external_references']:
             assert external_reference['external_id'] in (
                    sighting['external_ids'])
-            assert external_reference['source_name'] == sighting['source']
+            assert external_reference['source_name'] == MODULE_NAME
             assert external_reference['description']
-            assert external_reference['url']
+            assert external_reference['url'].startswith(GIGAMON_URL)
+            assert any(
+                external_id in external_reference['url']
+                for external_id in sighting['external_ids']
+            )
 
         assert sighting['sensor']
         assert sighting['internal'] is True
@@ -72,7 +90,8 @@ def test_positive_sighting(module_headers, observable, observable_type):
             sighting['targets'][0]['observed_time']['end_time']
         )
         for observable_type in sighting['targets'][0]['observables']:
-            assert observable_type['type'] in targets_observables_types
+            assert observable_type['type'] in TARGETS_OBSERVABLES_TYPES
+            assert observable_type['value']
 
     assert sightings['count'] == len(sightings['docs'])
 
@@ -109,15 +128,16 @@ def test_positive_sighting_relation(module_headers, observable,
         payload=observables,
         **{'headers': module_headers}
     )['data']
-    sightings = get_observables(
-        response_from_all_modules, 'Gigamon ThreatINSIGHT'
-    )['data']['sightings']
-    relations_types = [
-        'Connected_To', 'Sent_From', 'Sent_To',
-        'Resolved_To', 'Hosted_On', 'Queried_For',
-        'Downloaded_To', 'Downloaded_From',
-        'Uploaded_From', 'Uploaded_To',
-    ]
+    response_from_gigamon = get_observables(response_from_all_modules,
+                                            MODULE_NAME)
+
+    assert response_from_gigamon['module'] == MODULE_NAME
+    assert response_from_gigamon['module_instance_id']
+    assert response_from_gigamon['module_type_id']
+
+    sightings = response_from_gigamon['data']['sightings']
+    assert len(sightings['docs']) > 0
+
     for sighting in sightings['docs']:
         if 'HTTP' in sighting['description'].splitlines()[0]:
             http_relations = {
@@ -133,15 +153,17 @@ def test_positive_sighting_relation(module_headers, observable,
                     intersection_relations == upload_relations)
 
         for relation in sighting['relations']:
-            assert relation['origin'] == 'Gigamon ThreatINSIGHT'
-            assert relation['relation'] in relations_types
+            assert relation['origin'] == MODULE_NAME
+            assert relation['relation'] in RELATIONS_TYPES
             assert relation['source']['value']
-            assert relation['source']['type']
+            assert relation['source']['type'] in RELATED_OBSERVABLES_TYPES
             assert relation['related']['value']
-            assert relation['related']['type']
+            assert relation['related']['type'] in RELATED_OBSERVABLES_TYPES
             if relation['relation'] == 'Hosted_On':
                 assert relation['source']['value'].startswith('http') and (
                        relation['source']['type'] == 'url')
+
+    assert sightings['count'] == len(sightings['docs'])
 
 
 def test_positive_sighting_x509(module_headers):
@@ -166,11 +188,16 @@ def test_positive_sighting_x509(module_headers):
         payload=observables,
         **{'headers': module_headers}
     )['data']
-    sightings = get_observables(
-        response_from_all_modules, 'Gigamon ThreatINSIGHT'
-    )['data']['sightings']
+    response_from_gigamon = get_observables(response_from_all_modules,
+                                            MODULE_NAME)
 
+    assert response_from_gigamon['module'] == MODULE_NAME
+    assert response_from_gigamon['module_instance_id']
+    assert response_from_gigamon['module_type_id']
+
+    sightings = response_from_gigamon['data']['sightings']
     assert len(sightings['docs']) > 0
+
     assert [
         sighting for sighting in sightings['docs']
         if 'Event: `X509`' in sighting['description']
@@ -183,7 +210,7 @@ def test_positive_sighting_x509(module_headers):
                 if r['relation'] == 'SAN_DNS_For'
             ]
             assert relation
-            assert relation[0]['origin'] == 'Gigamon ThreatINSIGHT'
+            assert relation[0]['origin'] == MODULE_NAME
             assert relation[0]['source'] == observables[0]
             assert relation[0]['related']['type'] == 'ip'
             assert relation[0]['related']['value']
