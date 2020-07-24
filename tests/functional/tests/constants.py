@@ -8,4 +8,6 @@ RELATIONS_TYPES = [
     'Uploaded_From', 'Uploaded_To',
 ]
 TARGETS_OBSERVABLES_TYPES = ['ip', 'hostname', 'mac_address']
-RELATED_OBSERVABLES_TYPES = ['ip', 'domain', 'sha1', 'sha256', 'md5', 'url']
+RELATED_OBSERVABLES_TYPES = [
+    'ip', 'domain', 'sha1', 'sha256', 'md5', 'url', 'user_agent'
+]
