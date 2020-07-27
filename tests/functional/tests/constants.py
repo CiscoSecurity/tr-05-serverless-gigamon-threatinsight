@@ -18,3 +18,4 @@ OBSERVABLE_HUMAN_READABLE_NAME = {
     'sha1': 'SHA1',
     'domain': 'domain'
 }
+CTR_ENTITIES_LIMIT = 100

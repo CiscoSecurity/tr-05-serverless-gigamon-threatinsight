@@ -1,7 +1,10 @@
 import pytest
 from ctrlibrary.core.utils import get_observables
 from ctrlibrary.threatresponse.enrich import enrich_observe_observables
-from tests.functional.tests.constants import MODULE_NAME
+from tests.functional.tests.constants import (
+    MODULE_NAME,
+    CTR_ENTITIES_LIMIT
+)
 
 
 @pytest.mark.parametrize(
@@ -61,4 +64,7 @@ def test_positive_relationships(module_headers, observable, observable_type):
         assert relationship['id'].startswith('transient:relationship')
         assert relationship['relationship_type'] == 'sighting-of'
 
-    assert relationships['count'] == len(relationships['docs'])
+    assert relationships['count'] == (
+        len(relationships['docs'])) <= (
+        CTR_ENTITIES_LIMIT
+    )

@@ -5,7 +5,8 @@ from tests.functional.tests.constants import (
     MODULE_NAME,
     GIGAMON_URL,
     CONFIDENCE,
-    SEVERITY
+    SEVERITY,
+    CTR_ENTITIES_LIMIT
 )
 
 
@@ -80,4 +81,4 @@ def test_positive_indicators(module_headers, observable, observable_type):
                 f'/detections/rules/{indicator["external_ids"][0]}'
             )
 
-    assert indicators['count'] == len(indicators['docs'])
+    assert indicators['count'] == len(indicators['docs']) <= CTR_ENTITIES_LIMIT

@@ -7,7 +7,8 @@ from tests.functional.tests.constants import (
     TARGETS_OBSERVABLES_TYPES,
     GIGAMON_URL,
     RELATIONS_TYPES,
-    RELATED_OBSERVABLES_TYPES
+    RELATED_OBSERVABLES_TYPES,
+    CTR_ENTITIES_LIMIT
 )
 
 
@@ -93,7 +94,7 @@ def test_positive_sighting(module_headers, observable, observable_type):
             assert observable_type['type'] in TARGETS_OBSERVABLES_TYPES
             assert observable_type['value']
 
-    assert sightings['count'] == len(sightings['docs'])
+    assert sightings['count'] == len(sightings['docs']) <= CTR_ENTITIES_LIMIT
 
 
 @pytest.mark.parametrize(
@@ -163,7 +164,7 @@ def test_positive_sighting_relation(module_headers, observable,
                 assert relation['source']['value'].startswith('http') and (
                        relation['source']['type'] == 'url')
 
-    assert sightings['count'] == len(sightings['docs'])
+    assert sightings['count'] == len(sightings['docs']) <= CTR_ENTITIES_LIMIT
 
 
 def test_positive_sighting_x509(module_headers):
@@ -214,4 +215,5 @@ def test_positive_sighting_x509(module_headers):
             assert relation[0]['source'] == observables[0]
             assert relation[0]['related']['type'] == 'ip'
             assert relation[0]['related']['value']
-    assert sightings['count'] == len(sightings['docs'])
+
+    assert sightings['count'] == len(sightings['docs']) <= CTR_ENTITIES_LIMIT

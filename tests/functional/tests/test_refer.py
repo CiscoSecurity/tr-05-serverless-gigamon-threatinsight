@@ -46,6 +46,7 @@ def test_positive_refer_observables(module_headers, observable,
     assert response_from_gigamon_module['module'] == MODULE_NAME
     assert response_from_gigamon_module['module_instance_id']
     assert response_from_gigamon_module['module_type_id']
+
     assert response_from_gigamon_module['id'] == (
         f'ref-gti-search-{observable_type}-{observable}')
     assert response_from_gigamon_module['title'] == (
