@@ -1,6 +1,10 @@
+import pytest
 from ctrlibrary.core.utils import get_observables
 from ctrlibrary.threatresponse.enrich import enrich_observe_observables
-import pytest
+from tests.functional.tests.constants import (
+    MODULE_NAME,
+    CTR_ENTITIES_LIMIT
+)
 
 
 @pytest.mark.parametrize(
@@ -29,15 +33,20 @@ def test_positive_relationships(module_headers, observable, observable_type):
     Importance: Critical
     """
     observables = [{'type': observable_type, 'value': observable}]
-    response = enrich_observe_observables(
+    response_from_all_modules = enrich_observe_observables(
         payload=observables,
         **{'headers': module_headers}
     )['data']
-    gigamon_module_data = get_observables(
-        response, 'Gigamon ThreatINSIGHT')['data']
-    relationships = gigamon_module_data['relationships']
-    indicators = gigamon_module_data['indicators']
-    sightings = gigamon_module_data['sightings']
+    response_from_gigamon = get_observables(
+        response_from_all_modules, MODULE_NAME)
+
+    assert response_from_gigamon['module']
+    assert response_from_gigamon['module_instance_id']
+    assert response_from_gigamon['module_type_id']
+
+    relationships = response_from_gigamon['data']['relationships']
+    indicators = response_from_gigamon['data']['indicators']
+    sightings = response_from_gigamon['data']['sightings']
     indicators_ids = frozenset(
         indicator['id'] for indicator in indicators['docs'])
     sightings_ids = frozenset(
@@ -47,12 +56,15 @@ def test_positive_relationships(module_headers, observable, observable_type):
 
     for relationship in relationships['docs']:
         assert relationship['schema_version']
-        assert relationship['target_ref'].startswith('transient:')
+        assert relationship['target_ref'].startswith('transient:indicator')
         assert relationship['target_ref'] in indicators_ids
         assert relationship['type'] == 'relationship'
-        assert relationship['source_ref'].startswith('transient:')
+        assert relationship['source_ref'].startswith('transient:sighting')
         assert relationship['source_ref'] in sightings_ids
-        assert relationship['id'].startswith('transient:')
+        assert relationship['id'].startswith('transient:relationship')
         assert relationship['relationship_type'] == 'sighting-of'
 
-    assert relationships['count'] == len(relationships['docs'])
+    assert relationships['count'] == (
+        len(relationships['docs'])) <= (
+        CTR_ENTITIES_LIMIT
+    )
