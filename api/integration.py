@@ -1,8 +1,10 @@
 from collections import defaultdict
+from ssl import SSLCertVerificationError
 from urllib.parse import urljoin
 
 import requests
 from flask import current_app
+from requests.exceptions import SSLError
 
 
 def _url(family, route):
@@ -29,7 +31,19 @@ def _request(method, url, **kwargs):
 
     kwargs['headers'] = _headers(key)
 
-    response = requests.request(method, url, **kwargs)
+    try:
+        response = requests.request(method, url, **kwargs)
+    except SSLError as error:
+        # Go through a few layers of wrapped exceptions.
+        error = error.args[0].reason.args[0]
+        # Assume that a certificate could not be verified.
+        assert isinstance(error, SSLCertVerificationError)
+        reason = getattr(error, 'verify_message', error.args[0]).capitalize()
+        error = {
+            'code': 'ssl certificate verification failed',
+            'message': f'Unable to verify SSL certificate: {reason}.',
+        }
+        return None, error
 
     if response.ok:
         return response.json(), None
