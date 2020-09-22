@@ -16,6 +16,7 @@ app.register_blueprint(respond_api)
 
 @app.errorhandler(Exception)
 def handle_error(exception):
+    app.logger.error(exception)
     code = getattr(exception, 'code', 500)
     message = getattr(exception, 'description', 'Something went wrong.')
     reason = '.'.join([
