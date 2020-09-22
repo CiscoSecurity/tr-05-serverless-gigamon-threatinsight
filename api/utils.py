@@ -51,4 +51,6 @@ def jsonify_errors(error, data=None):
     if data:
         payload['data'] = data
 
+    current_app.logger.error(payload)
+
     return jsonify(payload)
