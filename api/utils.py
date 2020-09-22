@@ -38,9 +38,6 @@ def jsonify_data(data):
 
 
 def jsonify_errors(error, data=None):
-    # Avoiding of circular imports
-    from app import app
-
     error['code'] = error['code'].replace('.', ' : ').replace('_', ' ')
 
     # According to the official documentation, an error here means that the
@@ -54,6 +51,6 @@ def jsonify_errors(error, data=None):
     if data:
         payload['data'] = data
 
-    app.logger.error(payload)
+    current_app.logger.error(payload)
 
     return jsonify(payload)
