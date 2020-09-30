@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 
 from api.enrich import enrich_api
+from api.errors import RelayError
 from api.health import health_api
 from api.respond import respond_api
 
@@ -12,6 +13,12 @@ app.config.from_object('config.Config')
 app.register_blueprint(health_api)
 app.register_blueprint(enrich_api)
 app.register_blueprint(respond_api)
+
+
+@app.errorhandler(RelayError)
+def handle_relay_error(error):
+    app.logger.error(error.json())
+    return {'errors': [error.json()]}
 
 
 @app.errorhandler(Exception)
