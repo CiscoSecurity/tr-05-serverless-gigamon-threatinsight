@@ -24,7 +24,7 @@ def test_health_call_with_invalid_jwt_failure(route, client, invalid_jwt):
             {
                 'code': 'authorization failed',
                 'message': ('Authorization failed: '
-                            'Failed to decode JWT with provided key.'),
+                            'Failed to decode JWT with provided key'),
                 'type': 'fatal',
             }
         ]

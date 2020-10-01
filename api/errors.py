@@ -8,7 +8,7 @@ class RelayError(Exception):
     def __init__(self, reason=None):
         message = self.MESSAGE
         if reason:
-            message += f': {reason}.'
+            message += f': {reason}'
         else:
             message += "."
 
