@@ -1,4 +1,5 @@
 from collections import defaultdict
+from http import HTTPStatus
 from ssl import SSLCertVerificationError
 from urllib.parse import urljoin
 
@@ -52,9 +53,15 @@ def _request(method, url, **kwargs):
         error = response.json()['error']
         # The GTI API error response payload is already well formatted,
         # so just leave only the fields of interest and discard the rest.
+        if response.status_code in (HTTPStatus.UNAUTHORIZED,
+                                    HTTPStatus.FORBIDDEN):
+            message = f'Authorization failed: {error["message"]}'
+        else:
+            message = error['message']
+
         error = {
             'code': error['code'],
-            'message': error['message'],
+            'message': message,
         }
         return None, error
 
