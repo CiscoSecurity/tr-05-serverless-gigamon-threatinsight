@@ -6,7 +6,7 @@ from version import VERSION
 class Config:
     VERSION = VERSION
 
-    SECRET_KEY = os.environ.get('SECRET_KEY', '')
+    SECRET_KEY = os.environ.get('SECRET_KEY', None)
 
     CTR_USER_AGENT = (
         'Cisco Threat Response Integrations '

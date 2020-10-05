@@ -99,8 +99,9 @@ def test_enrich_call_with_valid_json_but_invalid_jwt_failure(gti_api_route,
     expected_payload = {
         'errors': [
             {
-                'code': 'client : invalid authentication',
-                'message': 'Authentication is invalid.',
+                'code': 'authorization failed',
+                'message': ('Authorization failed: '
+                            'Failed to decode JWT with provided key'),
                 'type': 'fatal',
             }
         ]

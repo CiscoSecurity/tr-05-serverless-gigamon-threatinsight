@@ -22,8 +22,9 @@ def test_health_call_with_invalid_jwt_failure(route, client, invalid_jwt):
     expected_payload = {
         'errors': [
             {
-                'code': 'client : invalid authentication',
-                'message': 'Authentication is invalid.',
+                'code': 'authorization failed',
+                'message': ('Authorization failed: '
+                            'Failed to decode JWT with provided key'),
                 'type': 'fatal',
             }
         ]
