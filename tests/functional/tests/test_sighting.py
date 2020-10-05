@@ -18,8 +18,8 @@ from tests.functional.tests.constants import (
      ('domain', 'securecorp.club'),
      ('sha256',
       '9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3'),
-     ('md5', '3319b1a422c785c221050f1152ad77cb'),
-     ('sha1', '2d7177f8466d82e28150572584928278ba72d435'))
+     ('md5', '00d8cf1940dc5f9c8a9c6656579f37bd'),
+     ('sha1', 'ae4149f9e0fc3ea69a2eb3855c01f1d26758c3d1'))
 )
 def test_positive_sighting(module_headers, observable, observable_type):
     """Perform testing for enrich observe observables endpoint to check
@@ -103,8 +103,8 @@ def test_positive_sighting(module_headers, observable, observable_type):
      ('domain', 'securecorp.club'),
      ('sha256',
       '9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3'),
-     ('md5', '3319b1a422c785c221050f1152ad77cb'),
-     ('sha1', '2d7177f8466d82e28150572584928278ba72d435'))
+     ('md5', '00d8cf1940dc5f9c8a9c6656579f37bd'),
+     ('sha1', 'ae4149f9e0fc3ea69a2eb3855c01f1d26758c3d1'))
 )
 def test_positive_sighting_relation(module_headers, observable,
                                     observable_type):
