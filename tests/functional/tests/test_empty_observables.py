@@ -37,9 +37,7 @@ def test_positive_smoke_observe_observables_empty_observables(
         **{'headers': module_headers}
     )
 
-    gigamon_data = response_from_all_modules['data']
-
-    response_from_gigamon = get_observables(gigamon_data, MODULE_NAME)
+    response_from_gigamon = get_observables(response_from_all_modules, MODULE_NAME)
 
     assert response_from_gigamon['module'] == MODULE_NAME
     assert response_from_gigamon['module_instance_id']
