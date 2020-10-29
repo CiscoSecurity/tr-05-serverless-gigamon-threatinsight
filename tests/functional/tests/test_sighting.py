@@ -42,7 +42,7 @@ def test_positive_sighting(module_headers, observable, observable_type):
     response_from_all_modules = enrich_observe_observables(
         payload=observables,
         **{'headers': module_headers}
-    )['data']
+    )
     response_from_gigamon = get_observables(response_from_all_modules,
                                             MODULE_NAME)
 
@@ -128,7 +128,7 @@ def test_positive_sighting_relation(module_headers, observable,
     response_from_all_modules = enrich_observe_observables(
         payload=observables,
         **{'headers': module_headers}
-    )['data']
+    )
     response_from_gigamon = get_observables(response_from_all_modules,
                                             MODULE_NAME)
 
@@ -188,7 +188,7 @@ def test_positive_sighting_x509(module_headers):
     response_from_all_modules = enrich_observe_observables(
         payload=observables,
         **{'headers': module_headers}
-    )['data']
+    )
     response_from_gigamon = get_observables(response_from_all_modules,
                                             MODULE_NAME)
 

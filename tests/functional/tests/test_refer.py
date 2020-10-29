@@ -39,7 +39,7 @@ def test_positive_refer_observables(module_headers, observable,
     response_from_all_modules = enrich_refer_observables(
         payload=observables,
         **{'headers': module_headers}
-    )['data']
+    )
     response_from_gigamon_module = get_observables(
         response_from_all_modules, MODULE_NAME)
 
