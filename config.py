@@ -9,7 +9,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', None)
 
     CTR_USER_AGENT = (
-        'Cisco Threat Response Integrations '
+        'SecureX Threat Response Integrations '
         '<tr-integrations-support@cisco.com>'
     )
 
