@@ -45,7 +45,7 @@ def set_ctr_entities_limit(payload):
             ctr_entities_limit = current_app.config['CTR_ENTITIES_LIMIT_MAX']
 
     except (KeyError, ValueError, AssertionError):
-        ctr_entities_limit = current_app.config['CTR_DEFAULT_ENTITIES_LIMIT']
+        ctr_entities_limit = current_app.config['CTR_ENTITIES_LIMIT_DEFAULT']
 
     current_app.config['CTR_ENTITIES_LIMIT'] = ctr_entities_limit
 
@@ -70,7 +70,7 @@ def get_public_key(jwks_host, token):
         InvalidURL: WRONG_JWKS_HOST,
     }
     try:
-        response = requests.get(f"http://{jwks_host}/.well-known/jwks")
+        response = requests.get(f"https://{jwks_host}/.well-known/jwks")
         jwks = response.json()
 
         public_keys = {}
