@@ -2,9 +2,11 @@ from http import HTTPStatus
 from re import match as re_match
 from unittest import mock
 
-from authlib.jose import jwt
 from pytest import fixture
 
+from tests.unit.conftest import GTI_KEY
+from tests.unit.api.mock_keys_for_tests import \
+    EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
 from .utils import headers, load_fixture
 
 
@@ -54,61 +56,6 @@ def gti_api_routes():
          ids=lambda route: f'POST {route}')
 def gti_api_route(request):
     return request.param
-
-
-@fixture(scope='module')
-def valid_json():
-    return [
-        {
-            'type': 'user',
-            'value': 'admin',
-        },
-        {
-            'type': 'ip',
-            'value': '45.77.51.101',
-        },
-        {
-            'type': 'domain',
-            'value': 'securecorp.club'
-        },
-        {
-            'type': 'md5',
-            'value': '3319b1a422c785c221050f1152ad77cb',
-        },
-        {
-            'type': 'sha1',
-            'value': '2d7177f8466d82e28150572584928278ba72d435',
-        },
-        {
-            'type': 'sha256',
-            'value': (
-                '9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3'  # noqa: E501
-            ),
-        },
-    ]
-
-
-def test_enrich_call_with_valid_json_but_invalid_jwt_failure(gti_api_route,
-                                                             client,
-                                                             valid_json,
-                                                             invalid_jwt):
-    response = client.post(gti_api_route,
-                           json=valid_json,
-                           headers=headers(invalid_jwt))
-
-    expected_payload = {
-        'errors': [
-            {
-                'code': 'authorization failed',
-                'message': ('Authorization failed: '
-                            'Failed to decode JWT with provided key'),
-                'type': 'fatal',
-            }
-        ]
-    }
-
-    assert response.status_code == HTTPStatus.OK
-    assert response.get_json() == expected_payload
 
 
 def all_routes():
@@ -202,8 +149,14 @@ def test_enrich_call_success(any_route,
                              client,
                              valid_json,
                              valid_jwt,
-                             expected_payload):
+                             expected_payload,
+                             rsa_api_request,
+                             rsa_api_response):
     app = client.application
+
+    rsa_api_request.return_value = rsa_api_response(
+        EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
+    )
 
     response = None
 
@@ -226,9 +179,9 @@ def test_enrich_call_success(any_route,
 
             response = client.post(any_route,
                                    json=valid_json,
-                                   headers=headers(valid_jwt))
+                                   headers=headers(valid_jwt()))
 
-            key = jwt.decode(valid_jwt, app.config['SECRET_KEY'])['key']
+            key = GTI_KEY
 
             get_events_for_observable_mock.assert_has_calls([
                 mock.call(key, observable)
@@ -248,8 +201,14 @@ def test_enrich_call_success(any_route,
 def test_enrich_call_with_auth_error_from_gti_failure(gti_api_route,
                                                       client,
                                                       valid_json,
-                                                      valid_jwt):
+                                                      valid_jwt,
+                                                      rsa_api_request,
+                                                      rsa_api_response):
     app = client.application
+
+    rsa_api_request.return_value = rsa_api_response(
+        EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
+    )
 
     target = 'api.enrich.get_events_for_observable'
 
@@ -263,9 +222,9 @@ def test_enrich_call_with_auth_error_from_gti_failure(gti_api_route,
 
         response = client.post(gti_api_route,
                                json=valid_json,
-                               headers=headers(valid_jwt))
+                               headers=headers(valid_jwt()))
 
-        key = jwt.decode(valid_jwt, app.config['SECRET_KEY'])['key']
+        key = GTI_KEY
 
         observable = next(
             observable

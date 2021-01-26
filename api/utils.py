@@ -1,18 +1,59 @@
 import json
-from typing import Optional
 
-from authlib.jose import jwt
-from authlib.jose.errors import BadSignatureError, DecodeError
+import jwt
+import requests
+from jwt import InvalidSignatureError, InvalidAudienceError, DecodeError
+from requests.exceptions import ConnectionError, InvalidURL
 from flask import request, current_app, jsonify
 
 from api.errors import AuthenticationRequiredError
 
+NO_AUTH_HEADER = 'Authorization header is missing'
+WRONG_AUTH_TYPE = 'Wrong authorization type'
+WRONG_PAYLOAD_STRUCTURE = 'Wrong JWT payload structure'
+WRONG_JWT_STRUCTURE = 'Wrong JWT structure'
+WRONG_AUDIENCE = 'Wrong configuration-token-audience'
+KID_NOT_FOUND = 'kid from JWT header not found in API response'
+WRONG_KEY = ('Failed to decode JWT with provided key. '
+             'Make suer domain in custom_jwks_host '
+             'corresponds to your SekureX instance region.')
+JWK_HOST_MISSING = ('jwk_host is missing in JWT payload. Make sure '
+                    'custom_jwks_host field is present in module_type')
+WRONG_JWKS_HOST = ('Wrong jwks_host in JWT payload. Make sure domain follows '
+                   'the visibility.<region>.cisco.com structure')
+
+
+def allow_test_account(payload):
+    try:
+        gti_allow_test_accounts = int(payload['GTI_ALLOW_TEST_ACCOUNTS'])
+        assert gti_allow_test_accounts in (0, 1)
+    except (KeyError, ValueError, AssertionError):
+        gti_allow_test_accounts = \
+            current_app.config['GTI_ALLOW_TEST_ACCOUNTS_DEFAULT']
+    else:
+        gti_allow_test_accounts = bool(gti_allow_test_accounts)
+
+    current_app.config['GTI_ALLOW_TEST_ACCOUNTS'] = gti_allow_test_accounts
+
+
+def set_ctr_entities_limit(payload):
+    try:
+        ctr_entities_limit = int(payload['CTR_ENTITIES_LIMIT'])
+        assert ctr_entities_limit > 0
+
+        if ctr_entities_limit > current_app.config['CTR_ENTITIES_LIMIT_MAX']:
+            ctr_entities_limit = current_app.config['CTR_ENTITIES_LIMIT_MAX']
+
+    except (KeyError, ValueError, AssertionError):
+        ctr_entities_limit = current_app.config['CTR_DEFAULT_ENTITIES_LIMIT']
+
+    current_app.config['CTR_ENTITIES_LIMIT'] = ctr_entities_limit
+
 
 def get_auth_token():
     expected_errors = {
-        KeyError: 'Authorization header is missing',
-        ValueError: 'JWT is missing',
-        AssertionError: 'Wrong authorization type'
+        KeyError: NO_AUTH_HEADER,
+        AssertionError: WRONG_AUTH_TYPE
     }
 
     try:
@@ -23,18 +64,61 @@ def get_auth_token():
         raise AuthenticationRequiredError(expected_errors[error.__class__])
 
 
-def get_key() -> Optional[str]:
+def get_public_key(jwks_host, token):
     expected_errors = {
-        KeyError: 'Wrong JWT payload structure',
-        TypeError: '<SECRET_KEY> is missing',
-        BadSignatureError: 'Failed to decode JWT with provided key',
-        DecodeError: 'Wrong JWT structure'
+        ConnectionError: WRONG_JWKS_HOST,
+        InvalidURL: WRONG_JWKS_HOST,
     }
+    try:
+        response = requests.get(f"http://{jwks_host}/.well-known/jwks")
+        jwks = response.json()
+
+        public_keys = {}
+        for jwk in jwks['keys']:
+            kid = jwk['kid']
+            public_keys[kid] = jwt.algorithms.RSAAlgorithm.from_jwk(
+                json.dumps(jwk)
+            )
+        kid = jwt.get_unverified_header(token)['kid']
+        return public_keys.get(kid)
+
+    except tuple(expected_errors) as error:
+        message = expected_errors[error.__class__]
+        raise AuthenticationRequiredError(message)
+
+
+def get_key():
+    """
+    Get authorization token and validate its signature against the public key
+    from /.well-known/jwks endpoint
+    """
+    expected_errors = {
+        KeyError: WRONG_PAYLOAD_STRUCTURE,
+        AssertionError: JWK_HOST_MISSING,
+        InvalidSignatureError: WRONG_KEY,
+        DecodeError: WRONG_JWT_STRUCTURE,
+        InvalidAudienceError: WRONG_AUDIENCE,
+        TypeError: KID_NOT_FOUND
+    }
+
     token = get_auth_token()
     try:
-        return jwt.decode(token, current_app.config['SECRET_KEY'])["key"]
+        jwks_host = jwt.decode(
+            token, options={'verify_signature': False}).get('jwks_host')
+        assert jwks_host
+        key = get_public_key(jwks_host, token)
+        aud = request.url_root
+        payload = jwt.decode(
+            token, key=key, algorithms=['RS256'], audience=[aud.rstrip('/')]
+        )
+
+        set_ctr_entities_limit(payload)
+        allow_test_account(payload)
+
+        return payload['key']
     except tuple(expected_errors) as error:
-        raise AuthenticationRequiredError(expected_errors[error.__class__])
+        message = expected_errors[error.__class__]
+        raise AuthenticationRequiredError(message)
 
 
 def get_json(schema):
