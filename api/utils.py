@@ -23,19 +23,6 @@ WRONG_JWKS_HOST = ('Wrong jwks_host in JWT payload. Make sure domain follows '
                    'the visibility.<region>.cisco.com structure')
 
 
-def allow_test_account(payload):
-    try:
-        gti_allow_test_accounts = int(payload['GTI_ALLOW_TEST_ACCOUNTS'])
-        assert gti_allow_test_accounts in (0, 1)
-    except (KeyError, ValueError, AssertionError):
-        gti_allow_test_accounts = \
-            current_app.config['GTI_ALLOW_TEST_ACCOUNTS_DEFAULT']
-    else:
-        gti_allow_test_accounts = bool(gti_allow_test_accounts)
-
-    current_app.config['GTI_ALLOW_TEST_ACCOUNTS'] = gti_allow_test_accounts
-
-
 def set_ctr_entities_limit(payload):
     try:
         ctr_entities_limit = int(payload['CTR_ENTITIES_LIMIT'])
@@ -113,7 +100,8 @@ def get_key():
         )
 
         set_ctr_entities_limit(payload)
-        allow_test_account(payload)
+        current_app.config['GTI_ALLOW_TEST_ACCOUNTS'] = \
+            payload['GTI_ALLOW_TEST_ACCOUNTS']
 
         return payload['key']
     except tuple(expected_errors) as error:

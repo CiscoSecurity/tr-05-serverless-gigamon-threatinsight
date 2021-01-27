@@ -136,23 +136,19 @@ module using your Lambda's URL and Gigamon ThreatINSIGHT API key:
 - EU: https://securex.eu.security.cisco.com/integrations/available/cdf11c33-0891-491a-8e36-201e4decd3d0/new
 - APJC: https://securex.apjc.security.cisco.com/integrations/available/904e961f-ff81-48f5-aeb0-5c033e2054b7/new 
 
-You will also be prompted to enter next Environment Variables:
-
-  - `CTR_ENTITIES_LIMIT`
-    - Restricts the maximum number of CTIM entities of each type returned in a
-    single response per each requested observable.
-    - Applies to the following CTIM entities:
-      - `Indicator`,
-      - `Sighting`.
-    - Must be a positive integer. Defaults to `100` (if unset or incorrect). Has
-    the upper bound of `1000` to avoid getting overwhelmed with too much data, so
-    any greater values are still acceptable but also limited at the same time.
+You will also be prompted to enter `CTR_ENTITIES_LIMIT` variable that:
+  - Restricts the maximum number of CTIM entities of each type returned in a
+  single response per each requested observable.
+  - Applies to the following CTIM entities:
+    - `Indicator`,
+    - `Sighting`.
+  - Must be a positive integer. Defaults to `100` (if unset or incorrect). Has
+  the upper bound of `1000` to avoid getting overwhelmed with too much data, so
+  any greater values are still acceptable but also limited at the same time.
    
-  - `GTI_ALLOW_TEST_ACCOUNTS`
-    - Allows fake data from the test accounts (`Demo` and `Training`) to be
-    returned along with real data (if enabled).
-    - Must be a boolean flag represented as an integer (`0` or `1`). Defaults to
-    `0` (if unset or incorrect).
+And be prompted to choice option `GTI_ALLOW_TEST_ACCOUNTS`:
+  - Allows fake data from the test accounts (`Demo` and `Training`) to be
+  returned along with real data (if enabled).
 
 ## Step 3: Testing (Optional)
 

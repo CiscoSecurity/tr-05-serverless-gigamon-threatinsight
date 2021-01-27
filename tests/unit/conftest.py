@@ -51,7 +51,8 @@ def valid_jwt(client):
             'key': key,
             'jwks_host': jwks_host,
             'aud': aud,
-            'CTR_ENTITIES_LIMIT': limit
+            'CTR_ENTITIES_LIMIT': limit,
+            'GTI_ALLOW_TEST_ACCOUNTS': True
         }
 
         if wrong_structure:
