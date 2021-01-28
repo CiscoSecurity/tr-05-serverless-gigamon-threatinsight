@@ -1,9 +1,11 @@
 from http import HTTPStatus
 from unittest import mock
 
-from authlib.jose import jwt
 from pytest import fixture
 
+from tests.unit.conftest import GTI_KEY
+from tests.unit.api.mock_keys_for_tests import \
+    EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
 from .utils import headers
 
 
@@ -16,26 +18,16 @@ def route(request):
     return request.param
 
 
-def test_health_call_with_invalid_jwt_failure(route, client, invalid_jwt):
-    response = client.post(route, headers=headers(invalid_jwt))
-
-    expected_payload = {
-        'errors': [
-            {
-                'code': 'authorization failed',
-                'message': ('Authorization failed: '
-                            'Failed to decode JWT with provided key'),
-                'type': 'fatal',
-            }
-        ]
-    }
-
-    assert response.status_code == HTTPStatus.OK
-    assert response.get_json() == expected_payload
-
-
-def test_health_call_success(route, client, valid_jwt):
+def test_health_call_success(route,
+                             client,
+                             valid_jwt,
+                             rsa_api_request,
+                             rsa_api_response):
     app = client.application
+
+    rsa_api_request.return_value = rsa_api_response(
+        EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
+    )
 
     target = 'api.health.get_events_for_entity'
 
@@ -45,9 +37,9 @@ def test_health_call_success(route, client, valid_jwt):
     with mock.patch(target) as get_events_for_entity_mock:
         get_events_for_entity_mock.return_value = (data, None)
 
-        response = client.post(route, headers=headers(valid_jwt))
+        response = client.post(route, headers=headers(valid_jwt()))
 
-        key = jwt.decode(valid_jwt, app.config['SECRET_KEY'])['key']
+        key = GTI_KEY
         entity = app.config['GTI_TEST_ENTITY']
 
         get_events_for_entity_mock.assert_called_with(key, entity)
@@ -60,8 +52,14 @@ def test_health_call_success(route, client, valid_jwt):
 
 def test_health_call_with_auth_error_from_gti_failure(route,
                                                       client,
-                                                      valid_jwt):
+                                                      valid_jwt,
+                                                      rsa_api_request,
+                                                      rsa_api_response):
     app = client.application
+
+    rsa_api_request.return_value = rsa_api_response(
+        EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
+    )
 
     target = 'api.health.get_events_for_entity'
 
@@ -73,9 +71,9 @@ def test_health_call_with_auth_error_from_gti_failure(route,
     with mock.patch(target) as get_events_for_entity_mock:
         get_events_for_entity_mock.return_value = (None, error)
 
-        response = client.post(route, headers=headers(valid_jwt))
+        response = client.post(route, headers=headers(valid_jwt()))
 
-        key = jwt.decode(valid_jwt, app.config['SECRET_KEY'])['key']
+        key = GTI_KEY
         entity = app.config['GTI_TEST_ENTITY']
 
         get_events_for_entity_mock.assert_called_with(key, entity)
