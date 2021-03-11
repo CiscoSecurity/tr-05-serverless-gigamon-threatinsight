@@ -5,6 +5,7 @@ from api.errors import RelayError
 from api.health import health_api
 from api.respond import respond_api
 from api.version import version_api
+from api.watchdog import watchdog_api
 
 app = Flask(__name__)
 
@@ -15,6 +16,7 @@ app.register_blueprint(health_api)
 app.register_blueprint(enrich_api)
 app.register_blueprint(respond_api)
 app.register_blueprint(version_api)
+app.register_blueprint(watchdog_api)
 
 
 @app.errorhandler(RelayError)

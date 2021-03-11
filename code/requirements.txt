@@ -2,4 +2,8 @@ Flask==1.1.2
 marshmallow==3.7.1
 requests==2.24.0
 zappa==0.51.0
+flake8==3.8.3
+coverage==5.2.1
+pytest==6.0.1
+cryptography==3.3.2
 pyjwt[crypto]==2.0.0
