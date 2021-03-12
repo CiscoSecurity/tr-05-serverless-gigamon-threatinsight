@@ -27,3 +27,8 @@ class RelayError(Exception):
 class AuthenticationRequiredError(RelayError):
     CODE = 'authorization failed'
     MESSAGE = 'Authorization failed'
+
+
+class WatchdogError(RelayError):
+    CODE = 'health check failed'
+    MESSAGE = 'Invalid Health Check'
