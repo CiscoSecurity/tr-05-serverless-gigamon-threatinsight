@@ -63,6 +63,7 @@
         }
     ],
     "properties": {
+        "url": "https://ciscohosted.url",
         "supported-apis": [
             "health",
             "observe/observables",

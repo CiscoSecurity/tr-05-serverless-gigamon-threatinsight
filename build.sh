@@ -6,9 +6,9 @@ echo
 echo " Development Dockerfile build script."
 echo
 
-module_name="Gigamon ThreatINSIGHT Relay"
+module_name="Gigamon ThreatINSIGHT"
 
-image_name="tr-05-serverless-gigamon-threatinsight"
+image_name="tr-05-gigamon-threatinsight"
 
 CONFIG_FILE=code/container_settings.json
 if [ -f $CONFIG_FILE ]; then

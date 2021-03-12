@@ -1,6 +1,6 @@
 [![Gitter Chat](https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg)](https://gitter.im/CiscoSecurity/Threat-Response "Gitter Chat")
 
-# Gigamon ThreatINSIGHT Relay (Cisco Hosted)
+# Gigamon ThreatINSIGHT (Cisco Hosted)
 
 A Cisco SecureX Concrete Relay implementation using
 [Gigamon ThreatINSIGHT](https://www.gigamon.com/products/detect-respond/gigamon-threatinsight.html?utm_campaign=cisco&utm_source=ti-module&utm_medium=referral)
@@ -38,17 +38,17 @@ In order to build the application, we need to use a `Dockerfile`.
  1. Open a terminal.  Build the container image using the `docker build` command.
 ￼
 ```
-docker build -t tr-05-serverless-gigamon-threatinsight .
+docker build -t tr-05-gigamon-threatinsight .
 ```
  2. Once the container is built, and an image is successfully created, start your container using the `docker run` command and specify the name of the image we have just created.  By default, the container will listen for HTTP requests using port 9090.
 ￼
 ```
-docker run -dp 9090:9090 --name tr-05-serverless-gigamon-threatinsight tr-05-serverless-gigamon-threatinsight
+docker run -dp 9090:9090 --name tr-05-gigamon-threatinsight tr-05-gigamon-threatinsight
 ```
  3. Watch the container logs to ensure it starts correctly.
 ￼
 ```
-docker logs tr-05-serverless-gigamon-threatinsight
+docker logs tr-05-gigamon-threatinsight
 ```
  4. Once the container has started correctly, open your web browser to http://localhost:9090.  You should see a response from the container.
 ￼
