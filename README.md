@@ -22,7 +22,7 @@ pip install --upgrade --requirement code/requirements.txt
 ```
 You can perform two kinds of testing:
 - Run static code analysis checking for any semantic discrepancies and [PEP 8](https://www.python.org/dev/peps/pep-0008/) compliance:
-￼
+
   `flake8 code`
 
 - Run the suite of unit tests and measure the code coverage:
@@ -36,7 +36,7 @@ You can perform two kinds of testing:
 In order to build the application, we need to use a `Dockerfile`.  
 
  1. Open a terminal.  Build the container image using the `docker build` command.
-￼
+
 ```
 docker build -t tr-05-gigamon-threatinsight .
 ```
