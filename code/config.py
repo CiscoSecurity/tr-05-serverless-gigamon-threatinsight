@@ -1,8 +1,9 @@
-from __version__ import VERSION
+import json
 
 
 class Config:
-    VERSION = VERSION
+    settings = json.load(open('container_settings.json', 'r'))
+    VERSION = settings["VERSION"]
 
     CTR_USER_AGENT = (
         'SecureX Threat Response Integrations '
