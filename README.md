@@ -1,7 +1,7 @@
 [![Gitter Chat](https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg)](https://gitter.im/CiscoSecurity/Threat-Response "Gitter Chat")
 
-# For AWS Serverless Lambda deployment
-[AWS Serverless Lambda Code](https://github.com/CiscoSecurity/tr-05-serverless-gigamon-threatinsight/releases/tag/v1.2.1)
+# NOTE! This code has been upgraded and the current release no longer supports installation in AWS
+If you wish to deploy in AWS, use [this](https://github.com/CiscoSecurity/tr-05-serverless-gigamon-threatinsight/releases/tag/v1.2.1) previous release.
 
 # Gigamon ThreatINSIGHT (Cisco Hosted)
 
