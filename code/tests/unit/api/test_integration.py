@@ -7,7 +7,7 @@ from pytest import fixture
 from api.integration import (
     get_detections_for_entity,
     get_events_for_detection,
-    get_events_for_entity,
+    get_events,
     get_dhcp_records_by_ip,
 )
 
@@ -205,7 +205,7 @@ def test_get_events_for_detection_success(client, gti_api_request):
     assert error is None
 
 
-def test_get_events_for_entity_failure(client, gti_api_request):
+def test_get_events_failure(client, gti_api_request):
     app = client.application
 
     expected_error = {
@@ -219,9 +219,9 @@ def test_get_events_for_entity_failure(client, gti_api_request):
     )
 
     key = 'key'
-    entity = 'entity'
+    observable = app.config['GTI_TEST_ENTITY']
 
-    events, error = get_events_for_entity(key, entity)
+    events, error = get_events(key, observable)
 
     expected_method = 'POST'
     expected_url = urljoin(
@@ -233,7 +233,7 @@ def test_get_events_for_entity_failure(client, gti_api_request):
         'User-Agent': app.config['CTR_USER_AGENT'],
     }
     expected_json = {
-        'query': entity,
+        'query': "ip = '8.8.8.8'",
         'limit': app.config['CTR_ENTITIES_LIMIT'],
     }
 
@@ -248,7 +248,7 @@ def test_get_events_for_entity_failure(client, gti_api_request):
     assert error == expected_error
 
 
-def test_get_events_for_entity_success(client, gti_api_request):
+def test_get_events_success(client, gti_api_request):
     app = client.application
 
     expected_events = [{'uuid': str(uuid4())} for _ in range(10)]
@@ -259,9 +259,9 @@ def test_get_events_for_entity_success(client, gti_api_request):
     )
 
     key = 'key'
-    entity = 'entity'
+    observable = app.config['GTI_TEST_ENTITY']
 
-    events, error = get_events_for_entity(key, entity)
+    events, error = get_events(key, observable)
 
     expected_method = 'POST'
     expected_url = urljoin(
@@ -273,7 +273,7 @@ def test_get_events_for_entity_success(client, gti_api_request):
         'User-Agent': app.config['CTR_USER_AGENT'],
     }
     expected_json = {
-        'query': entity,
+        'query': "ip = '8.8.8.8'",
         'limit': app.config['CTR_ENTITIES_LIMIT'],
     }
 

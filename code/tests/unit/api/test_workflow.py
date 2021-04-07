@@ -45,12 +45,12 @@ def test_get_events_for_observable(client):
             load_fixture('integration/events_for_detection')
         )
 
-        get_events_for_entity_mock = stack.enter_context(
-            mock.patch('api.workflow.get_events_for_entity')
+        get_events_mock = stack.enter_context(
+            mock.patch('api.workflow.get_events')
         )
 
-        get_events_for_entity_mock.return_value = success(
-            load_fixture('integration/events_for_entity')
+        get_events_mock.return_value = success(
+            load_fixture('integration/events')
         )
 
         expected_events = load_fixture('workflow/events_for_observable')
@@ -81,7 +81,7 @@ def test_get_events_for_observable(client):
             for detection in detections
         ])
 
-        get_events_for_entity_mock.assert_called_once_with(key, entity)
+        get_events_mock.assert_called_once_with(key, observable)
 
         # The actual algorithm for building the `event_time_by_ip` argument is
         # quite unwieldy but straightforward at the same time, so let's just

@@ -111,13 +111,13 @@ def get_events_for_detection(key, detection_uuid):
     return events, None
 
 
-def get_events_for_entity(key, entity):
+def get_events(key, observable):
     url = _url('event', 'query')
 
     limit = current_app.config['CTR_ENTITIES_LIMIT']
 
     json = {
-        'query': entity,
+        'query': f"{observable['type']} = '{observable['value']}'",
         'limit': limit,
     }
 

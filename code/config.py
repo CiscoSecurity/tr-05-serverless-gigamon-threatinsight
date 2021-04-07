@@ -22,7 +22,7 @@ class Config:
         'sha256': 'SHA256',
     }
 
-    GTI_TEST_ENTITY = '8.8.8.8'
+    GTI_TEST_ENTITY = {"type": "ip", "value": "8.8.8.8"}
 
     GTI_API_FAMILY_URLS = {
         'detection': 'https://detections.icebrg.io/v1/',
