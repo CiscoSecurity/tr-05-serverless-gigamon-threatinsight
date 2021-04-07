@@ -147,7 +147,7 @@ def get_events_for_observable(key, observable):
     # Fetch some of the most recent events for the given entity and merge them
     # to the already processed ones making sure to filter out any duplicates.
 
-    events_for_entity, error = get_events_for_entity(key, entity)
+    events_for_entity, error = get_events_for_entity(key, observable)
 
     if error:
         return None, error

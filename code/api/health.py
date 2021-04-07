@@ -11,8 +11,8 @@ def health():
     key = get_key()
 
     # Use some supported entity just to check that the GTI API key is valid.
-    entity = current_app.config['GTI_TEST_ENTITY']
-    _, error = get_events_for_entity(key, entity)
+    observable = current_app.config['GTI_TEST_ENTITY']
+    _, error = get_events_for_entity(key, observable)
 
     if error:
         return jsonify_errors(error)

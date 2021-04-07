@@ -81,7 +81,7 @@ def test_get_events_for_observable(client):
             for detection in detections
         ])
 
-        get_events_for_entity_mock.assert_called_once_with(key, entity)
+        get_events_for_entity_mock.assert_called_once_with(key, observable)
 
         # The actual algorithm for building the `event_time_by_ip` argument is
         # quite unwieldy but straightforward at the same time, so let's just
