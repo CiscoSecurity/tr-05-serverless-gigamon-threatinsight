@@ -29,20 +29,20 @@ def test_health_call_success(route,
         EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
     )
 
-    target = 'api.health.get_events_for_entity'
+    target = 'api.health.get_events'
 
     # Nothing really matters...
     data = ...
 
-    with mock.patch(target) as get_events_for_entity_mock:
-        get_events_for_entity_mock.return_value = (data, None)
+    with mock.patch(target) as get_events_mock:
+        get_events_mock.return_value = (data, None)
 
         response = client.post(route, headers=headers(valid_jwt()))
 
         key = GTI_KEY
         entity = app.config['GTI_TEST_ENTITY']
 
-        get_events_for_entity_mock.assert_called_with(key, entity)
+        get_events_mock.assert_called_with(key, entity)
 
     expected_payload = {'data': {'status': 'ok'}}
 
@@ -61,22 +61,22 @@ def test_health_call_with_auth_error_from_gti_failure(route,
         EXPECTED_RESPONSE_OF_JWKS_ENDPOINT
     )
 
-    target = 'api.health.get_events_for_entity'
+    target = 'api.health.get_events'
 
     error = {
         'code': 'client.invalid_authentication',
         'message': 'Authentication is invalid.',
     }
 
-    with mock.patch(target) as get_events_for_entity_mock:
-        get_events_for_entity_mock.return_value = (None, error)
+    with mock.patch(target) as get_events_mock:
+        get_events_mock.return_value = (None, error)
 
         response = client.post(route, headers=headers(valid_jwt()))
 
         key = GTI_KEY
         entity = app.config['GTI_TEST_ENTITY']
 
-        get_events_for_entity_mock.assert_called_with(key, entity)
+        get_events_mock.assert_called_with(key, entity)
 
     expected_payload = {
         'errors': [

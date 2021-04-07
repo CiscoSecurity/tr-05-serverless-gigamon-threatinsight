@@ -7,7 +7,7 @@ from flask import current_app
 from api.integration import (
     get_detections_for_entity,
     get_events_for_detection,
-    get_events_for_entity,
+    get_events,
     get_dhcp_records_by_ip,
 )
 
@@ -147,7 +147,7 @@ def get_events_for_observable(key, observable):
     # Fetch some of the most recent events for the given entity and merge them
     # to the already processed ones making sure to filter out any duplicates.
 
-    events_for_entity, error = get_events_for_entity(key, observable)
+    events_for_entity, error = get_events(key, observable)
 
     if error:
         return None, error
