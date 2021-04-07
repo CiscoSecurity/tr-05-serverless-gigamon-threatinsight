@@ -219,7 +219,7 @@ def test_get_events_for_entity_failure(client, gti_api_request):
     )
 
     key = 'key'
-    observable = {'value': '1.1.1.1', 'type': 'ip'}
+    observable = app.config['GTI_TEST_ENTITY']
 
     events, error = get_events_for_entity(key, observable)
 
@@ -233,7 +233,7 @@ def test_get_events_for_entity_failure(client, gti_api_request):
         'User-Agent': app.config['CTR_USER_AGENT'],
     }
     expected_json = {
-        'query': "ip = '1.1.1.1'",
+        'query': "ip = '8.8.8.8'",
         'limit': app.config['CTR_ENTITIES_LIMIT'],
     }
 
@@ -259,7 +259,7 @@ def test_get_events_for_entity_success(client, gti_api_request):
     )
 
     key = 'key'
-    observable = {'value': '1.1.1.1', 'type': 'ip'}
+    observable = app.config['GTI_TEST_ENTITY']
 
     events, error = get_events_for_entity(key, observable)
 
@@ -273,7 +273,7 @@ def test_get_events_for_entity_success(client, gti_api_request):
         'User-Agent': app.config['CTR_USER_AGENT'],
     }
     expected_json = {
-        'query': "ip = '1.1.1.1'",
+        'query': "ip = '8.8.8.8'",
         'limit': app.config['CTR_ENTITIES_LIMIT'],
     }
 
