@@ -10,7 +10,7 @@ from tests.functional.tests.constants import (
 @pytest.mark.parametrize(
     'observable_type, observable',
     (('ip', '45.77.51.101'),
-     ('domain', 'securecorp.club'),
+     # ('domain', 'securecorp.club'),
      ('sha256',
       '9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3'),
      )

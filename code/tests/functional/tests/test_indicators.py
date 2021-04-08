@@ -6,14 +6,15 @@ from tests.functional.tests.constants import (
     GIGAMON_URL,
     CONFIDENCE,
     SEVERITY,
-    CTR_ENTITIES_LIMIT
+    CTR_ENTITIES_LIMIT,
+    INTEGRATION_NAME
 )
 
 
 @pytest.mark.parametrize(
     'observable_type, observable',
     (('ip', '45.77.51.101'),
-     ('domain', 'securecorp.club'),
+     # ('domain', 'securecorp.club'),
      ('sha256',
       '9ffc7e4333d3be11b244d5f83b02ebcd194a671539f7faf1b5597d9209cc25c3'),
      )
@@ -52,10 +53,10 @@ def test_positive_indicators(module_headers, observable, observable_type):
 
     for indicator in indicators['docs']:
         assert indicator['description']
-        assert indicator['producer'] == MODULE_NAME
+        assert indicator['producer'] == INTEGRATION_NAME
         assert indicator['schema_version']
         assert indicator['type'] == 'indicator'
-        assert indicator['source'] == MODULE_NAME
+        assert indicator['source'] == INTEGRATION_NAME
         assert indicator['short_description']
         assert indicator['title']
         assert indicator['confidence'] in CONFIDENCE
@@ -75,7 +76,7 @@ def test_positive_indicators(module_headers, observable, observable_type):
             assert external_reference['external_id'] == (
                 indicator['external_ids'][0]
             )
-            assert external_reference['source_name'] == MODULE_NAME
+            assert external_reference['source_name'] == INTEGRATION_NAME
             assert external_reference['url'] == (
                 f'{GIGAMON_URL}'
                 f'/detections/rules/{indicator["external_ids"][0]}'

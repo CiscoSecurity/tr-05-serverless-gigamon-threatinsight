@@ -1,4 +1,5 @@
-MODULE_NAME = 'Gigamon ThreatINSIGHT'
+MODULE_NAME = 'Gigamon ThreatINSIGHT ConfTokenTest'
+INTEGRATION_NAME = 'Gigamon ThreatINSIGHT'
 GIGAMON_URL = 'https://portal.icebrg.io'
 CONFIDENCE = SEVERITY = ('High', 'Medium', 'Low')
 RELATIONS_TYPES = (
