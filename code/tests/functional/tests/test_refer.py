@@ -4,7 +4,8 @@ from ctrlibrary.threatresponse.enrich import enrich_refer_observables
 from tests.functional.tests.constants import (
     MODULE_NAME,
     GIGAMON_URL,
-    OBSERVABLE_HUMAN_READABLE_NAME
+    OBSERVABLE_HUMAN_READABLE_NAME,
+    INTEGRATION_NAME
 )
 
 
@@ -53,9 +54,9 @@ def test_positive_refer_observables(module_headers, observable,
         f'Search for this {OBSERVABLE_HUMAN_READABLE_NAME[observable_type]}')
     assert (response_from_gigamon_module['description']) == (
         f'Lookup this {OBSERVABLE_HUMAN_READABLE_NAME[observable_type]} on '
-        f'{MODULE_NAME}')
+        f'{INTEGRATION_NAME}')
     assert response_from_gigamon_module['categories'] == [
-        MODULE_NAME,
+        INTEGRATION_NAME,
         'Search'
     ]
     assert response_from_gigamon_module['url'] == (

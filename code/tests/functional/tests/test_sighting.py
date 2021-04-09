@@ -8,7 +8,8 @@ from tests.functional.tests.constants import (
     GIGAMON_URL,
     RELATIONS_TYPES,
     RELATED_OBSERVABLES_TYPES,
-    CTR_ENTITIES_LIMIT
+    CTR_ENTITIES_LIMIT,
+    INTEGRATION_NAME
 )
 
 
@@ -66,7 +67,7 @@ def test_positive_sighting(module_headers, observable, observable_type):
         assert sighting['observables'][0] == observables[0]
         assert sighting['external_ids']
         assert sighting['type'] == 'sighting'
-        assert sighting['source'] == MODULE_NAME
+        assert sighting['source'] == INTEGRATION_NAME
         assert sighting['source_uri'].startswith(GIGAMON_URL)
         assert any(
             external_id in sighting['source_uri']
@@ -76,7 +77,7 @@ def test_positive_sighting(module_headers, observable, observable_type):
         for external_reference in sighting['external_references']:
             assert external_reference['external_id'] in (
                    sighting['external_ids'])
-            assert external_reference['source_name'] == MODULE_NAME
+            assert external_reference['source_name'] == INTEGRATION_NAME
             assert external_reference['description']
             assert external_reference['url'].startswith(GIGAMON_URL)
             assert any(
@@ -154,7 +155,7 @@ def test_positive_sighting_relation(module_headers, observable,
                     intersection_relations == upload_relations)
 
         for relation in sighting['relations']:
-            assert relation['origin'] == MODULE_NAME
+            assert relation['origin'] == INTEGRATION_NAME
             assert relation['relation'] in RELATIONS_TYPES
             assert relation['source']['value']
             assert relation['source']['type'] in RELATED_OBSERVABLES_TYPES
@@ -211,7 +212,7 @@ def test_positive_sighting_x509(module_headers):
                 if r['relation'] == 'SAN_DNS_For'
             ]
             assert relation
-            assert relation[0]['origin'] == MODULE_NAME
+            assert relation[0]['origin'] == INTEGRATION_NAME
             assert relation[0]['source'] == observables[0]
             assert relation[0]['related']['type'] == 'ip'
             assert relation[0]['related']['value']
