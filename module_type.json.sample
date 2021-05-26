@@ -6,10 +6,6 @@
     "tips": "When configuring the Gigamon ThreatINSIGHT integration, you must first gather some information from your Gigamon ThreatINSIGHT account.\n\n1. Log into Gigamon ThreatINSIGHT, click **Settings Icon** and choose **Profile Settings**.\n2. Click **Create New Token**, provide a **Description** and click **Create**.\n3. Copy the **Token** into a file, or leave the tab open. **Important:** Do not close the dialog without retrieving the token; the token is not retrievable once the dialog is closed.\n4. Complete the **Add New Gigamon ThreatINSIGHT Module** form:\n    - **Module Name** - Leave the default name or enter a name that is meaningful to you.\n    - **URL** - The URL of the Gigamon ThreatINSIGHT Serverless Relay.\n    - **API KEY** - Enter the Gigamon ThreatINSIGHT API Key.\n    - **CTR ENTITIES LIMIT** - Enter the limit that restricts the maximum number of CTIM entities of each type returned in a single response per each requested observable. Must be a positive integer. Defaults to 100 (if unset or incorrect). Has the upper bound of 1000 to avoid getting overwhelmed with too much data, so any greater values are still acceptable but also limited at the same time.\n    - **GTI_ALLOW_TEST_ACCOUNTS** - Allows fake data from the test accounts (Demo and Training) to be returned along with real data (if enabled).\n6. Click **Save** to complete the Gigamon ThreatINSIGHT module configuration.",
     "external_references": [
         {
-            "label": "Free Trial",
-            "link": "https://www.gigamon.com/lp/threatinsight-self-guided-demo.html?utm_campaign=cisco&utm_source=ti-module&utm_medium=referral"
-        },
-        {
             "label": "Learn More",
             "link": "https://www.gigamon.com/products/detect-respond/gigamon-threatinsight.html?utm_campaign=cisco&utm_source=ti-module&utm_medium=referral"
         },
