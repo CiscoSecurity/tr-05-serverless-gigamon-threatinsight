@@ -220,8 +220,10 @@ def test_get_events_failure(client, gti_api_request):
 
     key = 'key'
     observable = app.config['GTI_TEST_ENTITY']
+    start_date = '2021-05-20T09:00:59.577Z'
+    end_date = '2021-05-21T09:00:59.577Z'
 
-    events, error = get_events(key, observable)
+    events, error = get_events(key, observable, start_date, end_date)
 
     expected_method = 'POST'
     expected_url = urljoin(
@@ -235,6 +237,8 @@ def test_get_events_failure(client, gti_api_request):
     expected_json = {
         'query': "ip = '8.8.8.8'",
         'limit': app.config['CTR_ENTITIES_LIMIT'],
+        'start_date': start_date,
+        'end_date': end_date,
     }
 
     gti_api_request.assert_called_once_with(
@@ -260,8 +264,10 @@ def test_get_events_success(client, gti_api_request):
 
     key = 'key'
     observable = app.config['GTI_TEST_ENTITY']
+    start_date = '2021-05-20T09:00:59.577Z'
+    end_date = '2021-05-21T09:00:59.577Z'
 
-    events, error = get_events(key, observable)
+    events, error = get_events(key, observable, start_date, end_date)
 
     expected_method = 'POST'
     expected_url = urljoin(
@@ -275,6 +281,8 @@ def test_get_events_success(client, gti_api_request):
     expected_json = {
         'query': "ip = '8.8.8.8'",
         'limit': app.config['CTR_ENTITIES_LIMIT'],
+        'start_date': start_date,
+        'end_date': end_date,
     }
 
     gti_api_request.assert_called_once_with(

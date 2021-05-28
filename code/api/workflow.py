@@ -1,3 +1,4 @@
+import datetime
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from operator import itemgetter
@@ -10,6 +11,7 @@ from api.integration import (
     get_events,
     get_dhcp_records_by_ip,
 )
+from api.utils import mil_time
 
 
 def _get_events_for_detection(key, detection_uuid):
@@ -147,23 +149,38 @@ def get_events_for_observable(key, observable):
     # Fetch some of the most recent events for the given entity and merge them
     # to the already processed ones making sure to filter out any duplicates.
 
-    events_for_entity, error = get_events(key, observable)
+    limit = current_app.config['CTR_ENTITIES_LIMIT']
 
-    if error:
-        return None, error
+    now = datetime.datetime.now()
+    end_date = now.isoformat()
+    start_date = (now - datetime.timedelta(days=1)).isoformat()
+    day_range = 7 # set to 7 days by default when searching through gigamon API
+    
+    while day_range and len(events) < limit:
 
-    event_uuids = frozenset(event['uuid'] for event in events)
+        events_for_entity, error = get_events(\
+            key, observable, mil_time(start_date), mil_time(end_date)\
+            )
 
-    events.extend(
-        event for event in events_for_entity
-        if event['uuid'] not in event_uuids
-    )
+        if error:
+            return None, error
+
+        event_uuids = frozenset(event['uuid'] for event in events)
+
+        events.extend(
+            event for event in events_for_entity
+            if event['uuid'] not in event_uuids
+        )
+        end_date, start_date = start_date, (
+            datetime.datetime.fromisoformat(start_date) - \
+            datetime.timedelta(days=1)
+            ).isoformat()
+        day_range -= 1
+
 
     events = [event for event in events if is_allowed(event['customer_id'])]
 
-    limit = current_app.config['CTR_ENTITIES_LIMIT']
-
-    events = events[:limit]
+    # events = events[:limit]
 
     events.sort(key=itemgetter('timestamp'), reverse=True)
 

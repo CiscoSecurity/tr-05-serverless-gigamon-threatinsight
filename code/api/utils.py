@@ -145,3 +145,9 @@ def jsonify_errors(error, data=None):
     current_app.logger.error(payload)
 
     return jsonify(payload)
+
+
+def mil_time(date):
+    # Convert ISO-formated timestamp to military time format to satisfy
+    # Gigamon API restrictions
+    return str(date)[:-3]+'Z'

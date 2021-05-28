@@ -111,14 +111,13 @@ def get_events_for_detection(key, detection_uuid):
     return events, None
 
 
-def get_events(key, observable):
+def get_events(key, observable, start_date, end_date):
     url = _url('event', 'query')
-
-    limit = current_app.config['CTR_ENTITIES_LIMIT']
 
     json = {
         'query': f"{observable['type']} = '{observable['value']}'",
-        'limit': limit,
+        'start_date': start_date,
+        'end_date': end_date
     }
 
     data, error = _request('POST', url, key=key, json=json)
