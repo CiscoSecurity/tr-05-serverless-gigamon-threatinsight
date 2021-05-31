@@ -236,7 +236,6 @@ def test_get_events_failure(client, gti_api_request):
     }
     expected_json = {
         'query': "ip = '8.8.8.8'",
-        'limit': app.config['CTR_ENTITIES_LIMIT'],
         'start_date': start_date,
         'end_date': end_date,
     }
@@ -280,7 +279,6 @@ def test_get_events_success(client, gti_api_request):
     }
     expected_json = {
         'query': "ip = '8.8.8.8'",
-        'limit': app.config['CTR_ENTITIES_LIMIT'],
         'start_date': start_date,
         'end_date': end_date,
     }

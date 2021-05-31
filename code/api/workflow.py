@@ -180,7 +180,7 @@ def get_events_for_observable(key, observable):
 
     events = [event for event in events if is_allowed(event['customer_id'])]
 
-    # events = events[:limit]
+    events = events[:limit]
 
     events.sort(key=itemgetter('timestamp'), reverse=True)
 
