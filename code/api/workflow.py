@@ -151,11 +151,15 @@ def get_events_for_observable(key, observable):
 
     limit = current_app.config['CTR_ENTITIES_LIMIT']
 
+    # Split one default Gigamon API request with 7 days timerange to few
+    # requests with 1 day timerange which helps to process request faster on
+    # Gigamon site with lower load
+
     now = datetime.datetime.now()
     end_date = now.isoformat()
     start_date = (now - datetime.timedelta(days=1)).isoformat()
-    day_range = 7 # set to 7 days by default when searching through gigamon API
-    
+    day_range = 7
+
     while day_range and len(events) < limit:
 
         events_for_entity, error = get_events(\
