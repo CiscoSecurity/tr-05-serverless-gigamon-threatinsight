@@ -234,8 +234,9 @@ def test_get_events_failure(client, gti_api_request):
     }
     expected_json = {
         'query': "ip = '8.8.8.8'",
-        'limit': app.config['CTR_ENTITIES_LIMIT'],
-    }
+        'start_date': gti_api_request.call_args.kwargs['json']['start_date'],
+        'end_date': gti_api_request.call_args.kwargs['json']['end_date']
+        }
 
     gti_api_request.assert_called_once_with(
         expected_method,
@@ -274,17 +275,18 @@ def test_get_events_success(client, gti_api_request):
     }
     expected_json = {
         'query': "ip = '8.8.8.8'",
-        'limit': app.config['CTR_ENTITIES_LIMIT'],
-    }
+        'start_date': gti_api_request.call_args.kwargs['json']['start_date'],
+        'end_date': gti_api_request.call_args.kwargs['json']['end_date']
+        }
 
-    gti_api_request.assert_called_once_with(
+    gti_api_request.assert_called_with(
         expected_method,
         expected_url,
         headers=expected_headers,
         json=expected_json,
     )
 
-    assert events == expected_events
+    assert events [:10] == expected_events
     assert error is None
 
 
