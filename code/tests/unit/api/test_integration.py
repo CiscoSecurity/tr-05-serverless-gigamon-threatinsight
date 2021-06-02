@@ -1,6 +1,7 @@
 from unittest import mock
 from urllib.parse import urljoin
 from uuid import uuid4
+from freezegun import freeze_time
 
 from pytest import fixture
 
@@ -205,6 +206,7 @@ def test_get_events_for_detection_success(client, gti_api_request):
     assert error is None
 
 
+@freeze_time("2021-01-14T03:21:34.123Z")
 def test_get_events_failure(client, gti_api_request):
     app = client.application
 
@@ -234,9 +236,9 @@ def test_get_events_failure(client, gti_api_request):
     }
     expected_json = {
         'query': "ip = '8.8.8.8'",
-        'start_date': gti_api_request.call_args.kwargs['json']['start_date'],
-        'end_date': gti_api_request.call_args.kwargs['json']['end_date']
-        }
+        'start_date': '2021-01-13T03:21:34.123Z',
+        'end_date': '2021-01-14T03:21:34.123Z'
+    }
 
     gti_api_request.assert_called_once_with(
         expected_method,
@@ -249,6 +251,7 @@ def test_get_events_failure(client, gti_api_request):
     assert error == expected_error
 
 
+@freeze_time("2021-01-14T03:21:34.123Z")
 def test_get_events_success(client, gti_api_request):
     app = client.application
 
@@ -275,18 +278,20 @@ def test_get_events_success(client, gti_api_request):
     }
     expected_json = {
         'query': "ip = '8.8.8.8'",
-        'start_date': gti_api_request.call_args.kwargs['json']['start_date'],
-        'end_date': gti_api_request.call_args.kwargs['json']['end_date']
-        }
+        'start_date': '2021-01-13T03:21:34.123Z',
+        'end_date': '2021-01-14T03:21:34.123Z'
+    }
 
-    gti_api_request.assert_called_with(
+    gti_api_request.assert_any_call(
         expected_method,
         expected_url,
         headers=expected_headers,
         json=expected_json,
     )
 
-    assert events [:10] == expected_events
+    gti_api_request.call_count == 7
+
+    assert events[:10] == expected_events
     assert error is None
 
 

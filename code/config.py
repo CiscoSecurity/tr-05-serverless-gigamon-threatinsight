@@ -39,3 +39,5 @@ class Config:
         'dmo', '6bc3d2f1-af77-4236-a9db-17dacd06e4d9',  # Demo
         'chg', 'f6f6f836-8bcd-4f5d-bd61-68d303c4f634',  # Training
     }
+
+    DAY_RANGE = 7  # Default day range for Gigamon API events search

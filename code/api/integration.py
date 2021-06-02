@@ -124,19 +124,20 @@ def get_events(key, observable):
     now = datetime.datetime.now()
     end_date = now.isoformat()
     start_date = (now - datetime.timedelta(days=1)).isoformat()
-    day_range = 7
+    day_range = current_app.config['DAY_RANGE']
     while day_range and len(events) < limit:
         json = {
             'query': f"{observable['type']} = '{observable['value']}'",
-            'start_date' : mil_time(start_date),
-            'end_date' : mil_time(end_date)
+            'start_date': mil_time(start_date),
+            'end_date': mil_time(end_date)
         }
         data, error = _request('POST', url, key=key, json=json)
         if error:
             return None, error
         end_date, start_date = start_date, (
-            datetime.datetime.fromisoformat(start_date) - \
-                datetime.timedelta(days=1)).isoformat()
+            datetime.datetime.fromisoformat(start_date) -
+            datetime.timedelta(days=1)
+        ).isoformat()
         events.extend(data['events'])
         day_range -= 1
 
