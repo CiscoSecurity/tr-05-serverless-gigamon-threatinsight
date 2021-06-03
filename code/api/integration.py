@@ -141,6 +141,8 @@ def get_events(key, observable):
         events.extend(data['events'])
         day_range -= 1
 
+    events = events[:limit]
+
     return events, None
 
 
