@@ -161,6 +161,10 @@ def get_events_for_observable(key, observable):
 
     events = [event for event in events if is_allowed(event['customer_id'])]
 
+    limit = current_app.config['CTR_ENTITIES_LIMIT']
+
+    events = events[:limit]
+
     events.sort(key=itemgetter('timestamp'), reverse=True)
 
     # Additionally, try to enrich each internal device with some of its most
