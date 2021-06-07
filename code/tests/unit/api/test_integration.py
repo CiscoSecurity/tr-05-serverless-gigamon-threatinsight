@@ -1,8 +1,9 @@
 from unittest import mock
 from urllib.parse import urljoin
 from uuid import uuid4
-from freezegun import freeze_time
 
+from flask import current_app
+from freezegun import freeze_time
 from pytest import fixture
 
 from api.integration import (
@@ -257,10 +258,15 @@ def test_get_events_success(client, gti_api_request):
 
     expected_events = [{'uuid': str(uuid4())} for _ in range(10)]
 
-    gti_api_request.return_value = gti_api_response(
-        ok=True,
-        payload={'events': expected_events},
-    )
+    gti_api_request.side_effect = [
+        gti_api_response(
+            ok=True,
+            payload={'events': expected_events},
+        ) if _ == 0 else
+        gti_api_response(
+            ok=True,
+            payload={'events': ''},
+        ) for _ in range(current_app.config['DAY_RANGE'])]
 
     key = 'key'
     observable = app.config['GTI_TEST_ENTITY']
@@ -289,9 +295,9 @@ def test_get_events_success(client, gti_api_request):
         json=expected_json,
     )
 
-    gti_api_request.call_count == 7
+    assert gti_api_request.call_count == current_app.config['DAY_RANGE']
 
-    assert events[:10] == expected_events
+    assert events == expected_events
     assert error is None
 
 
