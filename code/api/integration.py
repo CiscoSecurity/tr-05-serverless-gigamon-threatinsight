@@ -3,6 +3,7 @@ from http import HTTPStatus
 from ssl import SSLCertVerificationError
 from urllib.parse import urljoin
 
+import datetime
 import requests
 from flask import current_app
 from requests.exceptions import SSLError
@@ -111,22 +112,36 @@ def get_events_for_detection(key, detection_uuid):
     return events, None
 
 
+def mil_time(date):
+    return str(date)[:-3]+'Z'
+
+
 def get_events(key, observable):
     url = _url('event', 'query')
 
     limit = current_app.config['CTR_ENTITIES_LIMIT']
+    events = []
+    now = datetime.datetime.now()
+    end_date = now.isoformat()
+    start_date = (now - datetime.timedelta(days=1)).isoformat()
+    day_range = current_app.config['DAY_RANGE']
+    while day_range and len(events) < limit:
+        json = {
+            'query': f"{observable['type']} = '{observable['value']}'",
+            'start_date': mil_time(start_date),
+            'end_date': mil_time(end_date)
+        }
+        data, error = _request('POST', url, key=key, json=json)
+        if error:
+            return None, error
+        end_date, start_date = start_date, (
+            datetime.datetime.fromisoformat(start_date) -
+            datetime.timedelta(days=1)
+        ).isoformat()
+        events.extend(data['events'])
+        day_range -= 1
 
-    json = {
-        'query': f"{observable['type']} = '{observable['value']}'",
-        'limit': limit,
-    }
-
-    data, error = _request('POST', url, key=key, json=json)
-
-    if error:
-        return None, error
-
-    events = data['events']
+    events = events[:limit]
 
     return events, None
 
