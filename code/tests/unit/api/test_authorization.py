@@ -14,7 +14,6 @@ from api.utils import (
     WRONG_AUTH_TYPE,
     WRONG_JWKS_HOST,
     WRONG_PAYLOAD_STRUCTURE,
-    JWK_HOST_MISSING,
     WRONG_KEY,
     WRONG_JWT_STRUCTURE,
     WRONG_AUDIENCE,
@@ -126,7 +125,7 @@ def test_call_with_missing_jwks_host(
     )
     assert response.status_code == HTTPStatus.OK
     assert response.json == authorization_errors_expected_payload(
-        JWK_HOST_MISSING
+        WRONG_JWKS_HOST
     )
 
 

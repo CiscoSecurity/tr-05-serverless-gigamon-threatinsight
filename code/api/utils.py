@@ -18,8 +18,6 @@ KID_NOT_FOUND = 'kid from JWT header not found in API response'
 WRONG_KEY = ('Failed to decode JWT with provided key. '
              'Make sure domain in custom_jwks_host '
              'corresponds to your SecureX instance region.')
-JWK_HOST_MISSING = ('jwk_host is missing in JWT payload. Make sure '
-                    'custom_jwks_host field is present in module_type')
 WRONG_JWKS_HOST = ('Wrong jwks_host in JWT payload. Make sure domain follows '
                    'the visibility.<region>.cisco.com structure')
 
@@ -84,7 +82,7 @@ def get_key():
     """
     expected_errors = {
         KeyError: WRONG_PAYLOAD_STRUCTURE,
-        AssertionError: JWK_HOST_MISSING,
+        AssertionError: WRONG_JWKS_HOST,
         InvalidSignatureError: WRONG_KEY,
         DecodeError: WRONG_JWT_STRUCTURE,
         InvalidAudienceError: WRONG_AUDIENCE,
