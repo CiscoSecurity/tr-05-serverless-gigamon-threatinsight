@@ -93,9 +93,9 @@ def get_key():
 
     token = get_auth_token()
     try:
-        jwks_host = jwt.decode(
-            token, options={'verify_signature': False}).get('jwks_host')
-        assert jwks_host
+        jwks_payload = jwt.decode(token, options={'verify_signature': False})
+        assert 'jwks_host' in jwks_payload
+        jwks_host = jwks_payload.get('jwks_host')
         key = get_public_key(jwks_host, token)
         aud = request.url_root
         payload = jwt.decode(

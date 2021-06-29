@@ -45,7 +45,8 @@ def valid_jwt(client):
             aud='http://localhost',
             limit=100,
             kid='02B1174234C29F8EFB69911438F597FF3FFEE6B7',
-            wrong_structure=False
+            wrong_structure=False,
+            wrong_jwks_host=False
     ):
         payload = {
             'key': key,
@@ -54,6 +55,9 @@ def valid_jwt(client):
             'CTR_ENTITIES_LIMIT': limit,
             'GTI_ALLOW_TEST_ACCOUNTS': True
         }
+
+        if wrong_jwks_host:
+            payload.pop('jwks_host')
 
         if wrong_structure:
             payload.pop('key')
