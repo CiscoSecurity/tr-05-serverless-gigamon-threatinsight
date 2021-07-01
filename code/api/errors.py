@@ -25,7 +25,7 @@ class RelayError(Exception):
 
 
 class AuthenticationRequiredError(RelayError):
-    CODE = 'authorization failed'
+    CODE = 'authorization error'
     MESSAGE = 'Authorization failed'
 
 
