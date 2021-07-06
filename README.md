@@ -85,6 +85,8 @@ And be prompted to choice option `GTI_ALLOW_TEST_ACCOUNTS`:
 
 ## Implementation Details
 
+This application was developed and tested under Python version 3.9.
+
 ### Implemented Relay Endpoints
 
 - `POST /health`
