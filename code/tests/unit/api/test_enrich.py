@@ -59,7 +59,6 @@ def gti_api_route(request):
 
 
 def all_routes():
-    yield '/deliberate/observables'
     yield '/observe/observables'
     yield '/refer/observables'
 
@@ -76,9 +75,6 @@ def expected_payload(any_route, client, valid_json):
     app = client.application
 
     payload = None
-
-    if any_route.startswith('/deliberate'):
-        payload = {}
 
     if any_route.startswith('/observe'):
         sightings = load_fixture('sightings')
@@ -159,9 +155,6 @@ def test_enrich_call_success(any_route,
     )
 
     response = None
-
-    if any_route.startswith('/deliberate'):
-        response = client.post(any_route)
 
     if any_route.startswith('/observe'):
         target = 'api.enrich.get_events_for_observable'
