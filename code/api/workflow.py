@@ -57,11 +57,6 @@ def get_events_for_observable(key, observable):
     if error:
         return None, error
 
-    detections = [detection for detection in detections if
-                  is_allowed(detection['account_uuid'])]
-    limit = current_app.config['CTR_ENTITIES_LIMIT']
-    detections = detections[:limit]
-
     # Fetch all the detections for the given entity and then all the events for
     # each detection enriching them with some additional context along the way.
 
@@ -73,7 +68,8 @@ def get_events_for_observable(key, observable):
     with ThreadPoolExecutor(max_workers=(cpu_count() or 1) * 5) as executor:
         futures = [
             executor.submit(_get_events_for_detection, key, detection['uuid'])
-            for detection in detections
+            for detection in detections if
+            is_allowed(detection['account_uuid'])
         ]
         for future in as_completed(futures):
             detection_uuid, (events_for_detection, error) = future.result()
