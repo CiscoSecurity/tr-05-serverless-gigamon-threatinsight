@@ -116,7 +116,9 @@ def mil_time(date):
     return str(date)[:-3]+'Z'
 
 
-def get_events(key, observable, event_uuids):
+def get_events(key, observable, event_uuids=None):
+    if not event_uuids:
+        event_uuids = set()
     url = _url('event', 'query')
 
     limit = current_app.config['CTR_ENTITIES_LIMIT'] - len(event_uuids)

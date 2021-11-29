@@ -224,7 +224,7 @@ def test_get_events_failure(client, gti_api_request):
     key = 'key'
     observable = app.config['GTI_TEST_ENTITY']
 
-    events, error = get_events(key, observable, frozenset())
+    events, error = get_events(key, observable)
 
     expected_method = 'POST'
     expected_url = urljoin(
@@ -272,7 +272,7 @@ def test_get_events_success(client, gti_api_request):
     key = 'key'
     observable = app.config['GTI_TEST_ENTITY']
 
-    events, error = get_events(key, observable, frozenset())
+    events, error = get_events(key, observable)
 
     expected_method = 'POST'
     expected_url = urljoin(
