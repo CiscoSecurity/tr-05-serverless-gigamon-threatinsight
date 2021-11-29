@@ -116,10 +116,10 @@ def mil_time(date):
     return str(date)[:-3]+'Z'
 
 
-def get_events(key, observable):
+def get_events(key, observable, event_uuids):
     url = _url('event', 'query')
 
-    limit = current_app.config['CTR_ENTITIES_LIMIT']
+    limit = current_app.config['CTR_ENTITIES_LIMIT'] - len(event_uuids)
     events = []
     now = datetime.datetime.now()
     end_date = now.isoformat()
@@ -138,10 +138,11 @@ def get_events(key, observable):
             datetime.datetime.fromisoformat(start_date) -
             datetime.timedelta(days=1)
         ).isoformat()
-        events.extend(data['events'])
+        events.extend(event for event in data['events'] if
+                      event['uuid'] not in event_uuids and is_allowed(
+                          event['customer_id'])
+                      )
         day_range -= 1
-
-    events = events[:limit]
 
     return events, None
 
@@ -177,3 +178,10 @@ def get_dhcp_records_by_ip(key, event_time_by_ip):
         dhcp_records_by_ip[record['ip']].append(record)
 
     return dhcp_records_by_ip, None
+
+
+def is_allowed(account: str) -> bool:
+    return (
+        current_app.config['GTI_ALLOW_TEST_ACCOUNTS'] or
+        account not in current_app.config['GTI_TEST_ACCOUNTS']
+    )

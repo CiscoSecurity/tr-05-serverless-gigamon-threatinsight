@@ -1,5 +1,6 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from multiprocessing import cpu_count
 from operator import itemgetter
 
 from flask import current_app
@@ -9,6 +10,7 @@ from api.integration import (
     get_events_for_detection,
     get_events,
     get_dhcp_records_by_ip,
+    is_allowed,
 )
 
 
@@ -55,11 +57,10 @@ def get_events_for_observable(key, observable):
     if error:
         return None, error
 
-    def is_allowed(account: str) -> bool:
-        return (
-            current_app.config['GTI_ALLOW_TEST_ACCOUNTS'] or
-            account not in current_app.config['GTI_TEST_ACCOUNTS']
-        )
+    detections = [detection for detection in detections if
+                  is_allowed(detection['account_uuid'])]
+    limit = current_app.config['CTR_ENTITIES_LIMIT']
+    detections = detections[:limit]
 
     # Fetch all the detections for the given entity and then all the events for
     # each detection enriching them with some additional context along the way.
@@ -69,13 +70,11 @@ def get_events_for_observable(key, observable):
     impacted_devices_by_rule_account = defaultdict(set)
     indicator_values_by_rule_account = defaultdict(set)
 
-    with ThreadPoolExecutor() as executor:
+    with ThreadPoolExecutor(max_workers=(cpu_count() or 1) * 5) as executor:
         futures = [
             executor.submit(_get_events_for_detection, key, detection['uuid'])
             for detection in detections
-            if is_allowed(detection['account_uuid'])
         ]
-
         for future in as_completed(futures):
             detection_uuid, (events_for_detection, error) = future.result()
 
@@ -147,19 +146,13 @@ def get_events_for_observable(key, observable):
     # Fetch some of the most recent events for the given entity and merge them
     # to the already processed ones making sure to filter out any duplicates.
 
-    events_for_entity, error = get_events(key, observable)
+    event_uuids = frozenset(event['uuid'] for event in events)
+    events_for_entity, error = get_events(key, observable, event_uuids)
 
     if error:
         return None, error
 
-    event_uuids = frozenset(event['uuid'] for event in events)
-
-    events.extend(
-        event for event in events_for_entity
-        if event['uuid'] not in event_uuids
-    )
-
-    events = [event for event in events if is_allowed(event['customer_id'])]
+    events.extend(events_for_entity)
 
     limit = current_app.config['CTR_ENTITIES_LIMIT']
 
