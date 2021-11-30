@@ -256,7 +256,8 @@ def test_get_events_failure(client, gti_api_request):
 def test_get_events_success(client, gti_api_request):
     app = client.application
 
-    expected_events = [{'uuid': str(uuid4())} for _ in range(10)]
+    expected_events = [{'uuid': str(uuid4()), 'customer_id': 'id'} for _ in
+                       range(10)]
 
     gti_api_request.side_effect = [
         gti_api_response(
