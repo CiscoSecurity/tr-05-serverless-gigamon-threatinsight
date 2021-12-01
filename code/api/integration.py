@@ -8,8 +8,6 @@ from requests.exceptions import SSLError
 from flask import current_app
 from urllib.parse import urljoin
 
-from api.errors import AuthenticationRequiredError
-
 
 def _url(family, route):
     return urljoin(current_app.config['GTI_API_FAMILY_URLS'][family], route)
