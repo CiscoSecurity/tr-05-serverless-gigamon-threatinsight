@@ -50,7 +50,11 @@ def _request(method, url, **kwargs):
         return None, error
 
     except UnicodeEncodeError:
-        raise AuthenticationRequiredError('wrong key')
+        error = {
+            'code': 'client.invalid_authentication',
+            'message': 'Authorization failed: Invalid Authorization header',
+        }
+        return None, error
 
     if response.ok:
         return response.json(), None
