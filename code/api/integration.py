@@ -1,12 +1,12 @@
 from collections import defaultdict
 from http import HTTPStatus
 from ssl import SSLCertVerificationError
-from urllib.parse import urljoin
-
 import datetime
+
 import requests
-from flask import current_app
 from requests.exceptions import SSLError
+from flask import current_app
+from urllib.parse import urljoin
 
 
 def _url(family, route):
@@ -44,6 +44,13 @@ def _request(method, url, **kwargs):
         error = {
             'code': 'ssl certificate verification failed',
             'message': f'Unable to verify SSL certificate: {reason}.',
+        }
+        return None, error
+
+    except UnicodeEncodeError:
+        error = {
+            'code': 'client.invalid_authentication',
+            'message': 'Authorization failed: Invalid Authorization header',
         }
         return None, error
 
