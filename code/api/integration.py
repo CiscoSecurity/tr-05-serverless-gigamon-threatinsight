@@ -1,12 +1,14 @@
 from collections import defaultdict
 from http import HTTPStatus
 from ssl import SSLCertVerificationError
+import datetime
+
+import requests
+from requests.exceptions import SSLError
+from flask import current_app
 from urllib.parse import urljoin
 
-import datetime
-import requests
-from flask import current_app
-from requests.exceptions import SSLError
+from api.errors import AuthenticationRequiredError
 
 
 def _url(family, route):
@@ -46,6 +48,9 @@ def _request(method, url, **kwargs):
             'message': f'Unable to verify SSL certificate: {reason}.',
         }
         return None, error
+
+    except UnicodeEncodeError:
+        raise AuthenticationRequiredError('wrong key')
 
     if response.ok:
         return response.json(), None
