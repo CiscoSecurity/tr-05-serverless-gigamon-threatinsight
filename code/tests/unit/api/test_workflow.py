@@ -67,6 +67,8 @@ def test_get_events_for_observable(client):
 
         key = 'Chop Suey!'
         observable = load_fixture('observable')
+        event_uuids = frozenset({'33798826-53fc-4a32-ad9d-825dc0c08749',
+                                'fd1d7b35-1df4-4a3a-b436-dda9179c9a79'})
 
         events, error = get_events_for_observable(key, observable)
 
@@ -81,7 +83,7 @@ def test_get_events_for_observable(client):
             for detection in detections
         ])
 
-        get_events_mock.assert_called_once_with(key, observable)
+        get_events_mock.assert_called_once_with(key, observable, event_uuids)
 
         # The actual algorithm for building the `event_time_by_ip` argument is
         # quite unwieldy but straightforward at the same time, so let's just
